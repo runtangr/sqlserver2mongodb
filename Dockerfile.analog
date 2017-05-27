@@ -1,0 +1,13 @@
+from python:2.7
+ENV TZ=Asia/Chengdu
+#run ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+#run cat /etc/issue
+run apt-get update
+run apt-get  install -r requirements.txt
+
+ADD ./src /app/src
+ADD ./docs /app/docs
+#ADD ./php_framework /php_framework
+workdir /app/src
+
+CMD ["/bin/sh","/app/docs/start_analog.sh"]

@@ -1,0 +1,2 @@
+suds>=0.4
+leancloud-sdk==0.10.0
