@@ -1,0 +1,40 @@
+﻿version: '2'
+jobs:
+ Position:  
+    name: 资金持仓
+    webservice: Query_uimsStockTransList
+    class: Position
+ Order:
+    name: 成交
+    webservice: Query_uimsStockTransDataSetList
+    class: Order
+    
+#Match 直接MC系统本身查询更新，无需调用webservice接口    
+ Match:
+    name: 大赛统计
+    webservice:
+    class: Match
+ Range:
+    name: 排名数据
+    webservice: Query_uimsSYPM
+    class: Range
+ Speech:
+    name: 获奖感言
+    webservice: Query_uimsHJGY
+    class: Speech
+ HistRange:
+    name: 历史排名
+    webservice: Query_uimsLSPM
+    class: HistRange
+ Comment:
+    name: 专家点评
+    webservice: Query_uimsZJDP
+    class: Comment
+ Season:
+    name: 赛季同步
+    webservice: Query_uimsSEASONSET
+    class: Season
+ NiuguList:
+    name: 牛股榜
+    webservice: Query_uimsNGB
+    class: NiuguList
