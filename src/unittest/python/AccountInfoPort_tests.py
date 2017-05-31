@@ -24,14 +24,13 @@ class TestOrder(unittest.TestCase):
         print ("start!")
 
         #测试地址
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+        url = "http://180.169.122.18:8091/Stocks.asmx?WSDL"
         client = Client(url)
         # print (client)
 
         #用户查询 WebService 测试接口AppSoftGet_uimsStockTransList
         response = client.service.AppSoftGet_uimsStockTransList(Coordinates='021525374658617185',
-                                                Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-                                                flag = 0
+                                                Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A'
                                                 )
         self.data= json.loads(response)
         print (self.data)

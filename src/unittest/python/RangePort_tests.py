@@ -14,7 +14,7 @@ import json
 from core import leancloud_patch
 import leancloud
 from core.Utils import init_leancloud_client
-
+from datetime import datetime
 init_leancloud_client()
 
 class TestOrder(unittest.TestCase):
@@ -24,17 +24,18 @@ class TestOrder(unittest.TestCase):
         print ("start!")
 
         #测试地址
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+        url = "http://180.169.122.18:8091/Stocks.asmx?WSDL"
         client = Client(url)
         # print (client)
 
         #大赛排名 WebService 测试接口Query_uimsSYPM
         response = client.service.Query_uimsSYPM(Coordinates='021525374658617185',
-                                                Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-                                                 mainkeyid = 0,
-                                                datetime ='Y-m-d H:i:s',
-                                                flag = 0
+                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
+                                                 rsMainkeyID = 0,
+                                                 rsDatetime ="2004-02-02 0:0:0",
+                                                 flg = 0
                                                 )
+
         self.data= json.loads(response)
         print (self.data)
 
