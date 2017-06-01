@@ -22,10 +22,10 @@ jobs:
     name: 获奖感言
     webservice: Query_uimsHJGY
     class: Speech
- HistRange:
+ HistRank:
     name: 历史排名
     webservice: Query_uimsLSPM
-    class: HistRange
+    class: HistRank
  Comment:
     name: 专家点评
     webservice: Query_uimsZJDP
