@@ -27,9 +27,9 @@ class TestOrder(unittest.TestCase):
         MyMatchObj = AnalogMyMatch()
 
         #参考文档 达人赛.md 或数据库表结构
-        MyMatchObj.set('groupBmId',18)
+        MyMatchObj.set('groupBmId',181)
         MyMatchObj.set('matchName',"达人竞技赛")
-        MyMatchObj.set('userName',"小强哥")
+        MyMatchObj.set('userName',"小强de哥")
         MyMatchObj.set('syl',"0.00%")
         # 还有一些未写出来
 
@@ -39,9 +39,9 @@ class TestOrder(unittest.TestCase):
         StockObj = AnalogStock()
 
         #参考文档 达人赛.md 或数据库表结构
-        StockObj.set('groupBmId',24594)
+        StockObj.set('groupBmId',245991)
         StockObj.set('matchName',"达人竞技赛")
-        StockObj.set('userName',"欢乐英雄")
+        StockObj.set('userName',"欢乐de 英雄")
         StockObj.set('stockName',"光明地产")
         StockObj.set('stockTypeName',"A股")
         # 还有一些未写出来
