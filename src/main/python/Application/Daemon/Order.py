@@ -49,36 +49,36 @@ class Order:
 
 			DataObj =  json.loads(OrderMC["DataObj"])#
 
-			for DataObj_first in DataObj:
+			for DataObjArr in DataObj:
 
 				#计算
-				cjje = DataObj_first['Volume'] * DataObj_first['Price'] - DataObj_first['Commission'] - DataObj_first['Commission1']
-				transType =  "买" if DataObj_first['TransStyle'] == 1 else "卖"
-				dateTime = datetime.strptime(DataObj_first["cjdatetime"],"%Y-%m-%d %H:%M:%S")  #转换
+				cjje = DataObjArr['Volume'] * DataObjArr['Price'] - DataObjArr['Commission'] - DataObjArr['Commission1']
+				transType =  "买" if DataObjArr['TransStyle'] == 1 else "卖"
+				dateTime = datetime.strptime(DataObjArr["cjdatetime"],"%Y-%m-%d %H:%M:%S")  #转换
 
 
-				queryOrder.equal_to('mainKeyId',int(DataObj_first["TransRecordId"])) ####注意转换 int
+				queryOrder.equal_to('mainKeyId',int(DataObjArr["TransRecordId"])) ####注意转换 int
 				count = queryOrder.count()
 
 
-				queryMyMatch.equal_to('groupBmId', DataObj_first['VGroupid'])
+				queryMyMatch.equal_to('groupBmId', DataObjArr['VGroupid'])
 				myMatchObj = queryMyMatch.find()
 
 				if count > 0:
 
 					if myMatchObj:
 						#编辑
-						OrderObj.set('stockCode', DataObj_first['StockCode'])
-						OrderObj.set('stockName', DataObj_first['stockname'])
-						OrderObj.set('marketCode', DataObj_first['marketcode'])
-						OrderObj.set('price', DataObj_first['Price'])
-						OrderObj.set('volume', DataObj_first['Volume'])
+						OrderObj.set('stockCode', DataObjArr['StockCode'])
+						OrderObj.set('stockName', DataObjArr['stockname'])
+						OrderObj.set('marketCode', DataObjArr['marketcode'])
+						OrderObj.set('price', DataObjArr['Price'])
+						OrderObj.set('volume', DataObjArr['Volume'])
 						OrderObj.set('cjje', cjje)
 						OrderObj.set('transType', transType)
 						OrderObj.set('dealTime', dateTime)
-						OrderObj.set('profitorLoss', DataObj_first['ProfitorLoss'])
-						OrderObj.set('syl', DataObj_first['syl'])
-						OrderObj.set('userName',DataObj_first['ZhName'])
+						OrderObj.set('profitorLoss', DataObjArr['ProfitorLoss'])
+						OrderObj.set('syl', DataObjArr['syl'])
+						OrderObj.set('userName',DataObjArr['ZhName'])
 						OrderObj.set('headImageUrl',myMatchObj[0].get('headImageUrl'))
 						OrderObj.save()
 				#count =0
@@ -87,24 +87,24 @@ class Order:
 
 					if myMatchObj:
 						OrderObj.set('userObjectId',myMatchObj[0].get('userObjectId'))
-						OrderObj.set('userName',DataObj_first['ZhName'])
+						OrderObj.set('userName',DataObjArr['ZhName'])
 						OrderObj.set('analogUserId',myMatchObj[0].get('analogUserId'))
 						OrderObj.set('headImageUrl',myMatchObj[0].get('headImageUrl'))
 						OrderObj.set('matchObjectId',myMatchObj[0].get('matchObjectId'))
 						OrderObj.set('matchName',myMatchObj[0].get('matchName'))
 						OrderObj.set('analogMatchId',myMatchObj[0].get('analogMatchId'))
-						OrderObj.set('groupBmId',DataObj_first['VGroupid'])
-						OrderObj.set('mainKeyId', int(DataObj_first['TransRecordId'])) ####注意转换int
-						OrderObj.set('stockCode',DataObj_first['StockCode'])
-						OrderObj.set('stockName',DataObj_first['stockname'])
-						OrderObj.set('marketCode',DataObj_first['marketcode'])
-						OrderObj.set('price',DataObj_first['Price'])
-						OrderObj.set('volume',DataObj_first['Volume'])
+						OrderObj.set('groupBmId',DataObjArr['VGroupid'])
+						OrderObj.set('mainKeyId', int(DataObjArr['TransRecordId'])) ####注意转换int
+						OrderObj.set('stockCode',DataObjArr['StockCode'])
+						OrderObj.set('stockName',DataObjArr['stockname'])
+						OrderObj.set('marketCode',DataObjArr['marketcode'])
+						OrderObj.set('price',DataObjArr['Price'])
+						OrderObj.set('volume',DataObjArr['Volume'])
 						OrderObj.set('cjje',cjje)
 						OrderObj.set('transType',transType)
 						OrderObj.set('dealTime',dateTime)
-						OrderObj.set('profitorLoss',DataObj_first['ProfitorLoss'])
-						OrderObj.set('syl',DataObj_first['syl'])
+						OrderObj.set('profitorLoss',DataObjArr['ProfitorLoss'])
+						OrderObj.set('syl',DataObjArr['syl'])
 						OrderObj.save()
 
 
