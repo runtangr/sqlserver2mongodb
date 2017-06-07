@@ -32,9 +32,9 @@ class TestOrder(unittest.TestCase):
         response = client.service.Query_uimsStockTransList(Coordinates='021525374658617185',
                                                  Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                  rsMainkeyID = 0,
-                                                 rsDatetime ="2004-02-02 0:0:0",
+                                                 rsDatetime ="2012-06-02 10:15:0",
                                                 SYN_CAT_REF=2,
-                                                Top=2   #获取的条数
+                                                Top=1000   #获取的条数
                                                 )
 
         self.data= json.loads(response)
