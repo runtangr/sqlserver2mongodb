@@ -17,7 +17,7 @@ from core.Utils import init_leancloud_client
 from datetime import datetime
 init_leancloud_client()
 
-class TestOrder(unittest.TestCase):
+class TestHistRank(unittest.TestCase):
 
     #WebService 接口测试
     def test_WebService(self):

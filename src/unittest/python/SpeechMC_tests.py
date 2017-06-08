@@ -17,7 +17,7 @@ from core.Utils import init_leancloud_client
 
 init_leancloud_client()
 
-class TestOrder(unittest.TestCase):
+class TestSpeech(unittest.TestCase):
 
     #写入mc数据测试
     def test_mc(self):
