@@ -1,7 +1,7 @@
 #encoding=utf-8
 
 '''
-Modified on June 2, 2017
+Modified on June 8, 2017
 
 @author: tangr
 '''
@@ -12,6 +12,7 @@ import unittest
 from suds.client import Client
 import json
 from datetime import datetime
+import time
 from core import leancloud_patch
 import leancloud
 from core.Utils import init_leancloud_client
@@ -27,13 +28,17 @@ class Speech:
         client = Client(url)
         # print (client)
 
+        # 设置当前时间请求
+        dataTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
         # 获奖感言 WebService 测试接口Query_uimsHJGY
         response = client.service.Query_uimsHJGY(Coordinates='021525374658617185',
-																  Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-																  rsMainkeyID=0,
-																  rsDatetime="2004-02-02 0:0:0",
-																  flg=0
-																  )
+												Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
+												rsMainkeyID=0,
+												# rsDatetime="2004-02-02 0:0:0",
+												rsDatetime= dataTime,
+												flg=0
+												 )
         self.data = json.loads(response)
 
     def SpeechMC(self):
