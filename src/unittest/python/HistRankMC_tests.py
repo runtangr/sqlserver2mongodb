@@ -17,20 +17,21 @@ from core.Utils import init_leancloud_client
 
 init_leancloud_client()
 
-class TestOrder(unittest.TestCase):
+class TestHistRank(unittest.TestCase):
 
     #写入mc数据测试
     def test_mc(self):
 
         #mc更新 历史排名 对应表 uimsLSPM
-        uimsLSPM = leancloud.Object.extend('uimsLSPM') #!!!未知表结构  优先级放低
+        uimsLSPM = leancloud.Object.extend('uimsLSPM')
         uimsLSPMObj = uimsLSPM()
 
         #参考文档 达人赛.md 或数据库表结构
-        uimsLSPMObj.set('groupBmId',18)
-        uimsLSPMObj.set('matchName',"达人竞技赛")
-        uimsLSPMObj.set('userName',"小强哥")
-        uimsLSPMObj.set('syl',"0.00%")
+        uimsLSPMObj.set('rsOperateID', '1')
+        uimsLSPMObj.set('rsStatus', "1")
+        uimsLSPMObj.set('rsProjectId', "1")
+        uimsLSPMObj.set('groupbm', "qwert")
+        uimsLSPMObj.set('JudgeContent', "adsgasdgsbfhgs")
         # 还有一些未写出来
 
         uimsLSPMObj.save()
