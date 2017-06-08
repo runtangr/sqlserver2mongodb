@@ -59,6 +59,9 @@ class Range:
 			query_list = queryRange.find()
 			AnalogRange.destroy_all(query_list)
 
+			userObjectId = ''
+			headImageUrl = ''
+
 
 			for DataObjArr in DataObj:
 

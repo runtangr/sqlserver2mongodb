@@ -141,6 +141,7 @@ class Order:
 
 						#ok
 						MyMatchObj.set('userObjectId',userObj.id)
+						MyMatchObj.set('headImageUrl',userObj.get('headImageUrl'))
 						MyMatchObj.set('userName', DataObjArr['ZhName'])
 						MyMatchObj.set('analogUserId', DataObjArr['UserId'])
 						MyMatchObj.set('matchObjectId',matchObject.id)
