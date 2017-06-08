@@ -49,13 +49,6 @@ class Comment:
 		uimsZJDPObj = uimsZJDP()
 		uimsZJDP_query = uimsZJDP.query
 
-		uimsZJDP_query.add_ascending('rsMainkeyID')
-		count = uimsZJDP_query.count()
-		# if count > 0:
-		# zjdpObj = uimsZJDP_query.first()
-		# 	mainKeyId = int(zjdpObj.get('rsMainkeyID'))
-		# else:
-		# 	mainKeyId = 0
 
 		if CommentMC["Code"] == 0:
 

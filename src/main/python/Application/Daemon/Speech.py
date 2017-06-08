@@ -50,8 +50,6 @@ class Speech:
 		uimsHJGYObj = uimsHJGY()
 		uimsHJGYquery = uimsHJGY.query
 
-		# AnalogMyMatch = leancloud.Object.extend('AnalogMyMatch')
-		# queryMyMatch = AnalogMyMatch.query
 
 		if SpeechMC["Code"] == 0:
 

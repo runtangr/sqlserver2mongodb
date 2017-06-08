@@ -49,13 +49,6 @@ class HistRank:
 		uimsLSPMObj = uimsLSPM()
 		uimsLSPM_query = uimsLSPM.query
 
-		uimsLSPM_query.add_ascending('rsMainkeyID')
-		count = uimsLSPM_query.count()
-		# if count > 0:
-		# 	lspmObj = uimsLSPM_query.first()
-		# 	mainKeyId = int(lspmObj.get('rsMainkeyID'))
-		# else:
-		# 	mainKeyId = 0
 
 		if HistRankMC["Code"] == 0:
 
