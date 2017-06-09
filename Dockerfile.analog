@@ -1,9 +1,9 @@
-from python:2.7
+FROM python27/package:0.1
 ENV TZ=Asia/Chengdu
 #run ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 #run cat /etc/issue
 run apt-get update
-run apt-get  install -r requirements.txt
+run pip  install -r requirements.txt
 
 ADD ./src /app/src
 ADD ./docs /app/docs
