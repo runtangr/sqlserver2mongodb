@@ -12,9 +12,10 @@ import unittest
 from suds.client import Client
 import json
 from datetime import datetime
-from core import leancloud_patch
+import sys
+import leancloud_patch
 import leancloud
-from core.Utils import init_leancloud_client
+from Utils import init_leancloud_client
 import logging
 
 logging.basicConfig(level=logging.WARNING,

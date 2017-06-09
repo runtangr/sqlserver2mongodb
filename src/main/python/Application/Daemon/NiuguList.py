@@ -13,9 +13,9 @@ from suds.client import Client
 import json
 from datetime import datetime
 import time
-from core import leancloud_patch
+import leancloud_patch
 import leancloud
-from core.Utils import init_leancloud_client
+from Utils import init_leancloud_client
 import logging
 
 logging.basicConfig(level=logging.WARNING,

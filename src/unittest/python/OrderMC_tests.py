@@ -11,9 +11,9 @@ Modified on May 25, 2017
 import unittest
 from suds.client import Client
 import json
-from core import leancloud_patch
+import leancloud_patch
 import leancloud
-from core.Utils import init_leancloud_client
+from Utils import init_leancloud_client
 
 init_leancloud_client()
 
