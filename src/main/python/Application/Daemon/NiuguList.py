@@ -16,6 +16,12 @@ import time
 from core import leancloud_patch
 import leancloud
 from core.Utils import init_leancloud_client
+import logging
+
+logging.basicConfig(level=logging.WARNING,
+                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                datefmt='%a, %d %b %Y %H:%M:%S'
+					)
 
 init_leancloud_client()
 
@@ -39,50 +45,54 @@ class NiuguList:
 		mc更新uimsLSPM(牛股榜)表
 		'''
 		NiuguListMC = self.data
-		uimsNGB = leancloud.Object.extend('uimsNGB')
-		uimsNGBObj = uimsNGB()
-		uimsNGB_query = uimsNGB.query
-
 
 		if NiuguListMC["Code"] == 0:
 
 			DataObj =  json.loads(NiuguListMC["DataObj"])#
 
 			for DataObjArr in DataObj:
-				
+				uimsNGB_query = leancloud.Query('uimsNGB')
+
 				uimsNGB_query.equal_to('rsMainkeyID',DataObjArr['rsMainkeyID'])
 				countTmp = uimsNGB_query.count()
-				if countTmp > 0:
+				try:
+					if countTmp > 0:
 
-					ngbObjTmp = uimsNGB_query.first()
-					ngbObjTmp.set('rsOperateID', str(DataObjArr['rsOperateID']))
-					ngbObjTmp.set('rsStatus', str(DataObjArr['rsStatus']))
-					ngbObjTmp.set('rsProjectId', str(DataObjArr['rsProjectId']))
-					ngbObjTmp.set('rsDateTime', DataObjArr['rsDateTime'])
-					ngbObjTmp.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
-					ngbObjTmp.set('stockShortname', DataObjArr['stockShortname'])
-					ngbObjTmp.set('ownerCount', int(DataObjArr['ownerCount']))
-					ngbObjTmp.set('avgPrize', str(DataObjArr['avgPrize']))
-					ngbObjTmp.set('groupbm', DataObjArr['groupbm'])
-					ngbObjTmp.set('StockCode', DataObjArr['StockCode'])
-					ngbObjTmp.set('Stockid', str(DataObjArr['Stockid']))
-					ngbObjTmp.save()
+						ngbObjTmp = uimsNGB_query.first()
+						ngbObjTmp.set('rsOperateID', str(DataObjArr['rsOperateID']))
+						ngbObjTmp.set('rsStatus', str(DataObjArr['rsStatus']))
+						ngbObjTmp.set('rsProjectId', str(DataObjArr['rsProjectId']))
+						ngbObjTmp.set('rsDateTime', DataObjArr['rsDateTime'])
+						ngbObjTmp.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
+						ngbObjTmp.set('stockShortname', DataObjArr['stockShortname'])
+						ngbObjTmp.set('ownerCount', int(DataObjArr['ownerCount']))
+						ngbObjTmp.set('avgPrize', str(DataObjArr['avgPrize']))
+						ngbObjTmp.set('groupbm', DataObjArr['groupbm'])
+						ngbObjTmp.set('StockCode', DataObjArr['StockCode'])
+						ngbObjTmp.set('Stockid', str(DataObjArr['Stockid']))
+						ngbObjTmp.save()
 
-				else:
+					else:
+						uimsNGB = leancloud.Object.extend('uimsNGB')
+						uimsNGBObj = uimsNGB()
 
-					uimsNGBObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
-					uimsNGBObj.set('rsStatus', str(DataObjArr['rsStatus']))
-					uimsNGBObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
-					uimsNGBObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
-					uimsNGBObj.set('rsDateTime', DataObjArr['rsDateTime'])
-					uimsNGBObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
-					uimsNGBObj.set('stockShortname', DataObjArr['stockShortname'])
-					uimsNGBObj.set('ownerCount', int(DataObjArr['ownerCount']))
-					uimsNGBObj.set('avgPrize', str(DataObjArr['avgPrize']))
-					uimsNGBObj.set('groupbm', DataObjArr['groupbm'])
-					uimsNGBObj.set('StockCode', DataObjArr['StockCode'])
-					uimsNGBObj.set('Stockid', str(DataObjArr['Stockid']))
-					uimsNGBObj.save()
+						uimsNGBObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
+						uimsNGBObj.set('rsStatus', str(DataObjArr['rsStatus']))
+						uimsNGBObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
+						uimsNGBObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
+						uimsNGBObj.set('rsDateTime', DataObjArr['rsDateTime'])
+						uimsNGBObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
+						uimsNGBObj.set('stockShortname', DataObjArr['stockShortname'])
+						uimsNGBObj.set('ownerCount', int(DataObjArr['ownerCount']))
+						uimsNGBObj.set('avgPrize', str(DataObjArr['avgPrize']))
+						uimsNGBObj.set('groupbm', DataObjArr['groupbm'])
+						uimsNGBObj.set('StockCode', DataObjArr['StockCode'])
+						uimsNGBObj.set('Stockid', str(DataObjArr['Stockid']))
+						uimsNGBObj.save()
+				except Exception, e:
+					logging.error("牛股榜数据更新失败: %s" % DataObjArr)
+		else:
+			logging.warning("提交模拟炒股系统牛股榜数据返回失败：%s" %NiuguListMC)
 
 if __name__ == "__main__":
 

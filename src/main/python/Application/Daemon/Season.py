@@ -16,6 +16,12 @@ import time
 from core import leancloud_patch
 import leancloud
 from core.Utils import init_leancloud_client
+import logging
+
+logging.basicConfig(level=logging.WARNING,
+                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                datefmt='%a, %d %b %Y %H:%M:%S'
+					)
 
 init_leancloud_client()
 
@@ -45,30 +51,31 @@ class Season:
 		mc更新uimsSeasonSet(赛季同步)表
 		'''
 		SeasonMC = self.data
-		uimsSeasonSet = leancloud.Object.extend('uimsSeasonSet')
-		uimsSeasonSetObj = uimsSeasonSet()
-		uimsSeasonSet_query = uimsSeasonSet.query
 
 		if SeasonMC["Code"] == 0:
 
 			DataObj =  json.loads(SeasonMC["DataObj"])#
 
 			for DataObjArr in DataObj:
+				try:
+					uimsSeasonSet = leancloud.Object.extend('uimsSeasonSet')
+					uimsSeasonSetObj = uimsSeasonSet()
 
-				uimsSeasonSetObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
-				uimsSeasonSetObj.set('rsStatus', str(DataObjArr['rsStatus']))
-				uimsSeasonSetObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
-				uimsSeasonSetObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
-				uimsSeasonSetObj.set('rsDateTime', DataObjArr['rsDateTime'])
-				uimsSeasonSetObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
-				uimsSeasonSetObj.set('SeasonId', str(DataObjArr['SeasonId']))
-				uimsSeasonSetObj.set('GroupStyle', str(DataObjArr['GroupStyle']))
-				uimsSeasonSetObj.set('StartDate',   datetime.strptime(DataObjArr["StartDate"],"%Y-%m-%d %H:%M:%S"))
-				uimsSeasonSetObj.set('EndDate',datetime.strptime(DataObjArr["EndDate"],"%Y-%m-%d %H:%M:%S"))
-				uimsSeasonSetObj.save()
-				
-						
-
+					uimsSeasonSetObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
+					uimsSeasonSetObj.set('rsStatus', str(DataObjArr['rsStatus']))
+					uimsSeasonSetObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
+					uimsSeasonSetObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
+					uimsSeasonSetObj.set('rsDateTime', DataObjArr['rsDateTime'])
+					uimsSeasonSetObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
+					uimsSeasonSetObj.set('SeasonId', str(DataObjArr['SeasonId']))
+					uimsSeasonSetObj.set('GroupStyle', str(DataObjArr['GroupStyle']))
+					uimsSeasonSetObj.set('StartDate',   datetime.strptime(DataObjArr["StartDate"],"%Y-%m-%d %H:%M:%S"))
+					uimsSeasonSetObj.set('EndDate',datetime.strptime(DataObjArr["EndDate"],"%Y-%m-%d %H:%M:%S"))
+					uimsSeasonSetObj.save()
+				except Exception, e:
+					logging.error("赛季同步数据更新失败: %s" % DataObjArr)
+		else:
+			logging.warning("提交模拟炒股系统赛季同步数据返回失败：%s" % SeasonMC)
 
 if __name__ == "__main__":
 

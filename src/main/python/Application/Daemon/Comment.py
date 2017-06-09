@@ -16,6 +16,12 @@ import time
 from core import leancloud_patch
 import leancloud
 from core.Utils import init_leancloud_client
+import logging
+
+logging.basicConfig(level=logging.WARNING,
+                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                datefmt='%a, %d %b %Y %H:%M:%S'
+					)
 
 init_leancloud_client()
 
@@ -45,32 +51,33 @@ class Comment:
 		mc更新uimsLSPM(历史排名)表
 		'''
 		CommentMC = self.data
-		uimsZJDP = leancloud.Object.extend('uimsZJDP')
-		uimsZJDPObj = uimsZJDP()
-		uimsZJDP_query = uimsZJDP.query
-
 
 		if CommentMC["Code"] == 0:
 
 			DataObj =  json.loads(CommentMC["DataObj"])#
 
 			for DataObjArr in DataObj:
+				try:
+					uimsZJDP = leancloud.Object.extend('uimsZJDP')
+					uimsZJDPObj = uimsZJDP()
 
-				uimsZJDPObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
-				uimsZJDPObj.set('rsStatus', str(DataObjArr['rsStatus']))
-				uimsZJDPObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
-				uimsZJDPObj.set('getedPer', str(DataObjArr['getedPer']))
-				uimsZJDPObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
-				uimsZJDPObj.set('pm', str(DataObjArr['pm']))
-				uimsZJDPObj.set('groupbm', DataObjArr['groupbm'])
-				uimsZJDPObj.set('JudgeContent', DataObjArr['JudgeContent'])
-				uimsZJDPObj.set('rsDateTime', DataObjArr['rsDateTime'])
-				uimsZJDPObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
-				uimsZJDPObj.set('TradeDate',  datetime.strptime(DataObjArr["TradeDate"],"%Y-%m-%d %H:%M:%S"))
-				uimsZJDPObj.save()
-				
-						
-
+					uimsZJDPObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
+					uimsZJDPObj.set('rsStatus', str(DataObjArr['rsStatus']))
+					uimsZJDPObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
+					uimsZJDPObj.set('getedPer', str(DataObjArr['getedPer']))
+					uimsZJDPObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
+					uimsZJDPObj.set('pm', str(DataObjArr['pm']))
+					uimsZJDPObj.set('groupbm', DataObjArr['groupbm'])
+					uimsZJDPObj.set('JudgeContent', DataObjArr['JudgeContent'])
+					uimsZJDPObj.set('rsDateTime', DataObjArr['rsDateTime'])
+					uimsZJDPObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
+					uimsZJDPObj.set('TradeDate',  datetime.strptime(DataObjArr["TradeDate"],"%Y-%m-%d %H:%M:%S"))
+					uimsZJDPObj.save()
+				except Exception, e:
+					logging.error("专家点评数据更新失败: %s" % DataObjArr)
+			DataObjArr={}
+		else:
+			logging.warning("提交模拟炒股系统专家点评数据返回失败：%s" %CommentMC)
 
 if __name__ == "__main__":
 

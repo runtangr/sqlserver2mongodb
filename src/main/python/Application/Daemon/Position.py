@@ -49,20 +49,12 @@ class Order:
 
         self.data = json.loads(response)
 
-
     def OrderMC(self):
 		'''
 		mc更新AnalogStock和AnalogMyMatch表
 		'''
 
 		OrderMC = self.data
-		AnalogStock = leancloud.Object.extend('AnalogStock')
-
-		queryStock = AnalogStock.query
-
-		AnalogMyMatch = leancloud.Object.extend('AnalogMyMatch')
-		MyMatchObj = AnalogMyMatch()
-		queryMyMatch = AnalogMyMatch.query
 
 		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
 		querySyncInfo = AnalogSyncInfo.query
@@ -87,7 +79,7 @@ class Order:
 							DataObjArr['VGroupid'],"===",DataObjArr['rsDateTime'],"\r\n")
 
 				try:
-					# myMatchQuery = new LeanQuery('AnalogMyMatch');
+					queryMyMatch = leancloud.Query('AnalogMyMatch')
 					queryMyMatch.equal_to('groupBmId', DataObjArr['VGroupid'])
 					myMatchObj = queryMyMatch.find()
 					if myMatchObj:
@@ -115,31 +107,30 @@ class Order:
 
 					else:
 						#补齐用户
-
-						AnalogUser = leancloud.Object.extend('_User')
-						queryUser = AnalogUser.query
+						queryUser = leancloud.Query('_User')
 
 						queryUser.equal_to('userId',DataObjArr['UserId'])
 						try:
 							userObj = queryUser.first()
 						except Exception, e:
-							user = leancloud.User()
-							user.set_username(DataObjArr['CountName'])
-							user.set_password('a123456')
-							user.set('userId', DataObjArr['UserId'])
-							user.set('nickname', DataObjArr['ZhName'])
-							user.sign_up()
+							userObj = leancloud.User()
+							userObj.set_username(DataObjArr['CountName'])
+							userObj.set_password('a123456')
+							userObj.set('userId', DataObjArr['UserId'])
+							userObj.set('nickname', DataObjArr['ZhName'])
+							userObj.sign_up()
 
 						#大赛记录
-						AnalogMyMatch = leancloud.Object.extend('AnalogMyMatch')
-						queryMyMatch = AnalogMyMatch.query
-						matchObject = queryMyMatch.first()
+						queryMatch = leancloud.Query('AnalogMatch')
+						matchObject = queryMatch.first()
 
 						syl = '%.2f'%(DataObjArr['syl_all'] * 100)
 						sylday = '%.2f'%(DataObjArr['syl_day'] * 100)
 						sylweek = '%.2f'%(DataObjArr['syl_week'] * 100)
 
-						#ok
+						AnalogMyMatch = leancloud.Object.extend('AnalogMyMatch')
+						MyMatchObj = AnalogMyMatch()
+
 						MyMatchObj.set('userObjectId',userObj.id)
 						MyMatchObj.set('headImageUrl',userObj.get('headImageUrl'))
 						MyMatchObj.set('userName', DataObjArr['ZhName'])
@@ -172,7 +163,7 @@ class Order:
 
 						#如果stockcode不等于000000则更新持仓数据
 					if DataObjArr['StockCode'] != "000000":
-						# queryStock = new LeanQuery('AnalogStock');
+						queryStock = leancloud.Query('AnalogStock')
 						queryStock.equal_to('groupBmId', DataObjArr['VGroupid'])
 						queryStock.equal_to('marketCode', DataObjArr['marketcode'].strip())
 						queryStock.equal_to('stockCode', DataObjArr['StockCode'].strip())
@@ -200,7 +191,8 @@ class Order:
 								stockObj.set('headImageUrl',myMatchObj[0].get('headImageUrl'))
 								stockObj.save()
 						else:
-							#新增  ok
+							#新增
+							AnalogStock = leancloud.Object.extend('AnalogStock')
 							stockObj = AnalogStock()
 							for myMatchObjList in myMatchObj:
 								userObjectId = myMatchObjList.get('userObjectId')
@@ -209,7 +201,6 @@ class Order:
 								matchObjectId = myMatchObjList.get('matchObjectId')
 								matchName = myMatchObjList.get('matchName')
 								analogMatchId = myMatchObjList.get('analogMatchId')
-
 
 							stockObj.set('userObjectId',userObjectId)
 							stockObj.set('userName', DataObjArr['ZhName'])
@@ -237,7 +228,7 @@ class Order:
 							stockObj.set('buyMoney', DataObjArr['BuyMonney'])
 							stockObj.save()
 				except Exception,e:
-					logging.error("账户持仓数据更新失败: "%DataObjArr)
+					logging.error("账户持仓数据更新失败: %s"%DataObjArr)
 
 			if isChange == 1:
 				syncObj.set('mainKeyId', maxKeyId)
@@ -245,10 +236,7 @@ class Order:
 				syncObj.save()
 
 		else:
-			logging.warning ("提交模拟炒股系统账户查询返回失败：",OrderMC)
-
-
-
+			logging.warning ("提交模拟炒股系统账户查询返回失败：%s"%OrderMC)
 
 if __name__ == "__main__":
 

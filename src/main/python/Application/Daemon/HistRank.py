@@ -16,6 +16,12 @@ import time
 from core import leancloud_patch
 import leancloud
 from core.Utils import init_leancloud_client
+import logging
+
+logging.basicConfig(level=logging.WARNING,
+                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                datefmt='%a, %d %b %Y %H:%M:%S'
+					)
 
 init_leancloud_client()
 
@@ -45,37 +51,37 @@ class HistRank:
 		mc更新uimsLSPM(历史排名)表
 		'''
 		HistRankMC = self.data
-		uimsLSPM = leancloud.Object.extend('uimsLSPM')
-		uimsLSPMObj = uimsLSPM()
-		uimsLSPM_query = uimsLSPM.query
-
 
 		if HistRankMC["Code"] == 0:
 
 			DataObj =  json.loads(HistRankMC["DataObj"])#
 
 			for DataObjArr in DataObj:
+				try:
+					uimsLSPM = leancloud.Object.extend('uimsLSPM')
+					uimsLSPMObj = uimsLSPM()
 
-				uimsLSPMObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
-				uimsLSPMObj.set('rsStatus', str(DataObjArr['rsStatus']))
-				uimsLSPMObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
-				uimsLSPMObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
-				uimsLSPMObj.set('rsDateTime', DataObjArr['rsDateTime'])
-				uimsLSPMObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
-				uimsLSPMObj.set('cgl',str(DataObjArr['cgl']))
-				uimsLSPMObj.set('allmoney',str(DataObjArr['allmoney']))
-				uimsLSPMObj.set('vgroupid',str(DataObjArr['vgroupid']))
-				uimsLSPMObj.set('dqyl',str(DataObjArr['dqyl']))
-				uimsLSPMObj.set('pm',int(DataObjArr['pm']))
-				uimsLSPMObj.set('djs',str(DataObjArr['djs']))
-				uimsLSPMObj.set('groupbm',DataObjArr['groupbm'])
-				uimsLSPMObj.set('getedPer',DataObjArr['getedPer'])
-				uimsLSPMObj.set('gzz',DataObjArr['gzz'])
-				uimsLSPMObj.set('tradeDate', datetime.strptime(DataObjArr["tradeDate"],"%Y-%m-%d %H:%M:%S"))
-				uimsLSPMObj.save()
-				
-						
-
+					uimsLSPMObj.set('rsOperateID', str(DataObjArr['rsOperateID']))
+					uimsLSPMObj.set('rsStatus', str(DataObjArr['rsStatus']))
+					uimsLSPMObj.set('rsProjectId', str(DataObjArr['rsProjectId']))
+					uimsLSPMObj.set('rsMainkeyID', DataObjArr['rsMainkeyID'])
+					uimsLSPMObj.set('rsDateTime', DataObjArr['rsDateTime'])
+					uimsLSPMObj.set('rsDispIndex', str(DataObjArr['rsDispIndex']))
+					uimsLSPMObj.set('cgl',str(DataObjArr['cgl']))
+					uimsLSPMObj.set('allmoney',str(DataObjArr['allmoney']))
+					uimsLSPMObj.set('vgroupid',str(DataObjArr['vgroupid']))
+					uimsLSPMObj.set('dqyl',str(DataObjArr['dqyl']))
+					uimsLSPMObj.set('pm',int(DataObjArr['pm']))
+					uimsLSPMObj.set('djs',str(DataObjArr['djs']))
+					uimsLSPMObj.set('groupbm',DataObjArr['groupbm'])
+					uimsLSPMObj.set('getedPer',DataObjArr['getedPer'])
+					uimsLSPMObj.set('gzz',DataObjArr['gzz'])
+					uimsLSPMObj.set('tradeDate', datetime.strptime(DataObjArr["tradeDate"],"%Y-%m-%d %H:%M:%S"))
+					uimsLSPMObj.save()
+				except Exception, e:
+					logging.error("历史排名更新失败: %s" % DataObjArr)
+		else:
+			logging.warning("提交模拟炒股系统历史排名数据返回失败：%s" %HistRankMC)
 
 if __name__ == "__main__":
 
