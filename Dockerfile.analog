@@ -4,7 +4,7 @@ ENV TZ=Asia/Chengdu
 ADD ./src /app/src
 ADD ./docs /app/docs
 ADD requirements.txt /app/requirements.txt
-ADD analog.pth /usr/local/lib/python2.7/dist-packages
+ADD analog.pth /usr/local/lib/python2.7/dist-packages/analog.pth
 workdir /app/
 
 run apt-get update
