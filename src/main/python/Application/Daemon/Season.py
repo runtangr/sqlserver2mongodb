@@ -30,7 +30,7 @@ class Season:
         '''
         获取端口数据
         '''
-        url = "http://180.169.122.18:8091/Stocks.asmx?WSDL"
+        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
         client = Client(url)
         # print (client)
 

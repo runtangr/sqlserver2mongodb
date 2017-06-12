@@ -24,7 +24,7 @@ class TestPosition(unittest.TestCase):
         print ("start!")
 
         #测试地址
-        url = "http://180.169.122.18:8091/Stocks.asmx?WSDL"
+        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
         client = Client(url)
         # print (client)
 
