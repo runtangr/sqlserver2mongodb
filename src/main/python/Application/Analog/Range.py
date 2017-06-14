@@ -26,30 +26,52 @@ logging.basicConfig(level=logging.WARNING,
 init_leancloud_client()
 
 class Range:
-    def RangePort(self):
-        '''
-        获取端口数据
-        '''
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
-        client = Client(url)
-        # print (client)
+	def RangePort(self):
+		'''
+		获取端口数据
+		'''
+		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		client = Client(url)
+		# print (client)
 
-		#设置当前时间请求
-        dataTime = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())
-        # 排名数据同步 WebService 测试接口Query_uimsSYPM
-        response = client.service.Query_uimsSYPM(Coordinates='021525374658617185',
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		AnalogSyncInfoObj = AnalogSyncInfo()
+		querySyncInfo = AnalogSyncInfo.query
+
+		querySyncInfo.equal_to('type', 'range')
+		count = querySyncInfo.count()
+		if count == 0:
+			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
+			AnalogSyncInfoObj.set("type", "range")
+			AnalogSyncInfoObj.set("mainKeyId", 0)
+			AnalogSyncInfoObj.set("rsDateTime", "2004-02-02")
+			AnalogSyncInfoObj.save()
+
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
+		rsDateTime = syncObj.get('rsDateTime')
+
+		# 排名数据同步 WebService 测试接口Query_uimsSYPM
+		response = client.service.Query_uimsSYPM(Coordinates='021525374658617185',
 												 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-												 rsMainkeyID=0,
-												 rsDatetime = dataTime,
-												 flg=0
+												 rsMainkeyID=maxKeyId,
+												 rsDatetime = rsDateTime,
+												 flg=1   #
 												 )
-        self.data = json.loads(response)
+		self.data = json.loads(response)
 
-    def RangeMC(self):
+	def RangeMC(self):
 		'''
 		mc更新AnalogRange(成交明细)表
 		'''
 		RangeMC = self.data
+		isChange = 0
+
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		querySyncInfo = AnalogSyncInfo.query
+		querySyncInfo.equal_to('type', 'range')
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
 
 		if RangeMC["Code"] == 0:
 
@@ -65,6 +87,17 @@ class Range:
 			headImageUrl = ''
 
 			for DataObjArr in DataObj:
+
+
+				if DataObjArr['rsMainkeyID'] > maxKeyId:
+					isChange = 1
+					maxKeyId = DataObjArr['rsMainkeyID']
+					rsDateTime = DataObjArr['rsDateTime']
+
+				print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					   "rsDateTime:", DataObjArr['rsDateTime'])
+
+
 				try:
 					AnalogRange = leancloud.Object.extend('AnalogRange')
 					RangeObj = AnalogRange()
@@ -103,6 +136,11 @@ class Range:
 					RangeObj.save()
 				except Exception, e:
 					logging.error("排名数据更新失败: %s" % DataObjArr)
+
+			if isChange == 1:
+				syncObj.set('mainKeyId', maxKeyId)
+				syncObj.set('rsDateTime', rsDateTime)
+				syncObj.save()
 
 		else:
 			logging.warning("提交模拟炒股系统查询日收益排名返回失败：%s"% RangeMC)

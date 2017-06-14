@@ -26,37 +26,67 @@ logging.basicConfig(level=logging.WARNING,
 init_leancloud_client()
 
 class Season:
-    def SeasonPort(self):
-        '''
-        获取端口数据
-        '''
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
-        client = Client(url)
-        # print (client)
+	def SeasonPort(self):
+		'''
+		获取端口数据
+		'''
+		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		client = Client(url)
+		# print (client)
 
-        # 设置当前时间请求
-        dataTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		AnalogSyncInfoObj = AnalogSyncInfo()
+		querySyncInfo = AnalogSyncInfo.query
 
-        # 赛季同步 WebService 测试接口Query_uimsSEASONSET
-        response = client.service.Query_uimsSEASONSET(Coordinates='021525374658617185',
+		querySyncInfo.equal_to('type', 'season')
+		count = querySyncInfo.count()
+		if count == 0:
+			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
+			AnalogSyncInfoObj.set("type", "season")
+			AnalogSyncInfoObj.set("mainKeyId", 0)
+			AnalogSyncInfoObj.set("rsDateTime", "2004-02-02")
+			AnalogSyncInfoObj.save()
+
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
+		rsDateTime = syncObj.get('rsDateTime')
+
+		# 赛季同步 WebService 测试接口Query_uimsSEASONSET
+		response = client.service.Query_uimsSEASONSET(Coordinates='021525374658617185',
 												Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-												 rsMainkeyid=0,
-												 # rsDatetime="2004-02-02 0:0:0"
-												 rsDatetime=dataTime
+												 rsMainkeyid=maxKeyId,
+												 rsDatetime=rsDateTime
 																  )
-        self.data = json.loads(response)
+		self.data = json.loads(response)
 
-    def SeasonMC(self):
+	def SeasonMC(self):
 		'''
 		mc更新uimsSeasonSet(赛季同步)表
 		'''
 		SeasonMC = self.data
+		isChange = 0
+
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		querySyncInfo = AnalogSyncInfo.query
+		querySyncInfo.equal_to('type', 'season')
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
 
 		if SeasonMC["Code"] == 0:
 
 			DataObj =  json.loads(SeasonMC["DataObj"])#
 
 			for DataObjArr in DataObj:
+
+				if DataObjArr['rsMainkeyID'] > maxKeyId:
+					isChange = 1
+					maxKeyId = DataObjArr['rsMainkeyID']
+					rsDateTime = DataObjArr['rsDateTime']
+
+				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					 "rsDateTime:",DataObjArr['rsDateTime'])
+
+
 				try:
 					uimsSeasonSet = leancloud.Object.extend('uimsSeasonSet')
 					uimsSeasonSetObj = uimsSeasonSet()
@@ -74,6 +104,12 @@ class Season:
 					uimsSeasonSetObj.save()
 				except Exception, e:
 					logging.error("赛季同步数据更新失败: %s" % DataObjArr)
+
+			if isChange == 1:
+				syncObj.set('mainKeyId', maxKeyId)
+				syncObj.set('rsDateTime', rsDateTime)
+				syncObj.save()
+
 		else:
 			logging.warning("提交模拟炒股系统赛季同步数据返回失败：%s" % SeasonMC)
 

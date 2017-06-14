@@ -26,38 +26,67 @@ logging.basicConfig(level=logging.WARNING,
 init_leancloud_client()
 
 class Speech:
-    def SpeechPort(self):
-        '''
-        获取端口数据
-        '''
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
-        client = Client(url)
-        # print (client)
+	def SpeechPort(self):
+		'''
+		获取端口数据
+		'''
+		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		client = Client(url)
+		# print (client)
 
-        # 设置当前时间请求
-        dataTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		AnalogSyncInfoObj = AnalogSyncInfo()
+		querySyncInfo = AnalogSyncInfo.query
 
-        # 获奖感言 WebService 测试接口Query_uimsHJGY
-        response = client.service.Query_uimsHJGY(Coordinates='021525374658617185',
+		querySyncInfo.equal_to('type', 'speech')
+		count = querySyncInfo.count()
+		if count == 0:
+			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
+			AnalogSyncInfoObj.set("type", "speech")
+			AnalogSyncInfoObj.set("mainKeyId", 0)
+			AnalogSyncInfoObj.set("rsDateTime", "2004-02-02")
+			AnalogSyncInfoObj.save()
+
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
+		rsDateTime = syncObj.get('rsDateTime')
+
+		# 获奖感言 WebService 测试接口Query_uimsHJGY
+		response = client.service.Query_uimsHJGY(Coordinates='021525374658617185',
 												Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-												rsMainkeyID=0,
-												# rsDatetime="2004-02-02 0:0:0",
-												rsDatetime= dataTime,
+												rsMainkeyID=maxKeyId,
+												rsDatetime= rsDateTime,
 												flg=0
 												 )
-        self.data = json.loads(response)
+		self.data = json.loads(response)
 
-    def SpeechMC(self):
+	def SpeechMC(self):
 		'''
 		mc更新uimsHJGY(获奖感言)表
 		'''
 		SpeechMC = self.data
+		isChange = 0
+
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		querySyncInfo = AnalogSyncInfo.query
+		querySyncInfo.equal_to('type', 'speech')
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
 
 		if SpeechMC["Code"] == 0:
 
 			DataObj =  json.loads(SpeechMC["DataObj"])#
 
 			for DataObjArr in DataObj:
+
+				if DataObjArr['rsMainkeyID'] > maxKeyId:
+					isChange = 1
+					maxKeyId = DataObjArr['rsMainkeyID']
+					rsDateTime = DataObjArr['rsDateTime']
+
+				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					 "rsDateTime:",DataObjArr['rsDateTime'])
+
 				try:
 					uimsHJGY = leancloud.Object.extend('uimsHJGY')
 					uimsHJGYObj = uimsHJGY()
@@ -79,6 +108,11 @@ class Speech:
 					uimsHJGYObj.save()
 				except Exception, e:
 					logging.error("获奖感言数据更新失败: %s" % DataObjArr)
+
+			if isChange == 1:
+				syncObj.set('mainKeyId', maxKeyId)
+				syncObj.set('rsDateTime', rsDateTime)
+				syncObj.save()
 		else:
 			logging.warning("提交模拟炒股系统获奖感言数据返回失败：%s" %SpeechMC)
 

@@ -26,37 +26,65 @@ logging.basicConfig(level=logging.WARNING,
 init_leancloud_client()
 
 class Comment:
-    def CommentPort(self):
-        '''
-        获取端口数据
-        '''
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
-        client = Client(url)
-        # print (client)
+	def CommentPort(self):
+		'''
+		获取端口数据
+		'''
+		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		client = Client(url)
+		# print (client)
 
-        # 设置当前时间请求
-        dataTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		AnalogSyncInfoObj = AnalogSyncInfo()
+		querySyncInfo = AnalogSyncInfo.query
 
-        # 专家点评 WebService 测试接口Query_uimsZJDP
-        response = client.service.Query_uimsZJDP(Coordinates='021525374658617185',
+		querySyncInfo.equal_to('type', 'comment')
+		count = querySyncInfo.count()
+		if count == 0:
+			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
+			AnalogSyncInfoObj.set("type","comment")
+			AnalogSyncInfoObj.set("mainKeyId",0)
+			AnalogSyncInfoObj.set("rsDateTime","2004-02-02")
+			AnalogSyncInfoObj.save()
+
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
+		rsDateTime = syncObj.get('rsDateTime')
+
+		# 专家点评 WebService 测试接口Query_uimsZJDP
+		response = client.service.Query_uimsZJDP(Coordinates='021525374658617185',
 												Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-												 rsMainkeyid=0,
-												 # rsDatetime="2004-02-02 0:0:0"
-												 rsDatetime=dataTime
+												 rsMainkeyid=maxKeyId,
+												 rsDatetime=rsDateTime
 																  )
-        self.data = json.loads(response)
+		self.data = json.loads(response)
 
-    def CommentMC(self):
+	def CommentMC(self):
 		'''
 		mc更新uimsZJDP(历史排名)表
 		'''
 		CommentMC = self.data
+		isChange = 0
+
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		querySyncInfo = AnalogSyncInfo.query
+		querySyncInfo.equal_to('type', 'comment')
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
 
 		if CommentMC["Code"] == 0:
 
 			DataObj =  json.loads(CommentMC["DataObj"])#
 
 			for DataObjArr in DataObj:
+
+				if DataObjArr['rsMainkeyID'] > maxKeyId:
+					isChange = 1
+					maxKeyId = DataObjArr['rsMainkeyID']
+					rsDateTime = DataObjArr['rsDateTime']
+
+				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					 "rsDateTime:",DataObjArr['rsDateTime'])
 				try:
 					uimsZJDP = leancloud.Object.extend('uimsZJDP')
 					uimsZJDPObj = uimsZJDP()
@@ -75,7 +103,11 @@ class Comment:
 					uimsZJDPObj.save()
 				except Exception, e:
 					logging.error("专家点评数据更新失败: %s" % DataObjArr)
-			DataObjArr={}
+			if isChange == 1:
+				syncObj.set('mainKeyId', maxKeyId)
+				syncObj.set('rsDateTime', rsDateTime)
+				syncObj.save()
+
 		else:
 			logging.warning("提交模拟炒股系统专家点评数据返回失败：%s" %CommentMC)
 

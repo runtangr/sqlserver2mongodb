@@ -26,30 +26,36 @@ logging.basicConfig(level=logging.WARNING,
 init_leancloud_client()
 
 class Order:
-    def OrderPort(self):
-        '''
-        获取端口数据
-        '''
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
-        client = Client(url)
-        # print (client)
+	def OrderPort(self):
+		'''
+			获取端口数据
+			'''
+		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		client = Client(url)
+		# print (client)
 
-		# 设置当前时间请求
-        dataTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		querySyncInfo = AnalogSyncInfo.query
+
+		querySyncInfo.equal_to('type', 'account')
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
+		rsDateTime = syncObj.get('rsDateTime')
+		top = 500
+		type = 2
 
 	# 资金持仓 WebService 测试接口Query_uimsStockTransList
-        response = client.service.Query_uimsStockTransList(Coordinates='021525374658617185',
+		response = client.service.Query_uimsStockTransList(Coordinates='021525374658617185',
 														   Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-														   rsMainkeyID=0,
-														   # rsDatetime=dataTime,
-														   rsDatetime="2012-06-02 10:15:0", #测试使用
-														   SYN_CAT_REF=2,
-														   Top=1000  # 获取的条数  后期需设置环境变量
+														   rsMainkeyID=maxKeyId,
+														   rsDatetime=rsDateTime, #测试使用
+														   SYN_CAT_REF=type,
+														   Top=top  # 获取的条数  后期需设置环境变量
 														   )
 
-        self.data = json.loads(response)
+		self.data = json.loads(response)
 
-    def OrderMC(self):
+	def OrderMC(self):
 		'''
 		mc更新AnalogStock和AnalogMyMatch表
 		'''
@@ -75,8 +81,8 @@ class Order:
 					maxKeyId = DataObjArr['rsMainkeyID']
 					rsDateTime = DataObjArr['rsDateTime']
 
-				print (maxKeyId,"===",DataObjArr['rsMainkeyID'],"===",
-							DataObjArr['VGroupid'],"===",DataObjArr['rsDateTime'],"\r\n")
+				print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					   "VGroupid:", DataObjArr['VGroupid'], "===", "rsDateTime:", DataObjArr['rsDateTime'], "\r\n")
 
 				try:
 					queryMyMatch = leancloud.Query('AnalogMyMatch')

@@ -26,37 +26,67 @@ logging.basicConfig(level=logging.WARNING,
 init_leancloud_client()
 
 class HistRank:
-    def HistRankPort(self):
-        '''
-        获取端口数据
-        '''
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
-        client = Client(url)
-        # print (client)
+	def HistRankPort(self):
+		'''
+		获取端口数据
+		'''
+		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		client = Client(url)
+		# print (client)
 
-        # 设置当前时间请求
-        dataTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		AnalogSyncInfoObj = AnalogSyncInfo()
+		querySyncInfo = AnalogSyncInfo.query
 
-        # 历史排名 WebService 测试接口Query_uimsLSPM
-        response = client.service.Query_uimsLSPM(Coordinates='021525374658617185',
+		querySyncInfo.equal_to('type', 'histRank')
+		count = querySyncInfo.count()
+		if count == 0:
+			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
+			AnalogSyncInfoObj.set("type", "histRank")
+			AnalogSyncInfoObj.set("mainKeyId", 0)
+			AnalogSyncInfoObj.set("rsDateTime", "2004-02-02")
+			AnalogSyncInfoObj.save()
+
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
+		rsDateTime = syncObj.get('rsDateTime')
+
+		# 历史排名 WebService 测试接口Query_uimsLSPM
+		response = client.service.Query_uimsLSPM(Coordinates='021525374658617185',
 												Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-												 rsMainkeyID=0,
-												 # rsDatetime="2004-02-02 0:0:0"
-												 rsDatetime=dataTime
+												 rsMainkeyID=maxKeyId,
+												 rsDatetime=rsDateTime
 																  )
-        self.data = json.loads(response)
+		self.data = json.loads(response)
 
-    def HistRankMC(self):
+	def HistRankMC(self):
 		'''
 		mc更新uimsLSPM(历史排名)表
 		'''
 		HistRankMC = self.data
+
+		isChange = 0
+
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		querySyncInfo = AnalogSyncInfo.query
+		querySyncInfo.equal_to('type', 'histRank')
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
 
 		if HistRankMC["Code"] == 0:
 
 			DataObj =  json.loads(HistRankMC["DataObj"])#
 
 			for DataObjArr in DataObj:
+
+				if DataObjArr['rsMainkeyID'] > maxKeyId:
+					isChange = 1
+					maxKeyId = DataObjArr['rsMainkeyID']
+					rsDateTime = DataObjArr['rsDateTime']
+
+				print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					   "rsDateTime:", DataObjArr['rsDateTime'])
+
 				try:
 					uimsLSPM = leancloud.Object.extend('uimsLSPM')
 					uimsLSPMObj = uimsLSPM()
@@ -80,6 +110,11 @@ class HistRank:
 					uimsLSPMObj.save()
 				except Exception, e:
 					logging.error("历史排名更新失败: %s" % DataObjArr)
+
+			if isChange == 1:
+				syncObj.set('mainKeyId', maxKeyId)
+				syncObj.set('rsDateTime', rsDateTime)
+				syncObj.save()
 		else:
 			logging.warning("提交模拟炒股系统历史排名数据返回失败：%s" %HistRankMC)
 
