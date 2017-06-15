@@ -7,6 +7,7 @@ Modified on June 14, 2017
 '''
  #资讯
  #资讯表
+ #  未使用此程序 ！！
 
 import unittest
 from suds.client import Client
@@ -52,7 +53,7 @@ class CommNewsExtract:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 500
+		top = 1000
 
 		#  技术学堂表WebService 测试接口Query_CommNews_Extract
 		response = client.service.Query_CommNews_Extract(Coordinates='021525374658617185',

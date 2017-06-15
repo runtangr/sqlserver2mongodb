@@ -103,24 +103,35 @@ class CommNewsEdit:
 				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
 					 "rsDateTime:",DataObjArr['rsDateTime'])
 
+				# 转换
+				if DataObjArr['rsStatus'] > 0:
+					isDisable = 0
+				else:
+					isDisable = 1
+
+
+				NewsDate = datetime.strptime(DataObjArr['NewsDate'], '%Y-%m-%d %H:%M:%S')
+
 				try:
 					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
 					A_DxtInformationObj = A_DxtInformation()
 
 					A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
-					A_DxtInformationObj.set('source', DataObjArr['NewsSource'])
+					A_DxtInformationObj.set('source', DataObjArr['OtherDefine2'])
 					A_DxtInformationObj.set('summary', DataObjArr['NewsBrief'])
 					A_DxtInformationObj.set('thumbnail', DataObjArr['OtherDefine1'])
 					A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
 					A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
-					A_DxtInformationObj.set('srcContent', DataObjArr['NewsSource'])
+					A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
 
 					if DataObjArr['NewsStyle'] in label:
 						NewsStyle = DataObjArr['NewsStyle']
-						A_DxtInformationObj.set('categories', label[NewsStyle])
-						A_DxtInformationObj.set('labels', label[NewsStyle])
+						tmp =[]
+						tmp.append(label[NewsStyle])
+						A_DxtInformationObj.set('categories', tmp)
+						A_DxtInformationObj.set('labels', tmp)
 
-					A_DxtInformationObj.set('isDisable', DataObjArr['rsStatus'])  #-1 wei  jingyong
+					A_DxtInformationObj.set('isDisable', isDisable)
 					# correlatedStocks =[]
 					# Stocks_dict = {'code':'','name':'','market':''}
 					# if  DataObjArr['xggg']!=None:
@@ -138,11 +149,11 @@ class CommNewsEdit:
 
 
 					A_DxtInformationObj.set('author', DataObjArr['OtherDefine2'])
-					A_DxtInformationObj.set('publishTime', DataObjArr['NewsDate'])
-					A_DxtInformationObj.set('clickNumber', "")
-					A_DxtInformationObj.set('likeNumber', "")
-					A_DxtInformationObj.set('shareNumber', "")
-					A_DxtInformationObj.set('collectNumber', "")
+					A_DxtInformationObj.set('publishTime', NewsDate)
+					A_DxtInformationObj.set('clickNumber', 0)
+					A_DxtInformationObj.set('likeNumber', 0)
+					A_DxtInformationObj.set('shareNumber', 0)
+					A_DxtInformationObj.set('collectNumber', 0)
 					A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
 
 					A_DxtInformationObj.save()

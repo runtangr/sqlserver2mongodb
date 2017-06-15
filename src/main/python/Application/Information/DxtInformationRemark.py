@@ -96,6 +96,14 @@ class sirsReportRemark:
 				print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
 					   "rsDateTime:", DataObjArr['rsDateTime'])
 
+				# 转换
+				if DataObjArr['rsStatus'] > 0:
+					isDisable = 0
+				else:
+					isDisable = 1
+
+				RemarkTime = datetime.strptime(DataObjArr['RemarkTime'], '%Y-%m-%d %H:%M:%S')
+
 				try:
 					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
 					A_DxtInformationObj = A_DxtInformation()
@@ -110,17 +118,19 @@ class sirsReportRemark:
 
 					if DataObjArr['RemarkClass'] in label:
 						RemarkClass = DataObjArr['RemarkClass']
-						A_DxtInformationObj.set('categories', label[RemarkClass])
-						A_DxtInformationObj.set('labels', label[RemarkClass])
+						tmp = []
+						tmp.append(label[RemarkClass])
+						A_DxtInformationObj.set('categories', tmp)
+						A_DxtInformationObj.set('labels', tmp)
 
-					A_DxtInformationObj.set('isDisable', DataObjArr['rsStatus'])  #-1 wei  jingyong
+					A_DxtInformationObj.set('isDisable',isDisable)
 
 					A_DxtInformationObj.set('author', DataObjArr['RemarkMan'])
-					A_DxtInformationObj.set('publishTime', DataObjArr['RemarkTime'])
-					A_DxtInformationObj.set('clickNumber', "")
-					A_DxtInformationObj.set('likeNumber', "")
-					A_DxtInformationObj.set('shareNumber', "")
-					A_DxtInformationObj.set('collectNumber', "")
+					A_DxtInformationObj.set('publishTime', RemarkTime)
+					A_DxtInformationObj.set('clickNumber', 0)
+					A_DxtInformationObj.set('likeNumber', 0)
+					A_DxtInformationObj.set('shareNumber', 0)
+					A_DxtInformationObj.set('collectNumber', 0)
 					A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
 
 					A_DxtInformationObj.save()

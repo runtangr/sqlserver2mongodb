@@ -100,6 +100,13 @@ class jx_News:
 				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
 					 "rsDateTime:",DataObjArr['rsDateTime'])
 
+				#转换
+				if DataObjArr['rsStatus'] > 0:
+					isDisable = 0
+				else:
+					isDisable = 1
+				NewsTime = datetime.strptime(DataObjArr['NewsTime'], '%Y-%m-%d %H:%M:%S')
+
 				try:
 					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
 					A_DxtInformationObj = A_DxtInformation()
@@ -114,17 +121,20 @@ class jx_News:
 
 					if DataObjArr['CalssID'] in label:
 						CalssID = DataObjArr['CalssID']
-						A_DxtInformationObj.set('categories', label[CalssID])
-						A_DxtInformationObj.set('labels', label[CalssID])
+						tmp = []
+						tmp.append(label[CalssID])
+						A_DxtInformationObj.set('categories', tmp)
+						A_DxtInformationObj.set('labels', tmp)
 
-					A_DxtInformationObj.set('isDisable', DataObjArr['rsStatus'])  #-1 wei  jingyong
+
+					A_DxtInformationObj.set('isDisable', isDisable)
 
 					A_DxtInformationObj.set('author', DataObjArr['NewsAuthor'])
-					A_DxtInformationObj.set('publishTime', DataObjArr['NewsTime'])
-					A_DxtInformationObj.set('clickNumber', "")
-					A_DxtInformationObj.set('likeNumber', "")
-					A_DxtInformationObj.set('shareNumber', "")
-					A_DxtInformationObj.set('collectNumber', "")
+					A_DxtInformationObj.set('publishTime', NewsTime)
+					A_DxtInformationObj.set('clickNumber', 0)
+					A_DxtInformationObj.set('likeNumber', 0)
+					A_DxtInformationObj.set('shareNumber', 0)
+					A_DxtInformationObj.set('collectNumber', 0)
 					A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
 
 					A_DxtInformationObj.save()
