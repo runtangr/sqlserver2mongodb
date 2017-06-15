@@ -103,31 +103,6 @@ class jx_News:
 				try:
 					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
 					A_DxtInformationObj = A_DxtInformation()
-# news:
-# |title|string|资讯标题|无|		1
-# |source|string|资讯来源|无|
-# |summary|string|资讯摘要|无|   0:content
-# |thumbnail|string|缩略图url地址|无| 1
-# |url|string|网页跳转地址|无| 1
-# |content|string|处理过后的内容，填充为同步过来  1/srcContent
-# |srcContent|string|源内容，填充为同步过来的原始 1
-# |categories|array|渠道或类型，如为二级分类则用  1
-# |labels|array|标签数组|无|   1/categories
-# |isDisable |number|是否禁用 0不禁用 1禁用|0|
-# |correlatedStocks|array|相关股票数组|无|
-# |correlatedStocks.code|string|股票代码|无|
-# |correlatedStocks.name|string|股票名称|无|
-# |correlatedStocks.market|string|股票市场|无|
-# |author|string|作者|无|  1
-# |publishTime |datetime|发布时间| 无|   1
-# |clickNumber |number|点击数|0|
-# |likeNumber |number|好评数|0|
-# |shareNumber |number|分享数|0|
-# |collectNumber |number|收藏数|0|
-# |relationId |string|同步系统关联ID| 无|  1
-
-
-
 
 					A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
 					A_DxtInformationObj.set('source', DataObjArr['NewsSource'])
@@ -143,18 +118,6 @@ class jx_News:
 						A_DxtInformationObj.set('labels', label[CalssID])
 
 					A_DxtInformationObj.set('isDisable', DataObjArr['rsStatus'])  #-1 wei  jingyong
-
-
-					# correlatedStocks =[]
-					# Stocks_dict = {'code':'','name':'','market':''}
-					# if  DataObjArr['xggg']!=None:
-					# 	pattern_code = re.compile("\w")
-					# 	Stocks_dict['code'] = pattern_code.search(DataObjArr['xggg'])
-					# 	pattern_name = re.compile("、")
-					# 	Stocks_dict['name'] = pattern_name.search(DataObjArr['xggg'])
-					# 	correlatedStocks.append(Stocks_dict)
-					# A_DxtInformationObj.set('correlatedStocks', correlatedStocks)
-
 
 					A_DxtInformationObj.set('author', DataObjArr['NewsAuthor'])
 					A_DxtInformationObj.set('publishTime', DataObjArr['NewsTime'])
