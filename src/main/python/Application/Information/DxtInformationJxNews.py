@@ -51,7 +51,7 @@ class jx_News:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 1000
+		top = 500
 
 		# 财富快线新闻 WebService 测试接口Query_jx_News
 		response = client.service.Query_jx_News(Coordinates='021525374658617185',

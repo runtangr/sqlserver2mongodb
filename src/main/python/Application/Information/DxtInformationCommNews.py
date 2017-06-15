@@ -51,7 +51,7 @@ class CommNewsEdit:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 1000
+		top = 500
 
 		# 自主新闻 WebService 测试接口Query_CommNews_EDIT
 		response = client.service.Query_CommNews_EDIT(Coordinates='021525374658617185',

@@ -52,7 +52,7 @@ class CommNewsExtract:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 1000
+		top = 500
 
 		#  技术学堂表WebService 测试接口Query_CommNews_Extract
 		response = client.service.Query_CommNews_Extract(Coordinates='021525374658617185',
