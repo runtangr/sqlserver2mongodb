@@ -12,5 +12,5 @@ run apt-get update
 run pip install  suds
 run pip install  leancloud-sdk==1.10.0
 
-workdir /app/src/main/python/Application/Daemon
+workdir /app/src/main/python/Application
 #CMD ["/bin/sh","/app/docs/start_analog.sh"]
