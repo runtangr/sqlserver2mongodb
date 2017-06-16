@@ -35,9 +35,17 @@ class Order:
 		# print (client)
 
 		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		AnalogSyncInfoObj = AnalogSyncInfo()
 		querySyncInfo = AnalogSyncInfo.query
 
-		querySyncInfo.equal_to('type', 'account')
+		querySyncInfo.equal_to('type', 'position')
+		count = querySyncInfo.count()
+		if count == 0:
+			AnalogSyncInfoObj.set("type", "position")
+			AnalogSyncInfoObj.set("mainKeyId", 0)
+			AnalogSyncInfoObj.set("rsDateTime", "1990-00-00")
+			AnalogSyncInfoObj.save()
+
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
@@ -64,7 +72,7 @@ class Order:
 
 		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
 		querySyncInfo = AnalogSyncInfo.query
-		querySyncInfo.equal_to('type', 'account')
+		querySyncInfo.equal_to('type', 'position')
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 
@@ -113,18 +121,18 @@ class Order:
 
 					else:
 						#补齐用户
-						queryUser = leancloud.Query('_User')
-
-						queryUser.equal_to('userId',DataObjArr['UserId'])
-						try:
-							userObj = queryUser.first()
-						except Exception, e:
-							userObj = leancloud.User()
-							userObj.set_username(DataObjArr['CountName'])
-							userObj.set_password('a123456')
-							userObj.set('userId', DataObjArr['UserId'])
-							userObj.set('nickname', DataObjArr['ZhName'])
-							userObj.sign_up()
+						# queryUser = leancloud.Query('_User')
+                        #
+						# queryUser.equal_to('userId',DataObjArr['UserId'])
+						# try:
+						# 	userObj = queryUser.first()
+						# except Exception, e:
+						# 	userObj = leancloud.User()
+						# 	userObj.set_username(DataObjArr['CountName'])
+						# 	userObj.set_password('a123456')
+						# 	userObj.set('userId', DataObjArr['UserId'])
+						# 	userObj.set('nickname', DataObjArr['ZhName'])
+						# 	userObj.sign_up()
 
 						#大赛记录
 						queryMatch = leancloud.Query('AnalogMatch')
@@ -136,6 +144,10 @@ class Order:
 
 						AnalogMyMatch = leancloud.Object.extend('AnalogMyMatch')
 						MyMatchObj = AnalogMyMatch()
+
+						queryUser = leancloud.Query('_User')
+						queryUser.equal_to('userId', DataObjArr['UserId'])
+						userObj = queryUser.first()
 
 						MyMatchObj.set('userObjectId',userObj.id)
 						MyMatchObj.set('headImageUrl',userObj.get('headImageUrl'))
