@@ -145,7 +145,8 @@ class Order:
 						AnalogMyMatch = leancloud.Object.extend('AnalogMyMatch')
 						MyMatchObj = AnalogMyMatch()
 
-						queryUser = leancloud.Query('_User')
+						User = leancloud.Object.extend('_User')
+						queryUser =leancloud.Query(User)
 						queryUser.equal_to('userId', DataObjArr['UserId'])
 						userObj = queryUser.first()
 

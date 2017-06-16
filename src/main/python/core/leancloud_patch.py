@@ -154,7 +154,7 @@ import os
 
 # mc_url = os.environ.get("MC_URL", "10.9.2.191:5000")
 # mc_url = os.environ.get("MC_URL", "10.30.0.128:7000")
-mc_url = os.environ.get("MC_URL", "10.30.0.12:8001")#10.30.0.12:6000或10.30.0.12
+mc_url = os.environ.get("MC_URL", "10.30.0.12:8002")#10.30.0.12:6000或10.30.0.12
 # mc_url = os.environ.get("MC_URL", "api.qkzhi.com")
 SERVER_URLS.update({"MC": mc_url})
 
