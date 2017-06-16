@@ -50,6 +50,13 @@ class Order:
 
 			DataObj =  json.loads(OrderMC["DataObj"])#
 
+			style = {
+					-1:"卖",
+					1:"买",
+					20:"分红",
+					30:"送股"
+					}
+
 			for DataObjArr in DataObj:
 
 				AnalogOrder = leancloud.Object.extend('AnalogOrder')
@@ -57,7 +64,9 @@ class Order:
 
 				#计算
 				cjje = DataObjArr['Volume'] * DataObjArr['Price'] - DataObjArr['Commission'] - DataObjArr['Commission1']
-				transType =  "买" if DataObjArr['TransStyle'] == 1 else "卖"
+
+
+				transType =  style[DataObjArr['TransStyle']]
 				dateTime = datetime.strptime(DataObjArr["cjdatetime"],"%Y-%m-%d %H:%M:%S")  #转换
 
 				queryOrder.equal_to('mainKeyId',int(DataObjArr["TransRecordId"])) ####注意转换 int
