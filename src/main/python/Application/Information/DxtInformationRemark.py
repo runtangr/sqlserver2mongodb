@@ -45,13 +45,13 @@ class sirsReportRemark:
 			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
 			AnalogSyncInfoObj.set("type", "Remark")
 			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "1990-00-00")
+			AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
 			AnalogSyncInfoObj.save()
 
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 50
+		top = 100
 
 		# 钱坤晨会 WebService 测试接口Query_sirsReportRemark
 		response = client.service.Query_sirsReportRemark(Coordinates='021525374658617185',

@@ -45,13 +45,13 @@ class jx_News:
 			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
 			AnalogSyncInfoObj.set("type", "jx_News")
 			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "2004-02-02")
+			AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
 			AnalogSyncInfoObj.save()
 
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 500
+		top = 100
 
 		# 财富快线新闻 WebService 测试接口Query_jx_News
 		response = client.service.Query_jx_News(Coordinates='021525374658617185',
