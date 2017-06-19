@@ -151,7 +151,7 @@ class Order:
 							OrderObj.set('mainKeyId', int(DataObjArr['TransRecordId'])) ####注意转换int
 							OrderObj.set('stockCode',DataObjArr['StockCode'])
 							OrderObj.set('stockName',DataObjArr['stockname'])
-							OrderObj.set('marketCode',DataObjArr['marketcode'])
+							OrderObj.set('marketCode',DataObjArr['MarketCode'])
 							OrderObj.set('price',DataObjArr['Price'])
 							OrderObj.set('volume',DataObjArr['Volume'])
 							OrderObj.set('cjje',cjje)
