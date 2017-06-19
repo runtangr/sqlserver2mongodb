@@ -43,20 +43,20 @@ class Teacher:
 		if count == 0:
 			AnalogSyncInfoObj.set("type", "TGQuestion")
 			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "1990-00-00")
+			AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
 			AnalogSyncInfoObj.save()
 
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 500
+		top = 100
 
 		# 问股列表 WebService 测试接口P_SynCommAskOnline
 		response = client.service.P_SynCommAskOnline(
 													Coordinates='021525374658617185',
 													Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-													rsMainkeyid=maxKeyId,
-													rsDatetime=rsDateTime,
+													rsMainkeyID=maxKeyId,
+													rsDateTime=rsDateTime,
 													top=top
 													)
 		self.data = json.loads(response)

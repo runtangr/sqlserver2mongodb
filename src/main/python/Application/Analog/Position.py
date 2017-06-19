@@ -84,9 +84,9 @@ class Order:
 			dataList = json.loads(DataObj['Data'])
 
 			for DataObjArr in dataList:
-				if DataObjArr['rsMainkeyID'] > maxKeyId:
+				if int(DataObjArr['rsMainkeyID']) > maxKeyId:
 					isChange = 1
-					maxKeyId = DataObjArr['rsMainkeyID']
+					maxKeyId = int(DataObjArr['rsMainkeyID'])
 					rsDateTime = DataObjArr['rsDateTime']
 
 				print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",

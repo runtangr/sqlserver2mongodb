@@ -42,7 +42,7 @@ class Order:
 		if count == 0:
 			AnalogSyncInfoObj.set("type", "order")
 			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "1990-00-00")
+			AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
 			AnalogSyncInfoObj.save()
 
 		syncObj = querySyncInfo.first()
@@ -87,9 +87,9 @@ class Order:
 
 			for DataObjArr in DataObj:
 
-				if DataObjArr['rsMainkeyID'] > maxKeyId:
+				if int(DataObjArr['rsMainkeyID']) > maxKeyId:
 					isChange = 1
-					maxKeyId = DataObjArr['rsMainkeyID']
+					maxKeyId = int(DataObjArr['rsMainkeyID'])
 					rsDateTime = DataObjArr['rsDateTime']
 
 				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
@@ -119,7 +119,7 @@ class Order:
 							#编辑
 							OrderObj.set('stockCode', DataObjArr['StockCode'])
 							OrderObj.set('stockName', DataObjArr['stockname'])
-							OrderObj.set('marketCode', DataObjArr['marketcode'])
+							OrderObj.set('marketCode', DataObjArr['MarketCode'])
 							OrderObj.set('price', DataObjArr['Price'])
 							OrderObj.set('volume', DataObjArr['Volume'])
 							OrderObj.set('cjje', cjje)
