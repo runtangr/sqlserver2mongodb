@@ -49,7 +49,7 @@ class Order:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 500
+		top = 100
 		type = 2
 
 	# 资金持仓 WebService 测试接口Query_uimsStockTransList
