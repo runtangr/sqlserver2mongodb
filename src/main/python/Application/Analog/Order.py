@@ -26,29 +26,57 @@ logging.basicConfig(level=logging.WARNING,
 init_leancloud_client()
 
 class Order:
-    def OrderPort(self):
-        '''
-        获取端口数据
-        '''
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
-        client = Client(url)
-        # print (client)
+	def OrderPort(self):
+		'''
+		获取端口数据
+		'''
+		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		client = Client(url)
+		# print (client)
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		AnalogSyncInfoObj = AnalogSyncInfo()
+		querySyncInfo = AnalogSyncInfo.query
 
-        # 成交明细 WebService 测试接口Query_uimsStockTransDataSetList
-        response = client.service.Query_uimsStockTransDataSetList(Coordinates='021525374658617185',
-																  Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A'
-																  )
-        self.data = json.loads(response)
+		querySyncInfo.equal_to('type', 'order')
+		count = querySyncInfo.count()
+		if count == 0:
+			AnalogSyncInfoObj.set("type", "order")
+			AnalogSyncInfoObj.set("mainKeyId", 0)
+			AnalogSyncInfoObj.set("rsDateTime", "1990-00-00")
+			AnalogSyncInfoObj.save()
 
-    def OrderMC(self):
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
+		rsDateTime = syncObj.get('rsDateTime')
+		top = 500
+		type = 2
+		# 成交明细 WebService 测试接口Query_uimsStockTransDetailList
+		response = client.service.Query_uimsStockTransDetailList(Coordinates='021525374658617185',
+																 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
+																 rsMainkeyID=maxKeyId,
+																 rsDatetime=rsDateTime,  # 测试使用
+																 SYN_CAT_REF=type,
+																 Top=top  # 获取的条数  后期需设置环境变量
+																 )
+		self.data = json.loads(response)
+
+	def OrderMC(self):
 		'''
 		mc更新AnalogOrder(成交明细)表
 		'''
 		OrderMC = self.data
+		isChange = 0
+
+		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
+		querySyncInfo = AnalogSyncInfo.query
+		querySyncInfo.equal_to('type', 'order')
+		syncObj = querySyncInfo.first()
+		maxKeyId = int(syncObj.get('mainKeyId'))
 
 		if OrderMC["Code"] == 0:
 
-			DataObj =  json.loads(OrderMC["DataObj"])#
+			MCDataObj = json.loads(OrderMC["DataObj"])
+			DataObj =  json.loads(MCDataObj["Data"])#
 
 			style = {
 					-1:"卖",
@@ -58,6 +86,14 @@ class Order:
 					}
 
 			for DataObjArr in DataObj:
+
+				if DataObjArr['rsMainkeyID'] > maxKeyId:
+					isChange = 1
+					maxKeyId = DataObjArr['rsMainkeyID']
+					rsDateTime = DataObjArr['rsDateTime']
+
+				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					 "rsDateTime:",DataObjArr['rsDateTime'])
 
 				AnalogOrder = leancloud.Object.extend('AnalogOrder')
 				queryOrder = AnalogOrder.query
@@ -126,6 +162,11 @@ class Order:
 							OrderObj.save()
 				except Exception, e:
 					logging.error("成交数据更新失败: %s" % DataObjArr)
+
+			if isChange == 1:
+				syncObj.set('mainKeyId', maxKeyId)
+				syncObj.set('rsDateTime', rsDateTime)
+				syncObj.save()
 		else:
 			logging.warning("提交模拟炒股系统账户查询返回失败：%s" %OrderMC)
 
