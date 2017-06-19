@@ -30,7 +30,7 @@ class HistRank:
 		'''
 		获取端口数据
 		'''
-		url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+		url = "http://114.80.94.175:8084/Stocks.asmx?WSDL"
 		client = Client(url)
 		# print (client)
 

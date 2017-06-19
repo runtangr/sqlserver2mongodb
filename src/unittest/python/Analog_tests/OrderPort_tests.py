@@ -24,14 +24,20 @@ class TestOrder(unittest.TestCase):
         print ("start!")
 
         #测试地址
-        url = "http://10.30.0.122:8091/Stocks.asmx?WSDL"
+        url = "http://114.80.94.175:8084/Stocks.asmx?WSDL"
         client = Client(url)
         # print (client)
 
-        #成交明细 WebService 测试接口Query_uimsStockTransDataSetList
-        response = client.service.Query_uimsStockTransDataSetList(Coordinates='021525374658617185',
-                                                                Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A'
-                                                                )
+        #成交明细 WebService 测试接口Query_uimsStockTransDetailList
+
+        response = client.service.Query_uimsStockTransDetailList(Coordinates='021525374658617185',
+                                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
+                                                                 rsMainkeyID=0,
+                                                                 rsDatetime="2012-06-02 10:15:0",
+                                                                 SYN_CAT_REF=2,
+                                                                 Top=1000  # 获取的条数
+                                                                 )
+
         self.data= json.loads(response)
         print (self.data)
 
