@@ -92,9 +92,9 @@ class jx_News:
 
 			for DataObjArr in DataObj:
 
-				if DataObjArr['rsMainkeyID'] > maxKeyId:
+				if int(DataObjArr['rsMainkeyID']) > maxKeyId:
 					isChange = 1
-					maxKeyId = DataObjArr['rsMainkeyID']
+					maxKeyId = int(DataObjArr['rsMainkeyID'])
 					rsDateTime = DataObjArr['rsDateTime']
 
 				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
