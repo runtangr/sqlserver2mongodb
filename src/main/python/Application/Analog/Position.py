@@ -193,8 +193,8 @@ class Order:
 				if DataObjArr['StockCode'] != "000000":
 						queryStock = leancloud.Query('AnalogStock')
 						queryStock.equal_to('groupBmId', DataObjArr['VGroupid'])
-						queryStock.equal_to('marketCode', DataObjArr['marketcode'].strip())
-						queryStock.equal_to('stockCode', DataObjArr['StockCode'].strip())
+						queryStock.equal_to('marketCode', DataObjArr['marketcode'])
+						queryStock.equal_to('stockCode', DataObjArr['StockCode'])
 						count = queryStock.count()
 						if count > 0:
 							stockObj = queryStock.first()
@@ -238,8 +238,8 @@ class Order:
 							stockObj.set('matchName',matchName)
 							stockObj.set('analogMatchId',analogMatchId)
 							stockObj.set('groupBmId', DataObjArr['VGroupid'])
-							stockObj.set('stockCode', (DataObjArr['StockCode']).strip())
-							stockObj.set('marketCode', (DataObjArr['marketcode']).strip())
+							stockObj.set('stockCode', (DataObjArr['StockCode']))
+							stockObj.set('marketCode', (DataObjArr['marketcode']))
 							stockObj.set('stockName', DataObjArr['stockname'])
 							stockObj.set('totalVolume', DataObjArr['CurrentVolume'])
 							stockObj.set('useVolume', DataObjArr['UseVolume'])
