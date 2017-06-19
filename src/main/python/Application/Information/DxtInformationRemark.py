@@ -31,7 +31,7 @@ class sirsReportRemark:
 		'''
 		获取端口数据
 		'''
-		url = "http://10.30.0.122:8093/Stocks.asmx?WSDL"
+		url = "http://61.139.76.139:9527/Stocks.asmx?WSDL"
 		client = Client(url)
 		# print (client)
 
@@ -45,13 +45,13 @@ class sirsReportRemark:
 			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
 			AnalogSyncInfoObj.set("type", "Remark")
 			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "2004-02-02")
+			AnalogSyncInfoObj.set("rsDateTime", "1990-00-00")
 			AnalogSyncInfoObj.save()
 
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 100
+		top = 50
 
 		# 钱坤晨会 WebService 测试接口Query_sirsReportRemark
 		response = client.service.Query_sirsReportRemark(Coordinates='021525374658617185',
@@ -88,9 +88,9 @@ class sirsReportRemark:
 
 			for DataObjArr in DataObj:
 
-				if DataObjArr['rsMainkeyID'] > maxKeyId:
+				if int(DataObjArr['rsMainkeyID']) > maxKeyId:
 					isChange = 1
-					maxKeyId = DataObjArr['rsMainkeyID']
+					maxKeyId = int(DataObjArr['rsMainkeyID'])
 					rsDateTime = DataObjArr['rsDateTime']
 
 				print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",

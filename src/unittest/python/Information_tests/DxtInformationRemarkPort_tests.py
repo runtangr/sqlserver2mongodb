@@ -24,7 +24,7 @@ class TestCommNews(unittest.TestCase):
         print ("start!")
 
         #测试地址
-        url = "http://10.30.0.122:8093/Stocks.asmx?WSDL"
+        url = "http://61.139.76.139:9527/Stocks.asmx?WSDL"
         client = Client(url)
         # print (client)
 
