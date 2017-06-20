@@ -5,12 +5,17 @@ from collections import OrderedDict
 
 def init_leancloud_client():
     import os
-    LEANCLOUD_APP_ID = os.environ.get("LEANCLOUD_APP_ID", "3G47drEAaXtmQas7U4WxEmx4-gzGzoHsz")
-    LEANCLOUD_APP_KEY = os.environ.get("LEANCLOUD_APP_KEY", "x3cl6OYR2mC6dDQsW0dMeceJ")
+    # LEANCLOUD_APP_ID = os.environ.get("LEANCLOUD_APP_ID", "3G47drEAaXtmQas7U4WxEmx4-gzGzoHsz")
+    # LEANCLOUD_APP_KEY = os.environ.get("LEANCLOUD_APP_KEY", "x3cl6OYR2mC6dDQsW0dMeceJ")
+    LC_APP_ID = os.environ.setdefault("LC_APP_ID", "szoGzmrv3vCog9IaAlMwvPdu-gzGzoHsz")
+    LC_APP_KEY = os.environ.setdefault("LC_APP_KEY", "RkW3UjoK2br9q15ejFsPJFCN")
+
+    LC_APP_MASTER_KEY = os.environ.setdefault("LC_APP_MASTER_KEY", "tJmRPaS5pdwFNLC2JDCKyFA2")
+
     LEANCLOUD_REGION = os.environ.get("LEANCLOUD_REGION", "MC")
-    leancloud.init(app_id=LEANCLOUD_APP_ID, app_key=LEANCLOUD_APP_KEY)
+    leancloud.init(app_id=LC_APP_ID, app_key=LC_APP_KEY)
     leancloud.use_region(LEANCLOUD_REGION)
-    print("leancloud init success with app_id: {}, app_key: {}, region: {}".format(LEANCLOUD_APP_ID, LEANCLOUD_APP_KEY,
+    print("leancloud init success with app_id: {}, app_key: {}, region: {}".format(LC_APP_ID, LC_APP_KEY,
                                                                                    LEANCLOUD_REGION))
 
 

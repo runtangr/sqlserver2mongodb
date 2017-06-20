@@ -51,7 +51,7 @@ class sirsReportRemark:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 100
+		top = 50
 
 		# 钱坤晨会 WebService 测试接口Query_sirsReportRemark
 		response = client.service.Query_sirsReportRemark(Coordinates='021525374658617185',
@@ -116,8 +116,8 @@ class sirsReportRemark:
 					A_DxtInformationObj.set('content', DataObjArr['AttachContent'])
 					A_DxtInformationObj.set('srcContent', DataObjArr['AttachContent'])
 
-					if DataObjArr['RemarkClass'] in label:
-						RemarkClass = DataObjArr['RemarkClass']
+					if int(DataObjArr['RemarkClass']) in label:
+						RemarkClass = int(DataObjArr['RemarkClass'])
 						tmp = []
 						tmp.append(label[RemarkClass])
 						A_DxtInformationObj.set('categories', tmp)

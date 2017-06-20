@@ -51,7 +51,7 @@ class CommNewsEdit:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 100
+		top = 10
 
 		# 自主新闻 WebService 测试接口Query_CommNews_EDIT
 		response = client.service.Query_CommNews_EDIT(Coordinates='021525374658617185',
@@ -124,8 +124,8 @@ class CommNewsEdit:
 					A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
 					A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
 
-					if DataObjArr['NewsStyle'] in label:
-						NewsStyle = DataObjArr['NewsStyle']
+					if int(DataObjArr['NewsStyle']) in label:
+						NewsStyle = int(DataObjArr['NewsStyle'])
 						tmp =[]
 						tmp.append(label[NewsStyle])
 						A_DxtInformationObj.set('categories', tmp)

@@ -119,8 +119,8 @@ class jx_News:
 					A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
 					A_DxtInformationObj.set('srcContent', DataObjArr['NewsSource'])
 
-					if DataObjArr['CalssID'] in label:
-						CalssID = DataObjArr['CalssID']
+					if int(DataObjArr['CalssID']) in label:
+						CalssID = int(DataObjArr['CalssID'])
 						tmp = []
 						tmp.append(label[CalssID])
 						A_DxtInformationObj.set('categories', tmp)
