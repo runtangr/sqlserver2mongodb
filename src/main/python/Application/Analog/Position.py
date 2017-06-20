@@ -97,6 +97,22 @@ class Order:
 				queryMyMatch.equal_to('groupBmId', DataObjArr['VGroupid'])
 				myMatchObj = queryMyMatch.find()
 				if myMatchObj:
+
+					queryUser = leancloud.Query('_User')
+					queryUser.equal_to('userId', DataObjArr['UserId'])
+					try:
+						userObj = queryUser.first()
+					except Exception, e:
+						userObj = leancloud.User()
+						userObj.set_username(DataObjArr['CountName'])
+						userObj.set_password('a123456')
+						userObj.set('userId', DataObjArr['UserId'])
+						userObj.set('nickname', DataObjArr['ZhName'])
+						userObj.sign_up()
+
+					myMatchObj[0].set('userObjectId', userObj.id)
+					myMatchObj[0].set('headImageUrl', userObj.get('headImageUrl'))
+
 					syl = '%.2f' %(DataObjArr['syl_all'] * 100)
 					sylday = '%.2f' %(DataObjArr['syl_day'] * 100)
 					sylweek = '%.2f' %(DataObjArr['syl_week'] * 100)
