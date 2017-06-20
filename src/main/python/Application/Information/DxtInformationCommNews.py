@@ -81,7 +81,9 @@ class CommNewsEdit:
 			DataObj =  json.loads(CommNewsEditMC["DataObj"])#
 
 			#label
-			label = { 21056:"大盘分析",
+			label = {
+					36743:"主题投资",
+					21056:"大盘分析",
 					 23790:"钱坤观点",
 					 33310:"要闻点评",
 					 24612:"今日热点",
