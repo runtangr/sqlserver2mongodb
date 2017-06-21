@@ -60,8 +60,10 @@ class sirsReportRemark:
 												 rsDatetime=rsDateTime,
 												 top=top
 													)
-
-		self.sirsReportRemark = json.loads(response)
+		try:
+			self.sirsReportRemark = json.loads(response)
+		except Exception, e:
+			logging.error("%s  webservice 接口数据获取失败 %s" % (__file__, response))
 
 	def sirsReportRemarkMC(self):
 		'''
@@ -88,10 +90,12 @@ class sirsReportRemark:
 
 			for DataObjArr in DataObj:
 
-				if int(DataObjArr['rsMainkeyID']) > maxKeyId:
-					isChange = 1
+				if DataObjArr==DataObj[-1]:
 					maxKeyId = int(DataObjArr['rsMainkeyID'])
 					rsDateTime = DataObjArr['rsDateTime']
+					syncObj.set('mainKeyId', maxKeyId)
+					syncObj.set('rsDateTime', rsDateTime)
+					syncObj.save()
 
 				print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
 					   "rsDateTime:", DataObjArr['rsDateTime'])
@@ -105,42 +109,72 @@ class sirsReportRemark:
 				RemarkTime = datetime.strptime(DataObjArr['RemarkTime'], '%Y-%m-%d %H:%M:%S')
 
 				try:
-					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
-					A_DxtInformationObj = A_DxtInformation()
+					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
+					A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+					A_DxtInformationList = A_DxtInformationQuery.find()
+					# 编辑
+					if len(A_DxtInformationList) > 0:
 
-					A_DxtInformationObj.set('title', DataObjArr['AttachTitle'])
-					A_DxtInformationObj.set('source', "")
-					A_DxtInformationObj.set('summary', "")  ##content
-					A_DxtInformationObj.set('thumbnail', DataObjArr["OtherDefine8"])
-					A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
-					A_DxtInformationObj.set('content', DataObjArr['AttachContent'])
-					A_DxtInformationObj.set('srcContent', DataObjArr['AttachContent'])
+						A_DxtInformationList[0].set('title', DataObjArr['AttachTitle'])
+						A_DxtInformationList[0].set('source', "")
+						A_DxtInformationList[0].set('summary', "")  ##content
+						A_DxtInformationList[0].set('thumbnail', DataObjArr["OtherDefine8"])
+						A_DxtInformationList[0].set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationList[0].set('content', DataObjArr['AttachContent'])
+						A_DxtInformationList[0].set('srcContent', DataObjArr['AttachContent'])
 
-					if int(DataObjArr['RemarkClass']) in label:
-						RemarkClass = int(DataObjArr['RemarkClass'])
-						tmp = []
-						tmp.append(label[RemarkClass])
-						A_DxtInformationObj.set('categories', tmp)
-						A_DxtInformationObj.set('labels', tmp)
+						if int(DataObjArr['RemarkClass']) in label:
+							RemarkClass = int(DataObjArr['RemarkClass'])
+							tmp = []
+							tmp.append(label[RemarkClass])
+							A_DxtInformationList[0].set('categories', tmp)
+							A_DxtInformationList[0].set('labels', tmp)
 
-					A_DxtInformationObj.set('isDisable',isDisable)
+						A_DxtInformationList[0].set('isDisable',isDisable)
 
-					A_DxtInformationObj.set('author', DataObjArr['RemarkMan'])
-					A_DxtInformationObj.set('publishTime', RemarkTime)
-					A_DxtInformationObj.set('clickNumber', 0)
-					A_DxtInformationObj.set('likeNumber', 0)
-					A_DxtInformationObj.set('shareNumber', 0)
-					A_DxtInformationObj.set('collectNumber', 0)
-					A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+						A_DxtInformationList[0].set('author', DataObjArr['RemarkMan'])
+						A_DxtInformationList[0].set('publishTime', RemarkTime)
+						A_DxtInformationList[0].set('clickNumber', 0)
+						A_DxtInformationList[0].set('likeNumber', 0)
+						A_DxtInformationList[0].set('shareNumber', 0)
+						A_DxtInformationList[0].set('collectNumber', 0)
+						A_DxtInformationList[0].set('relationId', DataObjArr['rsMainkeyID'])
 
-					A_DxtInformationObj.save()
+						A_DxtInformationList[0].save()
+					else:
+						A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
+						A_DxtInformationObj = A_DxtInformation()
+
+						A_DxtInformationObj.set('title', DataObjArr['AttachTitle'])
+						A_DxtInformationObj.set('source', "")
+						A_DxtInformationObj.set('summary', "")  ##content
+						A_DxtInformationObj.set('thumbnail', DataObjArr["OtherDefine8"])
+						A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationObj.set('content', DataObjArr['AttachContent'])
+						A_DxtInformationObj.set('srcContent', DataObjArr['AttachContent'])
+
+						if int(DataObjArr['RemarkClass']) in label:
+							RemarkClass = int(DataObjArr['RemarkClass'])
+							tmp = []
+							tmp.append(label[RemarkClass])
+							A_DxtInformationObj.set('categories', tmp)
+							A_DxtInformationObj.set('labels', tmp)
+
+						A_DxtInformationObj.set('isDisable', isDisable)
+
+						A_DxtInformationObj.set('author', DataObjArr['RemarkMan'])
+						A_DxtInformationObj.set('publishTime', RemarkTime)
+						A_DxtInformationObj.set('clickNumber', 0)
+						A_DxtInformationObj.set('likeNumber', 0)
+						A_DxtInformationObj.set('shareNumber', 0)
+						A_DxtInformationObj.set('collectNumber', 0)
+						A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+
+						A_DxtInformationObj.save()
+
 				except Exception, e:
 					logging.error("钱坤晨会更新失败: %s" % DataObjArr)
 
-			if isChange == 1:
-				syncObj.set('mainKeyId', maxKeyId)
-				syncObj.set('rsDateTime', rsDateTime)
-				syncObj.save()
 
 		else:
 			logging.warning("提交模拟炒股系统钱坤晨会数据返回失败：%s" %sirsReportRemarkMC)

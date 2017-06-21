@@ -60,8 +60,10 @@ class CommNewsEdit:
 												 rsDatetime=rsDateTime,
 												 top=top
 													)
-
-		self.CommNews_EDIT = json.loads(response)
+		try:
+			self.CommNews_EDIT = json.loads(response)
+		except Exception, e:
+			logging.error("%s  webservice 接口数据获取失败 %s" % (__file__, response))
 
 	def CommNewsEditMC(self):
 		'''
@@ -92,15 +94,21 @@ class CommNewsEdit:
 					 23788:"早盘风向标"	,
 					 33312:"深入研究",
 					 39866:"每日点评",
-					 33311:"公司公告"}
+					 33311:"公司公告",
+					 28000:"为机构实战池",
+					31161:"为机构研报池",
+					27590:"为天机一号池"
+			}
 
 
 			for DataObjArr in DataObj:
 
-				if int(DataObjArr['rsMainkeyID']) > maxKeyId:
-					isChange = 1
+				if DataObjArr==DataObj[-1]:
 					maxKeyId = int(DataObjArr['rsMainkeyID'])
 					rsDateTime = DataObjArr['rsDateTime']
+					syncObj.set('mainKeyId', maxKeyId)
+					syncObj.set('rsDateTime', rsDateTime)
+					syncObj.save()
 
 				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
 					 "rsDateTime:",DataObjArr['rsDateTime'])
@@ -115,60 +123,73 @@ class CommNewsEdit:
 				NewsDate = datetime.strptime(DataObjArr['NewsDate'], '%Y-%m-%d %H:%M:%S')
 
 				try:
-					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
-					A_DxtInformationObj = A_DxtInformation()
+					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
+					A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+					A_DxtInformationList = A_DxtInformationQuery.find()
+					# 编辑
+					if len(A_DxtInformationList) > 0:
 
-					A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
-					A_DxtInformationObj.set('source', DataObjArr['OtherDefine2'])
-					A_DxtInformationObj.set('summary', DataObjArr['NewsBrief'])
-					A_DxtInformationObj.set('thumbnail', DataObjArr['OtherDefine1'])
-					A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
-					A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
-					A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
+						A_DxtInformationList[0].set('title', DataObjArr['NewsTitle'])
+						A_DxtInformationList[0].set('source', DataObjArr['OtherDefine2'])
+						A_DxtInformationList[0].set('summary', DataObjArr['NewsBrief'])
+						A_DxtInformationList[0].set('thumbnail', DataObjArr['OtherDefine1'])
+						A_DxtInformationList[0].set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationList[0].set('content', DataObjArr['NewsContent'])
+						A_DxtInformationList[0].set('srcContent', DataObjArr['NewsContent'])
 
-					if int(DataObjArr['NewsStyle']) in label:
-						NewsStyle = int(DataObjArr['NewsStyle'])
-						tmp =[]
-						tmp.append(label[NewsStyle])
-						A_DxtInformationObj.set('categories', tmp)
-						A_DxtInformationObj.set('labels', tmp)
+						if int(DataObjArr['NewsStyle']) in label:
+							NewsStyle = int(DataObjArr['NewsStyle'])
+							tmp =[]
+							tmp.append(label[NewsStyle])
+							A_DxtInformationList[0].set('categories', tmp)
+							A_DxtInformationList[0].set('labels', tmp)
 
-					A_DxtInformationObj.set('isDisable', isDisable)
-					# correlatedStocks =[]
-					# Stocks_dict = {'code':'','name':'','market':''}
-					# if  DataObjArr['xggg']!=None:
-					# 	pattern_data = re.split("、",DataObjArr['xggg'])
-					#     for pattern_list in pattern_data:
-					# 		    Stocks_dict['code'] = re.search("\d+",pattern_list)
-					# 	        if
-					# 	        	Stocks_dict['name'] = pattern_name.search(DataObjArr['xggg'])
-					# 			else:
-					# 				Stocks_dict['name'] = DataObjArr['xggg']
-                    #
-					# 				correlatedStocks.append(Stocks_dict)
-                    #
-					# A_DxtInformationObj.set('correlatedStocks', correlatedStocks)
+						A_DxtInformationList[0].set('isDisable', isDisable)
+						A_DxtInformationList[0].set('author', DataObjArr['OtherDefine2'])
+						A_DxtInformationList[0].set('publishTime', NewsDate)
+						A_DxtInformationList[0].set('clickNumber', 0)
+						A_DxtInformationList[0].set('likeNumber', 0)
+						A_DxtInformationList[0].set('shareNumber', 0)
+						A_DxtInformationList[0].set('collectNumber', 0)
+						A_DxtInformationList[0].set('relationId', DataObjArr['rsMainkeyID'])
 
+						A_DxtInformationList[0].save()
+					else:
+						A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
+						A_DxtInformationObj = A_DxtInformation()
 
-					A_DxtInformationObj.set('author', DataObjArr['OtherDefine2'])
-					A_DxtInformationObj.set('publishTime', NewsDate)
-					A_DxtInformationObj.set('clickNumber', 0)
-					A_DxtInformationObj.set('likeNumber', 0)
-					A_DxtInformationObj.set('shareNumber', 0)
-					A_DxtInformationObj.set('collectNumber', 0)
-					A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+						A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
+						A_DxtInformationObj.set('source', DataObjArr['OtherDefine2'])
+						A_DxtInformationObj.set('summary', DataObjArr['NewsBrief'])
+						A_DxtInformationObj.set('thumbnail', DataObjArr['OtherDefine1'])
+						A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
+						A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
 
-					A_DxtInformationObj.save()
+						if int(DataObjArr['NewsStyle']) in label:
+							NewsStyle = int(DataObjArr['NewsStyle'])
+							tmp = []
+							tmp.append(label[NewsStyle])
+							A_DxtInformationObj.set('categories', tmp)
+							A_DxtInformationObj.set('labels', tmp)
+
+						A_DxtInformationObj.set('isDisable', isDisable)
+						A_DxtInformationObj.set('author', DataObjArr['OtherDefine2'])
+						A_DxtInformationObj.set('publishTime', NewsDate)
+						A_DxtInformationObj.set('clickNumber', 0)
+						A_DxtInformationObj.set('likeNumber', 0)
+						A_DxtInformationObj.set('shareNumber', 0)
+						A_DxtInformationObj.set('collectNumber', 0)
+						A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+
 				except Exception, e:
 					logging.error("资讯表 自主新闻数据更新失败: %s" % DataObjArr)
 
-			if isChange == 1:
-				syncObj.set('mainKeyId', maxKeyId)
-				syncObj.set('rsDateTime', rsDateTime)
-				syncObj.save()
-
 		else:
 			logging.warning("提交模拟炒股系统资讯表 自主新闻数据返回失败：%s" %CommNewsEditMC)
+
+
+
 
 if __name__ == "__main__":
 

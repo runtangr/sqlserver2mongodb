@@ -60,8 +60,10 @@ class jx_News:
 												 rsDatetime=rsDateTime,
 												 top=top
 												)
-
-		self.jx_News_EDIT = json.loads(response)
+		try:
+			self.jx_News_EDIT = json.loads(response)
+		except Exception, e:
+			logging.error("%s  webservice 接口数据获取失败 %s" % (__file__, response))
 
 	def jx_NewsMC(self):
 		'''
@@ -92,10 +94,12 @@ class jx_News:
 
 			for DataObjArr in DataObj:
 
-				if int(DataObjArr['rsMainkeyID']) > maxKeyId:
-					isChange = 1
+				if DataObjArr==DataObj[-1]:
 					maxKeyId = int(DataObjArr['rsMainkeyID'])
 					rsDateTime = DataObjArr['rsDateTime']
+					syncObj.set('mainKeyId', maxKeyId)
+					syncObj.set('rsDateTime', rsDateTime)
+					syncObj.save()
 
 				print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
 					 "rsDateTime:",DataObjArr['rsDateTime'])
@@ -108,43 +112,73 @@ class jx_News:
 				NewsTime = datetime.strptime(DataObjArr['NewsTime'], '%Y-%m-%d %H:%M:%S')
 
 				try:
-					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
-					A_DxtInformationObj = A_DxtInformation()
+					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
+					A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+					A_DxtInformationList = A_DxtInformationQuery.find()
+					# 编辑
+					if len(A_DxtInformationList) > 0:
 
-					A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
-					A_DxtInformationObj.set('source', DataObjArr['NewsSource'])
-					A_DxtInformationObj.set('summary', "") ###
-					A_DxtInformationObj.set('thumbnail', DataObjArr['NewsImage'])
-					A_DxtInformationObj.set('url', "")
-					A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
-					A_DxtInformationObj.set('srcContent', DataObjArr['NewsSource'])
+						A_DxtInformationList[0].set('title', DataObjArr['NewsTitle'])
+						A_DxtInformationList[0].set('source', DataObjArr['NewsSource'])
+						A_DxtInformationList[0].set('summary', "") ###
+						A_DxtInformationList[0].set('thumbnail', DataObjArr['NewsImage'])
+						A_DxtInformationList[0].set('url', "")
+						A_DxtInformationList[0].set('content', DataObjArr['NewsContent'])
+						A_DxtInformationList[0].set('srcContent', DataObjArr['NewsSource'])
 
-					if int(DataObjArr['CalssID']) in label:
-						CalssID = int(DataObjArr['CalssID'])
-						tmp = []
-						tmp.append(label[CalssID])
-						A_DxtInformationObj.set('categories', tmp)
-						A_DxtInformationObj.set('labels', tmp)
+						if int(DataObjArr['CalssID']) in label:
+							CalssID = int(DataObjArr['CalssID'])
+							tmp = []
+							tmp.append(label[CalssID])
+							A_DxtInformationList[0].set('categories', tmp)
+							A_DxtInformationList[0].set('labels', tmp)
 
 
-					A_DxtInformationObj.set('isDisable', isDisable)
+						A_DxtInformationList[0].set('isDisable', isDisable)
 
-					A_DxtInformationObj.set('author', DataObjArr['NewsAuthor'])
-					A_DxtInformationObj.set('publishTime', NewsTime)
-					A_DxtInformationObj.set('clickNumber', 0)
-					A_DxtInformationObj.set('likeNumber', 0)
-					A_DxtInformationObj.set('shareNumber', 0)
-					A_DxtInformationObj.set('collectNumber', 0)
-					A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+						A_DxtInformationList[0].set('author', DataObjArr['NewsAuthor'])
+						A_DxtInformationList[0].set('publishTime', NewsTime)
+						A_DxtInformationList[0].set('clickNumber', 0)
+						A_DxtInformationList[0].set('likeNumber', 0)
+						A_DxtInformationList[0].set('shareNumber', 0)
+						A_DxtInformationList[0].set('collectNumber', 0)
+						A_DxtInformationList[0].set('relationId', DataObjArr['rsMainkeyID'])
 
-					A_DxtInformationObj.save()
+						A_DxtInformationList[0].save()
+					#新增
+					else:
+						A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
+						A_DxtInformationObj = A_DxtInformation()
+
+						A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
+						A_DxtInformationObj.set('source', DataObjArr['NewsSource'])
+						A_DxtInformationObj.set('summary', "")  ###
+						A_DxtInformationObj.set('thumbnail', DataObjArr['NewsImage'])
+						A_DxtInformationObj.set('url', "")
+						A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
+						A_DxtInformationObj.set('srcContent', DataObjArr['NewsSource'])
+
+						if int(DataObjArr['CalssID']) in label:
+							CalssID = int(DataObjArr['CalssID'])
+							tmp = []
+							tmp.append(label[CalssID])
+							A_DxtInformationObj.set('categories', tmp)
+							A_DxtInformationObj.set('labels', tmp)
+
+						A_DxtInformationObj.set('isDisable', isDisable)
+
+						A_DxtInformationObj.set('author', DataObjArr['NewsAuthor'])
+						A_DxtInformationObj.set('publishTime', NewsTime)
+						A_DxtInformationObj.set('clickNumber', 0)
+						A_DxtInformationObj.set('likeNumber', 0)
+						A_DxtInformationObj.set('shareNumber', 0)
+						A_DxtInformationObj.set('collectNumber', 0)
+						A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+
+						A_DxtInformationObj.save()
+
 				except Exception, e:
 					logging.error("财富快线新闻数据更新失败: %s" % DataObjArr)
-
-			if isChange == 1:
-				syncObj.set('mainKeyId', maxKeyId)
-				syncObj.set('rsDateTime', rsDateTime)
-				syncObj.save()
 
 		else:
 			logging.warning("提交模拟炒股系统财富快线新闻数据返回失败：%s" %jx_NewsMC)
