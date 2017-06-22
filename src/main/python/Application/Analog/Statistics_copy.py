@@ -7,6 +7,7 @@ Modified on June 8, 2017
 '''
  #模拟炒股
  #大赛统计同步
+# 未使用本程序！
 
 import unittest
 from suds.client import Client
