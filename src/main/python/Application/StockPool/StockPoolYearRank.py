@@ -34,31 +34,15 @@ class StockPoolYearRank:
         client = Client(url)
         # print (client)
 
-        AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-        self.AnalogSyncInfoObj = AnalogSyncInfo()
-        querySyncInfo = AnalogSyncInfo.query
-
-        querySyncInfo.equal_to('type', 'StockPoolYearRank')
-        syncObj = querySyncInfo.find()
-        if len(syncObj)== 0:
-            dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
-            self.AnalogSyncInfoObj.set("type","StockPoolYearRank")
-            self.AnalogSyncInfoObj.set("mainKeyId",0)
-            self.AnalogSyncInfoObj.set("AccessDateTime","1990-01-01")
-            self.AnalogSyncInfoObj.save()
-
-        self.AnalogSyncInfoObj = querySyncInfo.first()
-        self.maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
-        self.rsDateTime = self.AnalogSyncInfoObj.get('rsDate')
-
+        self.CommStockPoolYearRank = []
 
         # 年最高涨幅榜 WebService 测试接口Query_NZGZF
-        for i in range(1,3):
+        for i in range(1,4):
             response = client.service.Query_NZGZF(Coordinates='021525374658617185',
                                                     Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                   PoolStyle=i
                                                         )
-            self.CommStockPoolYearRank = []
+
             try:
                 self.CommStockPoolYearRank.append(json.loads(response))
 
@@ -71,13 +55,15 @@ class StockPoolYearRank:
         '''
 
         for self.CommStockPoolYearRankLog in self.CommStockPoolYearRank:
-            maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
+
 
             if self.CommStockPoolYearRankLog["Code"] == 0:
                 try:
                     self.DataObj =  json.loads(self.CommStockPoolYearRankLog["DataObj"])#
                 except Exception, e:
                     logging.error("%s  webservice 接口DataObj数据获取失败 %s" % (__file__, self.CommStockPoolYearRankLog["DataObj"]))
+
+                self.SelectStockPool =0
 
                 map(self.DealData,self.DataObj)
 
@@ -87,19 +73,25 @@ class StockPoolYearRank:
     def DealData(self,DataObjArr):
 
         #判断最后一条
-        if DataObjArr==self.DataObj[-1]:
-            self.maxKeyId = int(DataObjArr['rsMainkeyID'])
-            self.AccessDateTime = DataObjArr['AccessDateTime']
-            self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
-            self.AnalogSyncInfoObj.set('AccessDateTime', self.AccessDateTime)
-            self.AnalogSyncInfoObj.save()
+
         #打印
-        print ("maxKeyId:", self.maxKeyId, "===", "rsMainKeyID:", DataObjArr['rsMainkeyID'], "===",
-               "AccessDateTime:", DataObjArr['AccessDateTime'])
+
 
         A_DxtStockPoolYearRankQuery = leancloud.Query('A_DxtStockPoolYearRank')
         A_DxtStockPoolYearRankQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtStockPoolYearRankList = A_DxtStockPoolYearRankQuery.find()
+
+        # 判断股票池
+        self.SelectStockPool += 1
+
+        # 查找StockPool 匹配relationId ，取出objectid
+        A_DxtStockPoolQuery = leancloud.Query('A_DxtStockPool')
+        A_DxtStockPoolQuery.equal_to('relationId', str(self.SelectStockPool))
+        self.A_DxtStockPoolList = A_DxtStockPoolQuery.find()
+
+        #转换
+        self.inTime = datetime.strptime(DataObjArr['AccessDateTime'], "%Y-%m-%d %H:%M:%S")
+
         # 编辑
         if len(self.A_DxtStockPoolYearRankList) > 0:
 
@@ -110,7 +102,7 @@ class StockPoolYearRank:
 
     def Edit(self,DataObjArr):
 
-        self.A_DxtStockPoolYearRankList[0].set('stockPoolObjectId', str(DataObjArr['StockPoolYearRankID']))
+        self.A_DxtStockPoolYearRankList[0].set('stockPoolObjectId', self.A_DxtStockPoolList[0].get('objectId'))
         self.A_DxtStockPoolYearRankList[0].set('stockCode', DataObjArr['StockCode'])
         self.A_DxtStockPoolYearRankList[0].set('stockName', DataObjArr['StockShortName'])
         self.A_DxtStockPoolYearRankList[0].set('marketCode', DataObjArr['MarketCode'])  ########
@@ -120,7 +112,7 @@ class StockPoolYearRank:
         self.A_DxtStockPoolYearRankList[0].set('inPrice', DataObjArr['AccessPrice'])
 
         self.A_DxtStockPoolYearRankList[0].set('stockComeFrom', DataObjArr['StockComeFrom'])
-        self.A_DxtStockPoolYearRankList[0].set('inTime', DataObjArr['AccessDateTime'])
+        self.A_DxtStockPoolYearRankList[0].set('inTime', self.inTime)
 
         self.A_DxtStockPoolYearRankList[0].set('relationId', str(DataObjArr["rsMainkeyID"]))
         self.A_DxtStockPoolYearRankList[0].save()
@@ -130,7 +122,7 @@ class StockPoolYearRank:
         A_DxtStockPoolYearRankDiary = leancloud.Object.extend('A_DxtStockPoolYearRank')
         A_DxtStockPoolYearRankDiaryObj = A_DxtStockPoolYearRankDiary()
 
-        A_DxtStockPoolYearRankDiaryObj.set('stockPoolObjectId', str(DataObjArr['StockPoolYearRankID']))
+        A_DxtStockPoolYearRankDiaryObj.set('stockPoolObjectId', self.A_DxtStockPoolList[0].get('objectId'))
         A_DxtStockPoolYearRankDiaryObj.set('stockCode', DataObjArr['StockCode'])
         A_DxtStockPoolYearRankDiaryObj.set('stockName', DataObjArr['StockShortName'])
         A_DxtStockPoolYearRankDiaryObj.set('marketCode', DataObjArr['MarketCode'])  ########
@@ -140,7 +132,7 @@ class StockPoolYearRank:
         A_DxtStockPoolYearRankDiaryObj.set('inPrice', DataObjArr['AccessPrice'])
 
         A_DxtStockPoolYearRankDiaryObj.set('stockComeFrom', DataObjArr['StockComeFrom'])
-        A_DxtStockPoolYearRankDiaryObj.set('inTime', DataObjArr['AccessDateTime'])
+        A_DxtStockPoolYearRankDiaryObj.set('inTime', self.inTime)
 
         A_DxtStockPoolYearRankDiaryObj.set('relationId', str(DataObjArr["rsMainkeyID"]))
         A_DxtStockPoolYearRankDiaryObj.save()

@@ -108,7 +108,7 @@ class StockPool:
 
                         A_DxtStockPoolStockObj = A_DxtStockPoolStockQuery.first()
                         # map(self.DealData,)
-                        A_DxtStockPoolStockObj.set('stockPoolObjectId', A_DxtStockPoolObj[0].get('objectId '))
+                        A_DxtStockPoolStockObj.set('stockPoolObjectId', A_DxtStockPoolObj[0].get('objectId'))
                         A_DxtStockPoolStockObj.set('stockCode', DataObjArr['StockCode'])
                         A_DxtStockPoolStockObj.set('stockName', DataObjArr['StockShortName'])
                         A_DxtStockPoolStockObj.set('marketCode', DataObjArr['MarketCode'])
