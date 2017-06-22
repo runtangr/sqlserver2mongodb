@@ -59,13 +59,18 @@ class StockPool:
                                                   rsDateTime=rsDateTime,
                                                   top=top
                                                                   )
-        self.data = json.loads(response)
+        try:
+            self.CommStockZB = json.loads(response)
+
+        except Exception, e:
+            logging.error("%s  webservice 接口数据获取失败 %s" % (__file__, response))
+       
 
     def StockPoolMC(self):
         '''
         mc更新A_DxtStockPool(股票池)表
         '''
-        StockPoolMC = self.data
+        StockPoolMC = self.CommStockZB
         isChange = 0
 
         AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
