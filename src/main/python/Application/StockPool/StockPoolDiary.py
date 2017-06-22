@@ -50,7 +50,7 @@ class StockPool:
         self.AnalogSyncInfoObj = querySyncInfo.first()
         self.maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
         self.rsDateTime = self.AnalogSyncInfoObj.get('rsDateTime')
-        top = 500
+        top = 200
 
         # 股票池日总结 WebService 测试接口Query_CommNews_EDIT  资讯CommNews_EDIT表
         response = client.service.Query_CommNews_EDIT(Coordinates='021525374658617185',
@@ -78,25 +78,31 @@ class StockPool:
             # newsStyle = 28000 为机构实战池
             # newsStyle = 31161 为机构研报池
             # newsStyle = 27590 为天机一号池
-            self.StcokPool=("28000", "31161", "27590")
+            self.StcokPool={"28000":"机构实战池",
+                            "31161":"机构研报池",
+                           "27590":"天玑I号池"}
+            self.StcokPoolList= list(self.StcokPool.keys())
 
 
             map(self.DealData,self.DataObj)
+
+            #最后保存同步数据
+            self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
+            self.AnalogSyncInfoObj.set('rsDateTime', self.rsDateTime)
+            self.AnalogSyncInfoObj.save()
 
         else:
              logging.warning("提交股票池股票数据返回失败：%s" %self.CommStockPoolLog)
 
     def DealData(self,DataObjArr):
 
-        if DataObjArr["NewsStyle"] not in self.StcokPool:
+        if DataObjArr["NewsStyle"] not in self.StcokPoolList:
             return
-        #判断最后一条
-        if DataObjArr==self.DataObj[-1]:
-            self.maxKeyId = int(DataObjArr['rsMainkeyID'])
-            self.rsDateTime = DataObjArr['rsDateTime']
-            self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
-            self.AnalogSyncInfoObj.set('rsDateTime', self.rsDateTime)
-            self.AnalogSyncInfoObj.save()
+        #此处无法判断左后一条数据，每次赋值
+        # if DataObjArr==self.DataObj[-1]:
+        self.maxKeyId = int(DataObjArr['rsMainkeyID'])
+        self.rsDateTime = DataObjArr['rsDateTime']
+
         #打印
         print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
                "rsDateTime:", DataObjArr['rsDateTime'])
@@ -107,6 +113,11 @@ class StockPool:
         A_DxtStockPoolStockQuery = leancloud.Query('A_DxtStockPoolDiary')
         A_DxtStockPoolStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtStockPoolStockList = A_DxtStockPoolStockQuery.find()
+
+        #查找StockPool 匹配name ，取出objectid
+        A_DxtStockPoolQuery = leancloud.Query('A_DxtStockPool')
+        A_DxtStockPoolQuery.equal_to('name', self.StcokPool[DataObjArr["NewsStyle"]])
+        self.A_DxtStockPoolList = A_DxtStockPoolQuery.find()
         # 编辑
         if len(self.A_DxtStockPoolStockList) > 0:
 
@@ -116,7 +127,7 @@ class StockPool:
 
     def Edit(self,DataObjArr):
 
-        self.A_DxtStockPoolStockList[0].set('stockPoolObjectId', str(DataObjArr['NewsStyle']))
+        self.A_DxtStockPoolStockList[0].set('stockPoolObjectId', self.A_DxtStockPoolList[0].get("objectId"))
         self.A_DxtStockPoolStockList[0].set('title', DataObjArr['NewsTitle'])
         self.A_DxtStockPoolStockList[0].set('content', DataObjArr['NewsContent'])
         self.A_DxtStockPoolStockList[0].set('publishTime', self.NewsDate)  ########
@@ -128,7 +139,7 @@ class StockPool:
         A_DxtStockPoolDiary = leancloud.Object.extend('A_DxtStockPoolDiary')
         A_DxtStockPoolDiaryObj = A_DxtStockPoolDiary()
 
-        A_DxtStockPoolDiaryObj.set('stockPoolObjectId', str(DataObjArr['NewsStyle']))
+        A_DxtStockPoolDiaryObj.set('stockPoolObjectId', self.A_DxtStockPoolList[0].get("objectId"))
         A_DxtStockPoolDiaryObj.set('title', DataObjArr['NewsTitle'])
         A_DxtStockPoolDiaryObj.set('content', DataObjArr['NewsContent'])
         A_DxtStockPoolDiaryObj.set('publishTime', self.NewsDate)  ########
