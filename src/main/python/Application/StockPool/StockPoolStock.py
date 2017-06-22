@@ -82,10 +82,13 @@ class StockPool:
 
             for DataObjArr in DataObj:
 
-                # if int(DataObjArr['rsMainkeyID']) > maxKeyId:
+                if DataObjArr== DataObj[-1]:
                 #     isChange = 1
-                maxKeyId = int(DataObjArr['rsMainkeyID'])
-                rsDateTime = DataObjArr['rsDateTime']
+                    maxKeyId = int(DataObjArr['rsMainkeyID'])
+                    rsDateTime = DataObjArr['rsDateTime']
+                    syncObj.set('mainKeyId', maxKeyId)
+                    syncObj.set('rsDateTime', rsDateTime)
+                    syncObj.save()
 
                 print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
                      "rsDateTime:",DataObjArr['rsDateTime'])
@@ -143,9 +146,7 @@ class StockPool:
                     logging.error("股票池股票数据更新失败: %s" % DataObjArr)
 
             # if isChange == 1:
-            syncObj.set('mainKeyId', maxKeyId)
-            syncObj.set('rsDateTime', rsDateTime)
-            syncObj.save()
+
 
         else:
              logging.warning("提交股票池股票数据返回失败：%s" %StockPoolMC)
