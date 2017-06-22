@@ -37,10 +37,10 @@ class StockPoolYearRank:
         self.CommStockPoolYearRank = []
 
         # 年最高涨幅榜 WebService 测试接口Query_NZGZF
-        for i in range(1,4):
+        for StockPoolNumber in range(1,4):
             response = client.service.Query_NZGZF(Coordinates='021525374658617185',
                                                     Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-                                                  PoolStyle=i
+                                                  PoolStyle=StockPoolNumber
                                                         )
 
             try:
@@ -71,11 +71,6 @@ class StockPoolYearRank:
                  logging.warning("提交股票池股票数据返回失败：%s" %self.CommStockPoolYearRankLog)
 
     def DealData(self,DataObjArr):
-
-        #判断最后一条
-
-        #打印
-
 
         A_DxtStockPoolYearRankQuery = leancloud.Query('A_DxtStockPoolYearRank')
         A_DxtStockPoolYearRankQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
