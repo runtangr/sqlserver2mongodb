@@ -125,9 +125,15 @@ class CommNewsEdit:
 				try:
 					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
 					A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+					#同步判断
+					A_DxtInformationQuery.equal_to('sync', 1)
+
 					A_DxtInformationList = A_DxtInformationQuery.find()
 					# 编辑
 					if len(A_DxtInformationList) > 0:
+
+						#添加同步字段
+						A_DxtInformationList[0].set('sync', 1)
 
 						A_DxtInformationList[0].set('title', DataObjArr['NewsTitle'])
 						A_DxtInformationList[0].set('source', DataObjArr['OtherDefine2'])
@@ -157,6 +163,9 @@ class CommNewsEdit:
 					else:
 						A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
 						A_DxtInformationObj = A_DxtInformation()
+
+						# 添加同步字段
+						A_DxtInformationObj.set('sync', 1)
 
 						A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
 						A_DxtInformationObj.set('source', DataObjArr['OtherDefine2'])

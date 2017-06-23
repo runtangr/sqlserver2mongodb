@@ -111,10 +111,14 @@ class sirsReportRemark:
 				try:
 					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
 					A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+
+					# 同步判断
+					A_DxtInformationQuery.equal_to('sync', 3)
 					A_DxtInformationList = A_DxtInformationQuery.find()
 					# 编辑
 					if len(A_DxtInformationList) > 0:
 
+						A_DxtInformationList[0].set('sync', 3)
 						A_DxtInformationList[0].set('title', DataObjArr['AttachTitle'])
 						A_DxtInformationList[0].set('source', "")
 						A_DxtInformationList[0].set('summary', "")  ##content
@@ -144,6 +148,8 @@ class sirsReportRemark:
 					else:
 						A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
 						A_DxtInformationObj = A_DxtInformation()
+
+						A_DxtInformationObj.set('sync', 3)
 
 						A_DxtInformationObj.set('title', DataObjArr['AttachTitle'])
 						A_DxtInformationObj.set('source', "")
