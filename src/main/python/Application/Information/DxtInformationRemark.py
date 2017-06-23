@@ -51,7 +51,7 @@ class sirsReportRemark:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 500
+		top = 100
 
 		# 钱坤晨会 WebService 测试接口Query_sirsReportRemark
 		response = client.service.Query_sirsReportRemark(Coordinates='021525374658617185',
