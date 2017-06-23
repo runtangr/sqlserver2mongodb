@@ -109,7 +109,7 @@ class jx_News:
 					isDisable = 0
 				else:
 					isDisable = 1
-				NewsTime = datetime.strptime(DataObjArr['NewsTime'], '%Y-%m-%d %H:%M:%S')
+				NewsTime = datetime.strptime(DataObjArr['NewsTime'][:-5], '%Y-%m-%d %H:%M:%S')
 
 				try:
 					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')

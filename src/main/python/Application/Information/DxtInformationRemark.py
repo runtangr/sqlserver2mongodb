@@ -51,7 +51,7 @@ class sirsReportRemark:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 100
+		top = 500
 
 		# 钱坤晨会 WebService 测试接口Query_sirsReportRemark
 		response = client.service.Query_sirsReportRemark(Coordinates='021525374658617185',
@@ -106,7 +106,7 @@ class sirsReportRemark:
 				else:
 					isDisable = 1
 
-				RemarkTime = datetime.strptime(DataObjArr['RemarkTime'], '%Y-%m-%d %H:%M:%S')
+				RemarkTime = datetime.strptime(DataObjArr['RemarkTime'][:-5], '%Y-%m-%d %H:%M:%S')
 
 				try:
 					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')

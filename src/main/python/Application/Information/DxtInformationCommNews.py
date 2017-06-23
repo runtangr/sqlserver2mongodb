@@ -119,8 +119,8 @@ class CommNewsEdit:
 				else:
 					isDisable = 1
 
-
-				NewsDate = datetime.strptime(DataObjArr['NewsDate'], '%Y-%m-%d %H:%M:%S')
+				#此处不需要毫秒 所以后面5个
+				NewsDate = datetime.strptime(DataObjArr['NewsDate'][:-5], '%Y-%m-%d %H:%M:%S')
 
 				try:
 					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
