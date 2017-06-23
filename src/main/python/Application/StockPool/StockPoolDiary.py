@@ -108,7 +108,7 @@ class StockPool:
                "rsDateTime:", DataObjArr['rsDateTime'])
 
         #数据处理
-        self.NewsDate = datetime.strptime(DataObjArr['NewsDate'],'%Y-%m-%d %H:%M:%S')
+        self.NewsDate = datetime.strptime(DataObjArr['NewsDate'][:-5],'%Y-%m-%d %H:%M:%S')
 
         A_DxtStockPoolStockQuery = leancloud.Query('A_DxtStockPoolDiary')
         A_DxtStockPoolStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
