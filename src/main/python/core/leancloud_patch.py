@@ -125,11 +125,11 @@ def post(url, params, headers=None):
 @check_error
 def put(url, params, headers=None):
     # print(headers)
-    print(params)
-    print(_get_base_url() + url)
+    # print(params)
+    # print(_get_base_url() + url)
     response = requests.put(_get_base_url() + url, headers=headers, data=json.dumps(params, separators=(',', ':')), timeout=TIMEOUT_SECONDS)
-    print(response)
-    print(response.json())
+    # print(response)
+    # print(response.json())
     return response
 
 @classmethod
