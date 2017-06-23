@@ -190,6 +190,7 @@ class CommNewsEdit:
 						A_DxtInformationObj.set('shareNumber', 0)
 						A_DxtInformationObj.set('collectNumber', 0)
 						A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+						A_DxtInformationObj.save()
 
 				except Exception, e:
 					logging.error("资讯表 自主新闻数据更新失败: %s" % DataObjArr)
