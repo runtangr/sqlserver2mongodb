@@ -1,7 +1,7 @@
 #encoding=utf-8
 
 '''
-Modified on June 23, 2017
+Modified on June 26, 2017
 
 @author: tangr
 '''
@@ -17,6 +17,8 @@ import leancloud_patch
 import leancloud
 from Utils import init_leancloud_client
 import logging
+
+import MarketData
 
 logging.basicConfig(level=logging.WARNING,
                 format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
@@ -100,6 +102,7 @@ class WZWTeacher:
         #数据处理
         # self.NewsDate = datetime.strptime(DataObjArr['NewsDate'][:-5],'%Y-%m-%d %H:%M:%S')
         # totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["ResidualCapital"]
+        self.isExpert = 0 if  DataObjArr["rsProjectId"] else 1
 
         A_DxtWZWTeacherStockQuery = leancloud.Query('A_DxtWZWTeacher')
         A_DxtWZWTeacherStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
@@ -119,26 +122,31 @@ class WZWTeacher:
             self.Save(A_DxtWZWTeacherDiaryObj,DataObjArr)
 
     def Save(self,Obj,DataObjArr):
+        #事实获取
+
+        MarketData.getTicker()
+
         Obj.set('name', DataObjArr['OtherDefine4'])
         Obj.set('photo', DataObjArr['Timage'])
         Obj.set('groupBmId', DataObjArr['rsMainkeyID'])
         Obj.set('djs', DataObjArr['DJS'])
-        Obj.set('isExpert', DataObjArr["rsProjectId"])  #
+        Obj.set('isExpert', self.isExpert)
 
-        Obj.set('totalCapital', 0)  #
+        Obj.set('totalCapital', 0)  #|总资产|无|
 
         # 跟行情有关 后期接口处理pb3
-        Obj.set('sz', )  #
-        Obj.set('cw', DataObjArr["rsProjectId"])
-        Obj.set('originalCapital', DataObjArr["rsProjectId"])
+        Obj.set('sz', )  #|总市值|无|
+        Obj.set('cw', "")  #|当前仓位|无|
+        Obj.set('originalCapital', DataObjArr["OriginalCapital"])
 
-        Obj.set('pm', DataObjArr['NewsTitle'])
-        Obj.set('syl', DataObjArr['NewsContent'])
-        Obj.set('certId', self.NewsDate)
-        Obj.set('desc', str(DataObjArr["rsMainkeyID"]))
-        Obj.set('motto', self.A_DxtWZWTeacherList[0].get("objectId"))
-        Obj.set('historyAccount', DataObjArr['NewsTitle'])
-        Obj.set('relationId', DataObjArr['NewsTitle'])
+        Obj.set('pm', "")  #|当月排行|无|
+        Obj.set('syl', "")   #|收益率|无|
+
+        Obj.set('certId', DataObjArr["Tzsbh"])
+        Obj.set('desc', DataObjArr["Tfxsjs"])
+        Obj.set('motto', DataObjArr["Ttzgy"])
+        Obj.set('historyAccount', "")  #历史账目-资金ID|无|
+        Obj.set('relationId', DataObjArr["rsMainkeyID"])
 
 if __name__ == "__main__":
 
