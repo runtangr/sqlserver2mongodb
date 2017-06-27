@@ -30,7 +30,7 @@ class StockPoolOut:
         '''
         获取端口数据
         '''
-        url = "http://125.70.0.228:9525/Stocks.asmx?WSDL"
+        url = "http://stock.cjs.com.cn/Stocks.asmx?WSDL"
         client = Client(url)
         # print (client)
 
