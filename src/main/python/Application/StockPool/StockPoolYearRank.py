@@ -54,8 +54,12 @@ class StockPoolYearRank:
         mc更新 A_DxtStockPoolYearRankDiary(年最高涨幅榜)表
         '''
 
+        self.SelectStockPool = 0
+
         for self.CommStockPoolYearRankLog in self.CommStockPoolYearRank:
 
+            # 判断股票池
+            self.SelectStockPool += 1
 
             if self.CommStockPoolYearRankLog["Code"] == 0:
                 try:
@@ -63,7 +67,7 @@ class StockPoolYearRank:
                 except Exception, e:
                     logging.error("%s  webservice 接口DataObj数据获取失败 %s" % (__file__, self.CommStockPoolYearRankLog["DataObj"]))
 
-                self.SelectStockPool =0
+
 
                 map(self.DealData,self.DataObj)
 
@@ -76,8 +80,6 @@ class StockPoolYearRank:
         A_DxtStockPoolYearRankQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtStockPoolYearRankList = A_DxtStockPoolYearRankQuery.find()
 
-        # 判断股票池
-        self.SelectStockPool += 1
 
         # 查找StockPool 匹配relationId ，取出objectid
         A_DxtStockPoolQuery = leancloud.Query('A_DxtStockPool')

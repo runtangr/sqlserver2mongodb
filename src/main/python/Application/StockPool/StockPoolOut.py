@@ -54,8 +54,12 @@ class StockPoolOut:
         mc更新 A_DxtStockPoolOutDiary(年最高涨幅榜)表
         '''
 
+        self.SelectStockPool = 0
+
         for self.CommStockPoolOutLog in self.CommStockPoolOut:
 
+            # 判断股票池
+            self.SelectStockPool += 1
 
             if self.CommStockPoolOutLog["Code"] == 0:
                 try:
@@ -63,7 +67,7 @@ class StockPoolOut:
                 except Exception, e:
                     logging.error("%s  webservice 接口DataObj数据获取失败 %s" % (__file__, self.CommStockPoolOutLog["DataObj"]))
 
-                self.SelectStockPool =0
+
 
                 map(self.DealData,self.DataObj)
 
@@ -76,8 +80,6 @@ class StockPoolOut:
         A_DxtStockPoolOutQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtStockPoolOutList = A_DxtStockPoolOutQuery.find()
 
-        # 判断股票池
-        self.SelectStockPool += 1
 
         # 查找StockPool 匹配relationId ，取出objectid
         A_DxtStockPoolQuery = leancloud.Query('A_DxtStockPool')
