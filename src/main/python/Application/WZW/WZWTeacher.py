@@ -102,29 +102,84 @@ class WZWTeacher:
         #数据处理
         # self.NewsDate = datetime.strptime(DataObjArr['NewsDate'][:-5],'%Y-%m-%d %H:%M:%S')
         # totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["ResidualCapital"]
+        #专家
         self.isExpert = 0 if  DataObjArr["rsProjectId"] else 1
+
+
+
 
         A_DxtWZWTeacherStockQuery = leancloud.Query('A_DxtWZWTeacher')
         A_DxtWZWTeacherStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtWZWTeacherStockList = A_DxtWZWTeacherStockQuery.find()
 
-        # #查找WZWTeacher 匹配name ，取出objectid
-        # A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
-        # A_DxtWZWTeacherQuery.equal_to('name', self.StcokPool[DataObjArr["NewsStyle"]])
-        # self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
-        # 编辑
+        #查找WZWStock 匹配name ，取出objectid
+        A_DxtWZWZWStockQuery = leancloud.Query('A_DxtWZWStock')
+        A_DxtWZWZWStockQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
+        self.A_DxtWZWStockList = A_DxtWZWZWStockQuery.find()
+        # 总市值
+        self.total_sz = 0
+        if len(self.A_DxtWZWStockList)!=0:
+
+            # 总市值 = 所有 持仓市价（持仓市价 = 行情接口 获取当前价 *当前持仓股数）
+            for PositionPrice in self.A_DxtWZWStockList:
+                self.total_sz += PositionPrice["total_sz"]
+        # 总资产 = 剩余资金+冻结资金+总市值（）
+        self.totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"] + self.total_sz
+        # 当前仓位= 总市值/总资产
+        self.cw = self.total_sz/self.totalCapital
+        #收益率 = 总市值/本期起始资金 -1
+        self.syl = self.total_sz/DataObjArr["OriginalCapital"]-1
+
+        #排名初始化
+        self.pm = 0
+
+        self.historyAccount={}  ###########
+
+            # 编辑 存储
         if len(self.A_DxtWZWTeacherStockList) > 0:
 
             self.Save(self.A_DxtWZWTeacherStockList[0],DataObjArr)
         else:
-            A_DxtWZWTeacherDiary = leancloud.Object.extend('A_DxtWZWTeacherDiary')
+            A_DxtWZWTeacherDiary = leancloud.Object.extend('A_DxtWZWTeacher')
             A_DxtWZWTeacherDiaryObj = A_DxtWZWTeacherDiary()
             self.Save(A_DxtWZWTeacherDiaryObj,DataObjArr)
 
-    def Save(self,Obj,DataObjArr):
-        #事实获取
+        # 排行 相关数据处理
+        A_DxtWZWTeacherStockQuery = leancloud.Query('A_DxtWZWTeacher')
+        self.A_DxtWZWTeacherStockAll = A_DxtWZWTeacherStockQuery.find()
 
-        MarketData.getTicker()
+        TeacherProperty = []
+        if len(self.A_DxtWZWTeacherStockAll) == 0:
+            self.pm = 0
+        else:
+            # 遍历所有老师
+            for Teacher in self.A_DxtWZWTeacherStockAll:
+                TeacherProperty.append(Teacher.get("totalCapital"))
+            # 排序
+            TeacherProperty.sort()
+            TeacherProperty.reverse()
+            # 获取当前排名
+            self.pm = TeacherProperty.index(self.totalCapital)+1
+            # 保存当前
+
+            #######save  可完善
+
+            A_DxtWZWTeacherStockQuery = leancloud.Query('A_DxtWZWTeacher')
+            A_DxtWZWTeacherStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+            self.A_DxtWZWTeacherStockList = A_DxtWZWTeacherStockQuery.find()
+
+            # 编辑 存储
+            if len(self.A_DxtWZWTeacherStockList) > 0:
+
+                self.Save(self.A_DxtWZWTeacherStockList[0], DataObjArr)
+            else:
+                A_DxtWZWTeacherDiary = leancloud.Object.extend('A_DxtWZWTeacher')
+                A_DxtWZWTeacherDiaryObj = A_DxtWZWTeacherDiary()
+                self.Save(A_DxtWZWTeacherDiaryObj, DataObjArr)
+
+
+
+    def Save(self,Obj,DataObjArr):
 
         Obj.set('name', DataObjArr['OtherDefine4'])
         Obj.set('photo', DataObjArr['Timage'])
@@ -132,21 +187,21 @@ class WZWTeacher:
         Obj.set('djs', DataObjArr['DJS'])
         Obj.set('isExpert', self.isExpert)
 
-        Obj.set('totalCapital', 0)  #|总资产|无|
+        Obj.set('totalCapital', self.totalCapital)
 
-        # 跟行情有关 后期接口处理pb3
-        Obj.set('sz', )  #|总市值|无|
-        Obj.set('cw', "")  #|当前仓位|无|
+        Obj.set('sz', self.total_sz)
+        Obj.set('cw', self.cw)
         Obj.set('originalCapital', DataObjArr["OriginalCapital"])
 
-        Obj.set('pm', "")  #|当月排行|无|
-        Obj.set('syl', "")   #|收益率|无|
+        Obj.set('pm',self.pm)  #|当月排行|无|
+        Obj.set('syl', self.syl)
 
         Obj.set('certId', DataObjArr["Tzsbh"])
         Obj.set('desc', DataObjArr["Tfxsjs"])
         Obj.set('motto', DataObjArr["Ttzgy"])
-        Obj.set('historyAccount', "")  #历史账目-资金ID|无|
-        Obj.set('relationId', DataObjArr["rsMainkeyID"])
+        Obj.set('historyAccount', self.historyAccount)  #历史账目-资金ID|无|
+        Obj.set('relationId', str(DataObjArr["rsMainkeyID"]))
+        Obj.save()
 
 if __name__ == "__main__":
 
