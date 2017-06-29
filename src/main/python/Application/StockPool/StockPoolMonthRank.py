@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.WARNING,
 
 init_leancloud_client()
 
-def   remoteSource():
+def   remoteSource(PoolStyleValue):
         url = "http://stock.cjs.com.cn/Stocks.asmx?WSDL"
         client = Client(url)
         response = client.service.Query_NZGZF(Coordinates='021525374658617185',
@@ -36,15 +36,13 @@ def   remoteSource():
         print("response",response.encode('utf8'))
         resp = json.loads(response)
         print("resp",resp)
+        return resp
 def  StockPoll(PoolStyle):
         A_DxtStockPoolQuery = leancloud.Query('A_DxtStockPool')
         A_DxtStockPoolQuery.equal_to('relationId', str(PoolStyle))
-        A_DxtStockPoolList = A_DxtStockPoolQuery.find()
-        print("A_DxtStockPoolList",A_DxtStockPoolList)
-        for item in A_DxtStockPoolList:
-            print("item",item )
-            print("item objectId ",item.get('objectId'))
-
+        item = A_DxtStockPoolQuery.first()
+        print("item objectId ",item.get('objectId'))
+        return item.get('objectId')
 def   addMonthRank(A_Obj,objectid,DataObjArr):
 #        A_DxtStockPoolYearRankDiary = leancloud.Object.extend('A_DxtStockPoolMonthRank')
 
@@ -65,11 +63,11 @@ def   addMonthRank(A_Obj,objectid,DataObjArr):
 
         A_Obj.set('relationId', str(DataObjArr["rsMainkeyID"]))
         A_Obj.save()
-def    DealData(self,relationId, DataObjArr):
+def    DealData(relationId, poolobjectid , DataObjArr):
 
-        A_DxtStockPoolYearRankQuery = leancloud.Query('A_DxtStockPoolYearRank')
+        A_DxtStockPoolYearRankQuery = leancloud.Query('A_DxtStockPoolMonthRank')
 #    A_DxtStockPoolYearRankQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-        A_DxtStockPoolYearRankQuery.equal_to('relationId', relationId)
+        A_DxtStockPoolYearRankQuery.equal_to('relationId', str(relationId))
 
 
         A_DxtStockPoolYearRankList = A_DxtStockPoolYearRankQuery.find()
@@ -80,15 +78,30 @@ def    DealData(self,relationId, DataObjArr):
         if len(A_DxtStockPoolYearRankList) > 0:
             
 #            self.Edit(DataObjArr)
+            print("len>1")
             A_Obj = A_DxtStockPoolYearRankList[0]
         else:
+            print("len=0")
             A_DxtStockPoolYearRankDiary = leancloud.Object.extend('A_DxtStockPoolMonthRank')
 
 
             A_Obj = A_DxtStockPoolYearRankDiary()
 
 
-            self.Add(DataObjArr)
-              
+        addMonthRank(A_Obj,poolobjectid, DataObjArr)
+
+def   processSource(item,poolobjectid):
+    print("item",item)  
+    print("rsMainkeyID",item["rsMainkeyID"] )  
+    relationid =  item["rsMainkeyID"]
+    DealData(relationid, poolobjectid , item )
+    
+
+def  monthrank(poolvalue):
+    poolobjectid = StockPoll(1)
+    print("poolobjectid",poolobjectid)
+    retv= remoteSource(1)
+    map(lambda item:processSource(item,poolobjectid),json.loads(retv['DataObj']))
+   
 if __name__ == '__main__':
-    StockPoll(1)
+     monthrank(1)
