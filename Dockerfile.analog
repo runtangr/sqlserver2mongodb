@@ -12,6 +12,8 @@ run apt-get update
 RUN pip install -r requirements.txt -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
 
 ADD ./packages /app/packages
+workdir /app/packages/
+RUN git clone http://gitlab.zqf.com.cn/tangrui/Market.git
 workdir /app/packages/Market
 RUN pyb publish
 workdir /app/packages/Market/target/dist/Market-1.0.dev0
