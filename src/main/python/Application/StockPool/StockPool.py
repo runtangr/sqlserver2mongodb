@@ -92,6 +92,9 @@ class StockPool:
 
                 print ("maxKeyId:",maxKeyId, "===","rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
                      "rsDateTime:",DataObjArr['rsDateTime'])
+
+                stockCLFKYL =""
+                stockCLFKZS =""
                 if len(DataObjArr['StockCLFK'])!=0:
                     StockCLFK = DataObjArr['StockCLFK'].split(',')
                     stockCLFKYL = StockCLFK[0]
