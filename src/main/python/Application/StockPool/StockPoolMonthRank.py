@@ -31,7 +31,7 @@ def   remoteSource(PoolStyleValue):
         client = Client(url)
         response = client.service.Query_NZGZF(Coordinates='021525374658617185',
                                                     Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-                                                  PoolStyle=1
+                                                  PoolStyle=PoolStyleValue
                                                         )
         print("response",response.encode('utf8'))
         resp = json.loads(response)
@@ -44,22 +44,20 @@ def  StockPoll(PoolStyle):
         print("item objectId ",item.get('objectId'))
         return item.get('objectId')
 def   addMonthRank(A_Obj,objectid,DataObjArr):
-#        A_DxtStockPoolYearRankDiary = leancloud.Object.extend('A_DxtStockPoolMonthRank')
 
-
-#        A_Obj = A_DxtStockPoolYearRankDiary()
+        inTime = datetime.strptime(DataObjArr['AccessDateTime'],"%Y-%m-%d %H:%M:%S")
 
         A_Obj.set('stockPoolObjectId', objectid )
         A_Obj.set('stockCode', DataObjArr['StockCode'])
         A_Obj.set('stockName', DataObjArr['StockShortName'])
-        A_Obj.set('marketCode', DataObjArr['MarketCode'])  ########
+        A_Obj.set('marketCode', DataObjArr['MarketCode'])
 
         A_Obj.set('cqPrice', DataObjArr['CQPrice'])
         A_Obj.set('dqsy', DataObjArr['Dqsy'])
         A_Obj.set('inPrice', DataObjArr['AccessPrice'])
 
         A_Obj.set('stockComeFrom', DataObjArr['StockComeFrom'])
-#        A_Obj.set('inTime', self.inTime)
+        A_Obj.set('inTime', inTime)
 
         A_Obj.set('relationId', str(DataObjArr["rsMainkeyID"]))
         A_Obj.save()
@@ -98,10 +96,13 @@ def   processSource(item,poolobjectid):
     
 
 def  monthrank(poolvalue):
-    poolobjectid = StockPoll(1)
+    poolobjectid = StockPoll(poolvalue)
     print("poolobjectid",poolobjectid)
-    retv= remoteSource(1)
+    retv= remoteSource(poolvalue)
     map(lambda item:processSource(item,poolobjectid),json.loads(retv['DataObj']))
    
 if __name__ == '__main__':
+
      monthrank(1)
+     monthrank(2)
+     monthrank(3)
