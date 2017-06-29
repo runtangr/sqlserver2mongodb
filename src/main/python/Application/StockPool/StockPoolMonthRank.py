@@ -29,7 +29,7 @@ init_leancloud_client()
 def   remoteSource(PoolStyleValue):
         url = "http://stock.cjs.com.cn/Stocks.asmx?WSDL"
         client = Client(url)
-        response = client.service.Query_NZGZF(Coordinates='021525374658617185',
+        response = client.service.Query_YZGZF(Coordinates='021525374658617185',
                                                     Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                   PoolStyle=PoolStyleValue
                                                         )
@@ -99,7 +99,10 @@ def  monthrank(poolvalue):
     poolobjectid = StockPoll(poolvalue)
     print("poolobjectid",poolobjectid)
     retv= remoteSource(poolvalue)
-    map(lambda item:processSource(item,poolobjectid),json.loads(retv['DataObj']))
+    try:
+        map(lambda item:processSource(item,poolobjectid),json.loads(retv['DataObj']))
+    except Exception, e:
+        logging.warning("提交股票池年最高涨幅榜数据返回失败：%s" % retv)
    
 if __name__ == '__main__':
 

@@ -121,6 +121,9 @@ class StockPool:
                         A_DxtStockPoolObj.set('stockZGZF', DataObjArr['StockPJSY'])
                         A_DxtStockPoolObj.set('stockXGMX', DataObjArr['StockSGMX'])
 
+                        #add
+                        A_DxtStockPoolObj.set('rsProjectId', DataObjArr['rsProjectId'])
+
                         A_DxtStockPoolObj.set('relationId', str(DataObjArr["rsMainkeyID"]))
                         A_DxtStockPoolObj.save()
 
@@ -139,6 +142,9 @@ class StockPool:
                         A_DxtStockPoolObj.set('stockPJSY', DataObjArr['StockPJSY'])
                         A_DxtStockPoolObj.set('stockZGZF', DataObjArr['StockPJSY'])
                         A_DxtStockPoolObj.set('stockXGMX', DataObjArr['StockSGMX'])
+
+                        # add
+                        A_DxtStockPoolObj.set('rsProjectId', DataObjArr['rsProjectId'])
 
                         A_DxtStockPoolObj.set('relationId',  str(DataObjArr["rsMainkeyID"]))
                         A_DxtStockPoolObj.save()

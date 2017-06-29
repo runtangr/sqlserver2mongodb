@@ -72,7 +72,7 @@ class StockPoolYearRank:
                 map(self.DealData,self.DataObj)
 
             else:
-                 logging.warning("提交股票池股票数据返回失败：%s" %self.CommStockPoolYearRankLog)
+                 logging.warning("提交股票池年最高涨幅榜数据返回失败：%s" %self.CommStockPoolYearRankLog)
 
     def DealData(self,DataObjArr):
 

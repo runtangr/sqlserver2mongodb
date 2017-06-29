@@ -92,7 +92,7 @@ class StockPool:
             self.AnalogSyncInfoObj.save()
 
         else:
-             logging.warning("提交股票池股票数据返回失败：%s" %self.CommStockPoolLog)
+             logging.warning("提交股票池股票池日总结数据返回失败：%s" %self.CommStockPoolLog)
 
     def DealData(self,DataObjArr):
 
