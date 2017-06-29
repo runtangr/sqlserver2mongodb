@@ -49,7 +49,7 @@ class Order:
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
 		rsDateTime = syncObj.get('rsDateTime')
-		top = 100
+		top = 200
 		type = 2
 
 	# 资金持仓 WebService 测试接口Query_uimsStockTransList
@@ -148,6 +148,7 @@ class Order:
 						userObj.set_password('a123456')
 						userObj.set('userId', DataObjArr['UserId'])
 						userObj.set('nickname', DataObjArr['ZhName'])
+						continue
 						userObj.sign_up()
 
 					#大赛记录

@@ -1,3 +1,6 @@
 
 leancloud-sdk==1.10.0
 suds>=0.4
+requests
+protobuf
+pybuilder
