@@ -8,9 +8,9 @@ ADD analog.pth /usr/local/lib/python2.7/site-packages/analog.pth
 workdir /app/
 
 run apt-get update
-#RUN pip install -r requirements.txt -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
-run pip install  suds
-run pip install  leancloud-sdk==1.10.0
+RUN pip install -r requirements.txt -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+#run pip install  suds
+#run pip install  leancloud-sdk==1.10.0
 
 workdir /app/src/main/python/Application
 #CMD ["/bin/sh","/app/docs/start_analog.sh"]
