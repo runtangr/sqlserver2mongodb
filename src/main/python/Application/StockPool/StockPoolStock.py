@@ -104,10 +104,10 @@ class StockPool:
                     A_DxtStockPoolQuery.equal_to('relationId', str(DataObjArr['PoolStyle']))
                     A_DxtStockPoolObj = A_DxtStockPoolQuery.find()
                     # 编辑
-                    if count > 0:
+                    if count > 0 and len(A_DxtStockPoolObj)>0:
 
                         A_DxtStockPoolStockObj = A_DxtStockPoolStockQuery.first()
-                        # map(self.DealData,)
+
                         A_DxtStockPoolStockObj.set('stockPoolObjectId', A_DxtStockPoolObj[0].get('objectId'))
                         A_DxtStockPoolStockObj.set('stockCode', DataObjArr['StockCode'])
                         A_DxtStockPoolStockObj.set('stockName', DataObjArr['StockShortName'])
@@ -122,10 +122,12 @@ class StockPool:
                         A_DxtStockPoolStockObj.set('stockId', DataObjArr['StockId'])
                         A_DxtStockPoolStockObj.set('inTime', inTime)
 
+                        #add
+                        A_DxtStockPoolStockObj.set('rsStatus', DataObjArr['rsStatus'])
                         A_DxtStockPoolStockObj.set('relationId',  str(DataObjArr["rsMainkeyID"]))
                         A_DxtStockPoolStockObj.save()
                     # 新增
-                    else:
+                    elif len(A_DxtStockPoolObj)>0:
                         A_DxtStockPoolStock = leancloud.Object.extend('A_DxtStockPoolStock')
                         A_DxtStockPoolStockObj = A_DxtStockPoolStock()
 
@@ -143,6 +145,8 @@ class StockPool:
                         A_DxtStockPoolStockObj.set('stockId', DataObjArr['StockId'])
                         A_DxtStockPoolStockObj.set('inTime', inTime)
 
+                        # add
+                        A_DxtStockPoolStockObj.set('rsStatus', DataObjArr['rsStatus'])
                         A_DxtStockPoolStockObj.set('relationId', str(DataObjArr["rsMainkeyID"]))
                         A_DxtStockPoolStockObj.save()
 
