@@ -76,7 +76,7 @@ class WZWTeacher:
 
         if self.WZWTeacher["Code"] == 0:
 
-            self.DataObj =  json.loads(self.WZWTeacher["DataObj"])#
+            self.DataObj =  json.loads(self.WZWTeacher["DataObj"])
 
 
             map(self.DealData,self.DataObj)
