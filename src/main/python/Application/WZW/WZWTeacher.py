@@ -122,7 +122,7 @@ class WZWTeacher:
 
             # 总市值 = 所有 持仓市价（持仓市价 = 行情接口 获取当前价 *当前持仓股数）
             for PositionPrice in self.A_DxtWZWStockList:
-                self.total_sz += PositionPrice["total_sz"]
+                self.total_sz += PositionPrice.get("total_sz")
         # 总资产 = 剩余资金+冻结资金+总市值（）
         self.totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"] + self.total_sz
         # 当前仓位= 总市值/总资产
