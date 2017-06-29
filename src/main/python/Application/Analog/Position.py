@@ -148,6 +148,7 @@ class Order:
 						userObj.set_password('a123456')
 						userObj.set('userId', DataObjArr['UserId'])
 						userObj.set('nickname', DataObjArr['ZhName'])
+						continue
 						userObj.sign_up()
 
 					#大赛记录
