@@ -108,9 +108,9 @@ class WZWTeacher:
 
 
 
-        A_DxtWZWTeacherStockQuery = leancloud.Query('A_DxtWZWTeacher')
-        A_DxtWZWTeacherStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-        self.A_DxtWZWTeacherStockList = A_DxtWZWTeacherStockQuery.find()
+        A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
+        A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+        self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
 
         #查找WZWStock 匹配name ，取出objectid
         A_DxtWZWZWStockQuery = leancloud.Query('A_DxtWZWStock')
@@ -136,24 +136,24 @@ class WZWTeacher:
         self.historyAccount={}  ###########
 
             # 编辑 存储
-        if len(self.A_DxtWZWTeacherStockList) > 0:
+        if len(self.A_DxtWZWTeacherList) > 0:
 
-            self.Save(self.A_DxtWZWTeacherStockList[0],DataObjArr)
+            self.Save(self.A_DxtWZWTeacherList[0],DataObjArr)
         else:
-            A_DxtWZWTeacherDiary = leancloud.Object.extend('A_DxtWZWTeacher')
-            A_DxtWZWTeacherDiaryObj = A_DxtWZWTeacherDiary()
-            self.Save(A_DxtWZWTeacherDiaryObj,DataObjArr)
+            A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+            A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+            self.Save(A_DxtWZWTeacherObj,DataObjArr)
 
         # 排行 相关数据处理
-        A_DxtWZWTeacherStockQuery = leancloud.Query('A_DxtWZWTeacher')
-        self.A_DxtWZWTeacherStockAll = A_DxtWZWTeacherStockQuery.find()
+        A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
+        self.A_DxtWZWTeacherAll = A_DxtWZWTeacherQuery.find()
 
         TeacherProperty = []
-        if len(self.A_DxtWZWTeacherStockAll) == 0:
+        if len(self.A_DxtWZWTeacherAll) == 0:
             self.pm = 0
         else:
             # 遍历所有老师
-            for Teacher in self.A_DxtWZWTeacherStockAll:
+            for Teacher in self.A_DxtWZWTeacherAll:
                 TeacherProperty.append(Teacher.get("totalCapital"))
             # 排序
             TeacherProperty.sort()
@@ -164,18 +164,18 @@ class WZWTeacher:
 
             #######save  可完善
 
-            A_DxtWZWTeacherStockQuery = leancloud.Query('A_DxtWZWTeacher')
-            A_DxtWZWTeacherStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-            self.A_DxtWZWTeacherStockList = A_DxtWZWTeacherStockQuery.find()
+            A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
+            A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+            self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
 
             # 编辑 存储
-            if len(self.A_DxtWZWTeacherStockList) > 0:
+            if len(self.A_DxtWZWTeacherList) > 0:
 
-                self.Save(self.A_DxtWZWTeacherStockList[0], DataObjArr)
+                self.Save(self.A_DxtWZWTeacherList[0], DataObjArr)
             else:
-                A_DxtWZWTeacherDiary = leancloud.Object.extend('A_DxtWZWTeacher')
-                A_DxtWZWTeacherDiaryObj = A_DxtWZWTeacherDiary()
-                self.Save(A_DxtWZWTeacherDiaryObj, DataObjArr)
+                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+                self.Save(A_DxtWZWTeacherObj, DataObjArr)
 
 
 

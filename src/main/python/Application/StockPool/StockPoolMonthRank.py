@@ -63,27 +63,27 @@ def   addMonthRank(A_Obj,objectid,DataObjArr):
         A_Obj.save()
 def    DealData(relationId, poolobjectid , DataObjArr):
 
-        A_DxtStockPoolYearRankQuery = leancloud.Query('A_DxtStockPoolMonthRank')
-#    A_DxtStockPoolYearRankQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-        A_DxtStockPoolYearRankQuery.equal_to('relationId', str(relationId))
+        A_DxtStockPoolMonthRankQuery = leancloud.Query('A_DxtStockPoolMonthRank')
+#    A_DxtStockPoolMonthRankQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+        A_DxtStockPoolMonthRankQuery.equal_to('relationId', str(relationId))
 
 
-        A_DxtStockPoolYearRankList = A_DxtStockPoolYearRankQuery.find()
+        A_DxtStockPoolMonthRankList = A_DxtStockPoolMonthRankQuery.find()
 
 
 
         # 编辑
-        if len(A_DxtStockPoolYearRankList) > 0:
-            
+        if len(A_DxtStockPoolMonthRankList) > 0:
+
 #            self.Edit(DataObjArr)
             print("len>1")
-            A_Obj = A_DxtStockPoolYearRankList[0]
+            A_Obj = A_DxtStockPoolMonthRankList[0]
         else:
             print("len=0")
-            A_DxtStockPoolYearRankDiary = leancloud.Object.extend('A_DxtStockPoolMonthRank')
+            A_DxtStockPoolMonthRankDiary = leancloud.Object.extend('A_DxtStockPoolMonthRank')
 
 
-            A_Obj = A_DxtStockPoolYearRankDiary()
+            A_Obj = A_DxtStockPoolMonthRankDiary()
 
 
         addMonthRank(A_Obj,poolobjectid, DataObjArr)
