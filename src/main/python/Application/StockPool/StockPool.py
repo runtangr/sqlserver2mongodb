@@ -100,6 +100,8 @@ class StockPool:
                     stockCLFKYL = StockCLFK[0]
                     stockCLFKZS= StockCLFK[1]
 
+                isDisable = 0 if DataObjArr['rsProjectId']==0 else 1
+
 
                 StockCLFGList = DataObjArr['StockCLFG'].split(',')
 
@@ -122,7 +124,7 @@ class StockPool:
                         A_DxtStockPoolObj.set('stockXGMX', DataObjArr['StockSGMX'])
 
                         #add
-                        A_DxtStockPoolObj.set('rsProjectId', DataObjArr['rsProjectId'])
+                        A_DxtStockPoolObj.set('isDisable', isDisable)
 
                         A_DxtStockPoolObj.set('relationId', str(DataObjArr["rsMainkeyID"]))
                         A_DxtStockPoolObj.save()
@@ -144,7 +146,7 @@ class StockPool:
                         A_DxtStockPoolObj.set('stockXGMX', DataObjArr['StockSGMX'])
 
                         # add
-                        A_DxtStockPoolObj.set('rsProjectId', DataObjArr['rsProjectId'])
+                        A_DxtStockPoolObj.set('isDisable', isDisable)
 
                         A_DxtStockPoolObj.set('relationId',  str(DataObjArr["rsMainkeyID"]))
                         A_DxtStockPoolObj.save()
