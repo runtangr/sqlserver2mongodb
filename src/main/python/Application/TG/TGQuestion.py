@@ -35,38 +35,39 @@ class Teacher:
 		# print (client)
 
 		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		AnalogSyncInfoObj = AnalogSyncInfo()
+		self.AnalogSyncInfoObj = AnalogSyncInfo()
 		querySyncInfo = AnalogSyncInfo.query
 
 		querySyncInfo.equal_to('type', 'TGQuestion')
-		count = querySyncInfo.count()
-		if count == 0:
-			AnalogSyncInfoObj.set("type", "TGQuestion")
-			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
-			AnalogSyncInfoObj.save()
+		syncObj = querySyncInfo.find()
+		if len(syncObj) == 0:
 
-		syncObj = querySyncInfo.first()
-		maxKeyId = int(syncObj.get('mainKeyId'))
-		rsDateTime = syncObj.get('rsDateTime')
+			self.AnalogSyncInfoObj.set("type", "TGQuestion")
+			self.AnalogSyncInfoObj.set("mainKeyId", 0)
+			self.AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
+			self.AnalogSyncInfoObj.save()
+
+		self.AnalogSyncInfoObj = querySyncInfo.first()
+		self.maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
+		self.rsDateTime = self.AnalogSyncInfoObj.get('rsDateTime')
 		top = 100
 
 		# 问股列表 WebService 测试接口P_SynCommAskOnline
 		response = client.service.P_SynCommAskOnline(
 													Coordinates='021525374658617185',
 													Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
-													rsMainkeyID=maxKeyId,
-													rsDateTime=rsDateTime,
+													rsMainkeyID=self.maxKeyId,
+													rsDateTime=self.rsDateTime,
 													top=top
 													)
 		self.data = json.loads(response)
 
 	def TeacherMC(self):
 		'''
-		mc更新uimsZJDP(历史排名)表
+		mc更新A_DxtTGQuestion(问股列表)表
 		'''
 		TeacherMC = self.data
-		isChange = 0
+
 
 		if TeacherMC["Code"] == 0:
 
@@ -74,31 +75,54 @@ class Teacher:
 
 			for DataObjArr in DataObj:
 
+				# 最后一条数据赋值
+				if DataObjArr == DataObj[-1]:
+					self.maxKeyId = int(DataObjArr['rsMainkeyID'])
+					self.rsDateTime = DataObjArr['rsDateTime']
+					self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
+					self.AnalogSyncInfoObj.set('rsDateTime', self.rsDateTime)
+					self.AnalogSyncInfoObj.save()
+
+				# 打印
+				print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+					   "rsDateTime:", DataObjArr['rsDateTime'])
+
+				#时间转换
+				questionTime = datetime.strptime(DataObjArr['AskDateTime'], '%Y-%m-%d %H:%M:%S')
+				answerTime = datetime.strptime(DataObjArr['AnsDateTime'], '%Y-%m-%d %H:%M:%S')
+
 				try:
-					A_DxtTGTeacherQuery = leancloud.Query('A_DxtTGTeacher')
-					A_DxtTGTeacherQuery.equal_to('relationId', DataObjArr['TeacherUserid'])
-					count = A_DxtTGTeacherQuery.count()
+					A_DxtTGQuestionQuery = leancloud.Query('A_DxtTGQuestion')
+					A_DxtTGQuestionQuery.equal_to('relationId', DataObjArr['rsMainkeyID'])
+					count = A_DxtTGQuestionQuery.count()
+
 					#编辑
 					if count >0:
-						A_DxtTGTeacherObj = A_DxtTGTeacherQuery.first()
-						A_DxtTGTeacherObj.set('photo', DataObjArr['UserPhoto'])
-						A_DxtTGTeacherObj.set('name', DataObjArr['NickName'])
-						A_DxtTGTeacherObj.save()
+						A_DxtTGQuestionObj = A_DxtTGQuestionQuery.first()
+						A_DxtTGQuestionObj.set('userObjectId', DataObjArr['UserId'])
+						A_DxtTGQuestionObj.set('userNickName', DataObjArr['OtherIM'])
+						A_DxtTGQuestionObj.set('userPhoto', DataObjArr['UserPhoto'])
+						A_DxtTGQuestionObj.set('question', DataObjArr['AskContent'])
+						A_DxtTGQuestionObj.set('answer', DataObjArr["AnsContent"])
+						A_DxtTGQuestionObj.set('questionTime',questionTime )
+						A_DxtTGQuestionObj.set('answerTime', answerTime)
+
+						A_DxtTGQuestionObj.save()
 					#新增
 					else:
-						A_DxtTGTeacher = leancloud.Object.extend('A_DxtTGTeacher')
-						A_DxtTGTeacherObj = A_DxtTGTeacher()
-						A_DxtTGTeacherObj.set('name', DataObjArr['NickName'])
-						A_DxtTGTeacherObj.set('photo', DataObjArr['UserPhoto'])
-						A_DxtTGTeacherObj.set('relationId', DataObjArr['TeacherUserid'])
+						A_DxtTGQuestion = leancloud.Object.extend('A_DxtTGQuestion')
+						A_DxtTGQuestionObj = A_DxtTGQuestion()
 
-						A_DxtTGTeacherObj.set('title', "")
-						A_DxtTGTeacherObj.set('desc', "")
-						A_DxtTGTeacherObj.set('tel', "")
-						A_DxtTGTeacherObj.set('isTop', 0)
-						A_DxtTGTeacherObj.set('order', 0)
+						A_DxtTGQuestionObj.set('userObjectId', DataObjArr['UserId'])
+						A_DxtTGQuestionObj.set('userNickName', DataObjArr['OtherIM'])
+						A_DxtTGQuestionObj.set('userPhoto', DataObjArr['UserPhoto'])
+						A_DxtTGQuestionObj.set('question', DataObjArr['AskContent'])
+						A_DxtTGQuestionObj.set('answer', DataObjArr["AnsContent"])
+						A_DxtTGQuestionObj.set('questionTime', questionTime)
+						A_DxtTGQuestionObj.set('answerTime', answerTime)
+						A_DxtTGQuestionObj.set('relationId', DataObjArr['rsMainkeyID'])
 
-						A_DxtTGTeacherObj.save()
+						A_DxtTGQuestionObj.save()
 				except Exception, e:
 					logging.error("投顾老师数据更新失败: %s" % DataObjArr)
 		else:
