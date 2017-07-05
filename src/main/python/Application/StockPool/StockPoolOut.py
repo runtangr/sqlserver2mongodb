@@ -97,24 +97,6 @@ class StockPoolOut:
         else:
             self.Add(DataObjArr)
 
-    # | stockPoolObjectId | string | 股票池ID | 无 |
-    # | stockCode | string | 股票代码 | 无 |
-    # | stockName | string | 股票名称 | 无 |
-    # | marketCode | string | 市场代码 | 无 |
-    # | cqPrice | number | 除权价格 | 无 |
-    # | outPrice | number | 入池价格 | 无 |
-    # | dqsy | number | 区间最高收益 | 无 |
-    # | inPrice | number | 入池价格 | 无 |
-    # | stockComeFrom | string | 推荐机构 | 无 |
-    # | inDateTime | datetime | 发布时间，对应websercie的AccessDateTime | 无 |
-    # | outDateTime | datetime | 发布时间，对应websercie的OutDateTime | 无 |
-    # | stockId | number | 股票ID | 无 |
-    # | relationId | string | 同步系统关联ID | 无 |
-    #
-    # 输出列：StockCode股票代码, StockShortName股票名称,
-    # AccessDateTime入池时间, AccessPrice入池价,
-    # OutDateTime出池时间, OutPrice出池价, Dqsy区间最高收益,
-    # rsMainkeyID记录ID, CQPrice除权价, StockComeFrom推荐机构
 
     def Edit(self,DataObjArr):
 
@@ -128,8 +110,8 @@ class StockPoolOut:
         self.A_DxtStockPoolOutList[0].set('inPrice', DataObjArr['AccessPrice'])
 
         self.A_DxtStockPoolOutList[0].set('stockComeFrom', DataObjArr['StockComeFrom'])
-        self.A_DxtStockPoolOutList[0].set('inDateTime', self.AccessDateTime)
-        self.A_DxtStockPoolOutList[0].set('outDateTime', self.OutDateTime)
+        self.A_DxtStockPoolOutList[0].set('inTime', self.AccessDateTime)
+        self.A_DxtStockPoolOutList[0].set('outTime', self.OutDateTime)
         self.A_DxtStockPoolOutList[0].set('stockId', DataObjArr['StockId'])
         self.A_DxtStockPoolOutList[0].set('relationId', str(DataObjArr["rsMainkeyID"]))
         self.A_DxtStockPoolOutList[0].save()
@@ -149,8 +131,8 @@ class StockPoolOut:
         A_DxtStockPoolOutDiaryObj.set('inPrice', DataObjArr['AccessPrice'])
 
         A_DxtStockPoolOutDiaryObj.set('stockComeFrom', DataObjArr['StockComeFrom'])
-        A_DxtStockPoolOutDiaryObj.set('inDateTime', self.AccessDateTime)
-        A_DxtStockPoolOutDiaryObj.set('outDateTime', self.OutDateTime)
+        A_DxtStockPoolOutDiaryObj.set('inTime', self.AccessDateTime)
+        A_DxtStockPoolOutDiaryObj.set('outTime', self.OutDateTime)
         A_DxtStockPoolOutDiaryObj.set('stockId', DataObjArr['StockId'])
         A_DxtStockPoolOutDiaryObj.set('relationId', str(DataObjArr["rsMainkeyID"]))
         A_DxtStockPoolOutDiaryObj.save()
