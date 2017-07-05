@@ -76,24 +76,25 @@ def   remoteSourceSJSeasonId(client):
     # print("SeasonIdDict",SeasonIdDict)
     return SeasonIdDict
 
-def   addRankLastMonth(A_Obj,TeacherObj,DataObjArr):
+def   addRankLastMonth(A_Obj,TeacherObj,DataObjArr,SeasonId):
 
         SeasonId =-1
-        syl = DataObjArr["Ror"]
+        syl = DataObjArr["ror"]
         pm = CalculatePM(syl,SeasonId)
 
         A_Obj.set('name', DataObjArr["username"])
-        A_Obj.set('groupBmId',DataObjArr["VGroupid"])
+        A_Obj.set('groupBmId',DataObjArr["Vgroupid"])
         A_Obj.set('totalCapital', DataObjArr['capital'])
-        A_Obj.set('syl', )
-        A_Obj.set('profitorLoss', DataObjArr['profitorloss_lj'])
 
+        A_Obj.set('profitorLoss', DataObjArr['profitorloss_lj'])
+        A_Obj.set('syl', DataObjArr['ror'])
         A_Obj.set('pm', pm)
 
         A_Obj.set('season', SeasonId)
-        A_Obj.set('relationId', DataObjArr["VGroupid"])
+        A_Obj.set('relationId', DataObjArr["Vgroupid"])
         A_Obj.save()
         #非必要数据
+        # A_Obj.set('syl', )
         # A_Obj.set('photo', TeacherObj.get('photo'))
         # A_Obj.set('teacherObjectId', TeacherObj.get('objectId'))
         # A_Obj.set('djs', TeacherObj.get("djs"))
@@ -104,7 +105,7 @@ def   addRankLastMonth(A_Obj,TeacherObj,DataObjArr):
         #
         # A_Obj.save()
 
-def  addRankThisMonth(A_Obj, TeacherObj, DataObjArr):
+def  addRankThisMonth(A_Obj, TeacherObj, DataObjArr,SeasonId):
 
     SeasonId = 0
     syl = DataObjArr["bqsy"]
@@ -134,7 +135,6 @@ def  addRankThisMonth(A_Obj, TeacherObj, DataObjArr):
  #check
 def  addRankSeason(A_Obj, TeacherObj, DataObjArr,SeasonId):
 
-    SeasonId = 0
     syl = DataObjArr["bqsy"]
     pm = CalculatePM(syl, SeasonId)
 
@@ -146,7 +146,7 @@ def  addRankSeason(A_Obj, TeacherObj, DataObjArr,SeasonId):
     A_Obj.set('profitorLoss', DataObjArr['bqyk'])
     A_Obj.set('pm', pm)
 
-    A_Obj.set('syl', DataObjArr["Bqsy"])
+    A_Obj.set('syl', DataObjArr["bqsy"])
     A_Obj.set('season', SeasonId)
     A_Obj.set('relationId', DataObjArr["VGroupid"])
     A_Obj.save()
@@ -160,12 +160,15 @@ def  addRankSeason(A_Obj, TeacherObj, DataObjArr,SeasonId):
     # A_Obj.save()
 
 
-def  RankTeacher(Data):
+def  RankTeacher(Data,save_select):
     A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
-    A_DxtWZWTeacherQuery.equal_to('groupBmId', Data["VGroupid"])
-    item = A_DxtWZWTeacherQuery.first()
+    if save_select==addRankLastMonth:
+        A_DxtWZWTeacherQuery.equal_to('groupBmId', Data["Vgroupid"])
+    else:
+        A_DxtWZWTeacherQuery.equal_to('groupBmId', Data["VGroupid"])
+    A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
     # print("item objectId ",item.get('objectId'))
-    return item
+    return A_DxtWZWTeacherList
 
 def  CalculatePM(syl,SeasonId):
     #月收益计算 本赛季排名
@@ -175,11 +178,15 @@ def  CalculatePM(syl,SeasonId):
 
     syl_all = []
     if len(A_DxtWZWRankQueryAll) == 0:
-        pm = 0
+        pm = 1
     else:
         # 遍历
         for WZWRank in A_DxtWZWRankQueryAll:
-            syl_all.append(WZWRank.get("pm"))
+            syl_all.append(WZWRank.get("syl"))
+
+        if syl not in syl_all:
+            syl_all.append(syl)
+
         # 排序
         syl_all.sort()
         syl_all.reverse()
@@ -188,16 +195,21 @@ def  CalculatePM(syl,SeasonId):
 
     return pm
 
-def    DealData(relationId, TeacherObj , DataObjArr, save_select):
+
+def    DealData(relationId, TeacherObj , DataObjArr, save_select,SeasonId):
 
         A_DxtWZWRankQuery = leancloud.Query('A_DxtWZWRank')
 
         A_DxtWZWRankQuery.equal_to('relationId', relationId)
 
+        season = SeasonId
+        A_DxtWZWRankQuery.equal_to('season', season)
+
         A_DxtWZWRankList = A_DxtWZWRankQuery.find()
 
-        # 编辑
-        if len(A_DxtWZWRankList) > 0:
+        # 编辑  这里不匹配老师，每个赛季老师可能不存在老师表
+        #需要匹配 season id
+        if len(A_DxtWZWRankList) > 0 :
 
             print("len>1")
             A_Obj = A_DxtWZWRankList[0]
@@ -209,22 +221,25 @@ def    DealData(relationId, TeacherObj , DataObjArr, save_select):
             A_Obj = A_DxtWZWRankDiary()
 
 
-            save_select(A_Obj,TeacherObj, DataObjArr)
+        save_select(A_Obj,TeacherObj, DataObjArr,SeasonId)
 
-def   processSource(item,save_select):
+def   processSource(item,save_select,SeasonId):
     # print("item",item)
     # print("rsMainkeyID",item["rsMainkeyID"] )
-    relationid = item["VGroupid"]
+    if save_select==addRankLastMonth:
+        relationid = item["Vgroupid"]
+    else:
+        relationid = item["VGroupid"]
 
-    TeacherObj = RankTeacher(item)
+    TeacherObj = RankTeacher(item,save_select)
     # print("poolobjectid", teacherobjectid)
     #没有匹配到老师数据，不存储数据
 
 
-    DealData(relationid, TeacherObj , item ,save_select)
+    DealData(relationid, TeacherObj , item ,save_select,SeasonId)
     
 
-def  Rank(retv,save_select):
+def  Rank(retv,save_select,SeasonId):
 
     try:
         DataObj = json.loads(retv['DataObj'])
@@ -235,7 +250,7 @@ def  Rank(retv,save_select):
 
     
     try:
-        map(lambda item: processSource(item,save_select), DataObj)
+        map(lambda item: processSource(item,save_select,SeasonId), DataObj)
     except Exception, e:
         logging.warning("data format error :%s" % retv)
    
@@ -247,22 +262,26 @@ if __name__ == '__main__':
      #LastMonth
      retv = remoteSourceLastMonth(client)
      save_select = addRankLastMonth
-     Rank(retv,save_select)
+     SeasonId = -1
+     Rank(retv,save_select,SeasonId)
 
      # ThisMonth
      retv = remoteSourceThisMonth(client)
      save_select = addRankThisMonth
-     Rank(retv, save_select)
+     SeasonId = 0
+     Rank(retv, save_select,SeasonId)
 
      # Season
-     SeasonIdDict = remoteSourceSJSeasonId(client)
+
+     SeasonIdList = remoteSourceSJSeasonId(client)
      save_select = addRankSeason
 
-     x = lambda SeasonId:remoteSourceSJSeason(SeasonId, client)
-     for data in SeasonIdDict.values():
-         SeasonId, resp = x(data)
+     remote = lambda SeasonId:remoteSourceSJSeason(client,SeasonId)
+
+     for data in SeasonIdList:
+         SeasonId, retv = remote(int(data.values()[0]))
         #check
-         Rank(retv, save_select(SeasonId=SeasonId))
+         Rank(retv, save_select,SeasonId)
 
 
 
