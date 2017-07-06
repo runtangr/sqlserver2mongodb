@@ -99,7 +99,11 @@ class Order:
 				queryOrder = AnalogOrder.query
 
 				#计算
-				cjje = DataObjArr['Volume'] * DataObjArr['Price'] - DataObjArr['Commission'] - DataObjArr['Commission1']
+				if DataObjArr['TransStyle'] !=1:
+					cjje = DataObjArr['Volume'] * DataObjArr['Price'] - DataObjArr['Commission'] - DataObjArr['Commission1']
+				else:
+					cjje = DataObjArr['Volume'] * DataObjArr['Price'] + DataObjArr['Commission'] + DataObjArr['Commission1']
+
 
 
 				transType =  style[DataObjArr['TransStyle']]
