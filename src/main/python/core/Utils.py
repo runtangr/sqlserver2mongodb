@@ -7,10 +7,10 @@ def init_leancloud_client():
     import os
     # LEANCLOUD_APP_ID = os.environ.get("LEANCLOUD_APP_ID", "3G47drEAaXtmQas7U4WxEmx4-gzGzoHsz")
     # LEANCLOUD_APP_KEY = os.environ.get("LEANCLOUD_APP_KEY", "x3cl6OYR2mC6dDQsW0dMeceJ")
-    LC_APP_ID = os.environ.setdefault("LC_APP_ID", "szoGzmrv3vCog9IaAlMwvPdu-gzGzoHsz")
-    LC_APP_KEY = os.environ.setdefault("LC_APP_KEY", "RkW3UjoK2br9q15ejFsPJFCN")
+    LC_APP_ID = os.environ.setdefault("LC_APP_ID", "rGngnUit9fqERRVjQMfzQhWg-gzGzoHsz")
+    LC_APP_KEY = os.environ.setdefault("LC_APP_KEY", "xWQ3c4CoLPXIlRd6UxLRGndX")
 
-    LC_APP_MASTER_KEY = os.environ.setdefault("LC_APP_MASTER_KEY", "tJmRPaS5pdwFNLC2JDCKyFA2")
+    LC_APP_MASTER_KEY = os.environ.setdefault("LC_APP_MASTER_KEY", "W8DdA6QlSxtyIts3IDdzgTKQ")
 
     LEANCLOUD_REGION = os.environ.get("LEANCLOUD_REGION", "MC")
     leancloud.init(app_id=LC_APP_ID, app_key=LC_APP_KEY)
