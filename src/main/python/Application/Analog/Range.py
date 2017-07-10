@@ -78,10 +78,12 @@ class Range:
 			DataObj =  json.loads(RangeMC["DataObj"])#
 
 			#先删除原有数据
-			queryRange = leancloud.Query('AnalogRange')
-
-			query_list = queryRange.find()
-			leancloud.Object.destroy_all(query_list)
+			while True:
+				queryRange = leancloud.Query('AnalogRange')
+				query_list = queryRange.find()
+				if len(query_list)==0:
+					break
+				leancloud.Object.destroy_all(query_list)
 
 			userObjectId = ''
 			headImageUrl = ''
