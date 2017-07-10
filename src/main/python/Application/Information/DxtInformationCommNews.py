@@ -150,7 +150,9 @@ class CommNewsEdit:
 							A_DxtInformationList[0].set('categories', tmp)
 							#主题投资
 							if int(DataObjArr['NewsStyle'])==36743:
-								A_DxtInformationList[0].set('labels', DataObjArr['xghy'])
+								tmp = []
+								tmp.append(DataObjArr['xghy'])
+								A_DxtInformationList[0].set('labels', tmp)
 							else:
 								A_DxtInformationList[0].set('labels', tmp)
 
@@ -187,7 +189,9 @@ class CommNewsEdit:
 							A_DxtInformationObj.set('categories', tmp)
 							# 主题投资
 							if int(DataObjArr['NewsStyle']) == 36743:
-								A_DxtInformationObj.set('labels', DataObjArr['xghy'])
+								tmp = []
+								tmp.append(DataObjArr['xghy'])
+								A_DxtInformationObj.set('labels', tmp)
 							else:
 								A_DxtInformationObj.set('labels', tmp)
 
