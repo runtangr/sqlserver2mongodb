@@ -148,7 +148,11 @@ class CommNewsEdit:
 							tmp =[]
 							tmp.append(label[NewsStyle])
 							A_DxtInformationList[0].set('categories', tmp)
-							A_DxtInformationList[0].set('labels', tmp)
+							#主题投资
+							if int(DataObjArr['NewsStyle'])==36743:
+								A_DxtInformationList[0].set('labels', DataObjArr['xghy'])
+							else:
+								A_DxtInformationList[0].set('labels', tmp)
 
 						A_DxtInformationList[0].set('isDisable', isDisable)
 						A_DxtInformationList[0].set('author', DataObjArr['OtherDefine2'])
@@ -157,6 +161,7 @@ class CommNewsEdit:
 						A_DxtInformationList[0].set('likeNumber', 0)
 						A_DxtInformationList[0].set('shareNumber', 0)
 						A_DxtInformationList[0].set('collectNumber', 0)
+
 						A_DxtInformationList[0].set('relationId', DataObjArr['rsMainkeyID'])
 
 						A_DxtInformationList[0].save()
@@ -180,7 +185,11 @@ class CommNewsEdit:
 							tmp = []
 							tmp.append(label[NewsStyle])
 							A_DxtInformationObj.set('categories', tmp)
-							A_DxtInformationObj.set('labels', tmp)
+							# 主题投资
+							if int(DataObjArr['NewsStyle']) == 36743:
+								A_DxtInformationObj.set('labels', DataObjArr['xghy'])
+							else:
+								A_DxtInformationObj.set('labels', tmp)
 
 						A_DxtInformationObj.set('isDisable', isDisable)
 						A_DxtInformationObj.set('author', DataObjArr['OtherDefine2'])
