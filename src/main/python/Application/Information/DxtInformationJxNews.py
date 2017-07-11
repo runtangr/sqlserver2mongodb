@@ -130,7 +130,7 @@ class jx_News:
 						A_DxtInformationList[0].set('thumbnail', DataObjArr['NewsImage'])
 						A_DxtInformationList[0].set('url', "")
 						A_DxtInformationList[0].set('content', DataObjArr['NewsContent'])
-						A_DxtInformationList[0].set('srcContent', DataObjArr['NewsSource'])
+						A_DxtInformationList[0].set('srcContent', DataObjArr['NewsContent'])
 
 						if int(DataObjArr['CalssID']) in label:
 							CalssID = int(DataObjArr['CalssID'])
@@ -164,7 +164,7 @@ class jx_News:
 						A_DxtInformationObj.set('thumbnail', DataObjArr['NewsImage'])
 						A_DxtInformationObj.set('url', "")
 						A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
-						A_DxtInformationObj.set('srcContent', DataObjArr['NewsSource'])
+						A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
 
 						if int(DataObjArr['CalssID']) in label:
 							CalssID = int(DataObjArr['CalssID'])
