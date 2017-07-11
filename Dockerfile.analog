@@ -19,6 +19,9 @@ RUN pyb publish
 workdir /app/packages/Market/target/dist/Market-1.0.dev0
 RUN python setup.py install
 
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 
 workdir /app/src/main/python/Application
 #CMD ["/bin/sh","/app/docs/start_analog.sh"]
