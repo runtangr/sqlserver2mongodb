@@ -124,6 +124,7 @@ class sirsReportRemark:
 						A_DxtInformationList[0].set('summary', "")  ##content
 						A_DxtInformationList[0].set('thumbnail', DataObjArr["OtherDefine8"])
 						A_DxtInformationList[0].set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationList[0].set('pcUrl', DataObjArr['OtherDefine4'])
 						A_DxtInformationList[0].set('content', DataObjArr['AttachContent'])
 						A_DxtInformationList[0].set('srcContent', DataObjArr['AttachContent'])
 
@@ -160,6 +161,7 @@ class sirsReportRemark:
 						A_DxtInformationObj.set('summary', "")  ##content
 						A_DxtInformationObj.set('thumbnail', DataObjArr["OtherDefine8"])
 						A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationObj.set('pcUrl', DataObjArr['OtherDefine4'])
 						A_DxtInformationObj.set('content', DataObjArr['AttachContent'])
 						A_DxtInformationObj.set('srcContent', DataObjArr['AttachContent'])
 

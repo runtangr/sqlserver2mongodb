@@ -128,6 +128,7 @@ class CommNewsExtract:
         Obj.set('summary', DataObjArr["NewsBrief"])
         Obj.set('thumbnail', "")
         Obj.set('url', DataObjArr['OtherDefine4'])  #静态页|
+        Obj.set('pcUrl', DataObjArr['OtherDefine4'])  # 静态页|
         Obj.set('content', DataObjArr['NewsContent'])
         Obj.set('srcContent', DataObjArr['NewsContent'])
         Obj.set('NewsStyle', DataObjArr['NewsStyle'])   #add

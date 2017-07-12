@@ -140,6 +140,7 @@ class CommNewsEdit:
 						A_DxtInformationList[0].set('summary', DataObjArr['NewsBrief'])
 						A_DxtInformationList[0].set('thumbnail', DataObjArr['OtherDefine1'])
 						A_DxtInformationList[0].set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationList[0].set('pcUrl', DataObjArr['OtherDefine4'])
 						A_DxtInformationList[0].set('content', DataObjArr['NewsContent'])
 						A_DxtInformationList[0].set('srcContent', DataObjArr['NewsContent'])
 
@@ -183,6 +184,8 @@ class CommNewsEdit:
 						A_DxtInformationObj.set('summary', DataObjArr['NewsBrief'])
 						A_DxtInformationObj.set('thumbnail', DataObjArr['OtherDefine1'])
 						A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
+						A_DxtInformationObj.set('pcUrl', DataObjArr['OtherDefine4'])
+
 						A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
 						A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
 
