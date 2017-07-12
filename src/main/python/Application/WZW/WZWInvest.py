@@ -102,8 +102,14 @@ class WZWInvest:
         #时间格式处理
         self.wtTime = datetime.strptime(DataObjArr["wtTime"],'%Y-%m-%d %H:%M:%S')
         self.dealTime = datetime.strptime(DataObjArr["CJDate"], '%Y-%m-%d %H:%M:%S')
+        style = {
+            -1: "卖",
+            1: "买",
+            20: "分红",
+            30: "送股"
+        }
         # 买卖
-        self.TransStyle ="买" if DataObjArr["TransStyle"] else "卖"
+        self.TransStyle = style[DataObjArr["TransStyle"]]
 
         A_DxtWZWInvestQuery = leancloud.Query('A_DxtWZWInvest')
         A_DxtWZWInvestQuery.equal_to('relationId', DataObjArr['rsmainkeyid'])
