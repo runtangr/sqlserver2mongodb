@@ -127,12 +127,14 @@ class PHJJStock:
         Obj.set('price', self.price)
         Obj.set('stockId',  DataObjArr["gpid"])
 
-        Obj.set('firstBuyDate', DataObjArr['firstbuydate'])
+        Obj.set('firstBuyDate', self.firstBuyDate)
 
         Obj.set('relationId', DataObjArr['rsmainkeyid'])
         Obj.save()
 
     def Calculate(self,DataObjArr):
+        #时间
+        self.firstBuyDate = datetime.strptime(DataObjArr['firstbuydate'], "%Y-%m-%d")
         #单个成本
         self.price = DataObjArr["Cost"]/DataObjArr["currentVolume"]
 
