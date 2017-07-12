@@ -150,6 +150,10 @@ class jx_News:
 						A_DxtInformationList[0].set('collectNumber', 0)
 						A_DxtInformationList[0].set('relationId', DataObjArr['rsMainkeyID'])
 
+						A_DxtInformationList[0].set('contentDealStatus', 0)
+						A_DxtInformationList[0].set('CDNStatus', 0)
+						A_DxtInformationList[0].set('imgCDNStatus', 0)
+
 						A_DxtInformationList[0].save()
 					#新增
 					else:
@@ -182,6 +186,10 @@ class jx_News:
 						A_DxtInformationObj.set('shareNumber', 0)
 						A_DxtInformationObj.set('collectNumber', 0)
 						A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+
+						A_DxtInformationObj.set('contentDealStatus', 0)
+						A_DxtInformationObj.set('CDNStatus', 0)
+						A_DxtInformationObj.set('imgCDNStatus', 0)
 
 						A_DxtInformationObj.save()
 

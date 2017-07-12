@@ -147,6 +147,10 @@ class CommNewsExtract:
         Obj.set('collectNumber', DataObjArr["OtherDefine2"])
         Obj.set('relationId', DataObjArr['rsMainkeyID'])
 
+        Obj.set('contentDealStatus', 0)
+        Obj.set('CDNStatus', 0)
+        Obj.set('imgCDNStatus', 0)
+
         Obj.save()
 
 if __name__ == "__main__":
