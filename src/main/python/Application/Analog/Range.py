@@ -34,18 +34,18 @@ class Range:
 		client = Client(url)
 		# print (client)
 
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		AnalogSyncInfoObj = AnalogSyncInfo()
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		SyncControlObj = SyncControl()
+		querySyncInfo = SyncControl.query
 
 		querySyncInfo.equal_to('type', 'range')
 		count = querySyncInfo.count()
 		if count == 0:
 			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
-			AnalogSyncInfoObj.set("type", "range")
-			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "2004-02-02")
-			AnalogSyncInfoObj.save()
+			SyncControlObj.set("type", "range")
+			SyncControlObj.set("mainKeyId", 0)
+			SyncControlObj.set("rsDateTime", "2004-02-02")
+			SyncControlObj.save()
 
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
@@ -67,8 +67,8 @@ class Range:
 		RangeMC = self.data
 		isChange = 0
 
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		querySyncInfo = SyncControl.query
 		querySyncInfo.equal_to('type', 'range')
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))

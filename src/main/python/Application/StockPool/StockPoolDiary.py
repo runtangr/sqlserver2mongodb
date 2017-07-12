@@ -34,22 +34,22 @@ class StockPool:
         client = Client(url)
         # print (client)
 
-        AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-        self.AnalogSyncInfoObj = AnalogSyncInfo()
-        querySyncInfo = AnalogSyncInfo.query
+        SyncControl = leancloud.Object.extend('SyncControl')
+        self.SyncControlObj = SyncControl()
+        querySyncInfo = SyncControl.query
 
         querySyncInfo.equal_to('type', 'StockPoolDiary')
         syncObj = querySyncInfo.find()
         if len(syncObj)== 0:
             dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
-            self.AnalogSyncInfoObj.set("type","StockPoolDiary")
-            self.AnalogSyncInfoObj.set("mainKeyId",0)
-            self.AnalogSyncInfoObj.set("rsDateTime","2010-06-20")#每日总结 时间从 2010-06-22 开始
-            self.AnalogSyncInfoObj.save()
+            self.SyncControlObj.set("type","StockPoolDiary")
+            self.SyncControlObj.set("mainKeyId",0)
+            self.SyncControlObj.set("rsDateTime","2010-06-20")#每日总结 时间从 2010-06-22 开始
+            self.SyncControlObj.save()
 
-        self.AnalogSyncInfoObj = querySyncInfo.first()
-        self.maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
-        self.rsDateTime = self.AnalogSyncInfoObj.get('rsDateTime')
+        self.SyncControlObj = querySyncInfo.first()
+        self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
+        self.rsDateTime = self.SyncControlObj.get('rsDateTime')
         top = 200
 
         # 股票池日总结 WebService 测试接口Query_CommNews_EDIT  资讯CommNews_EDIT表
@@ -70,7 +70,7 @@ class StockPool:
         mc更新 A_DxtStockPoolDiary(股票池日总结)表
         '''
 
-        maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
+        maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
 
         if self.CommStockPoolLog["Code"] == 0:
 
@@ -87,9 +87,9 @@ class StockPool:
             map(self.DealData,self.DataObj)
 
             #最后保存同步数据
-            self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
-            self.AnalogSyncInfoObj.set('rsDateTime', self.rsDateTime)
-            self.AnalogSyncInfoObj.save()
+            self.SyncControlObj.set('mainKeyId', self.maxKeyId)
+            self.SyncControlObj.set('rsDateTime', self.rsDateTime)
+            self.SyncControlObj.save()
 
         else:
              logging.warning("提交股票池股票池日总结数据返回失败：%s" %self.CommStockPoolLog)

@@ -34,17 +34,17 @@ class Order:
 		client = Client(url)
 		# print (client)
 
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		AnalogSyncInfoObj = AnalogSyncInfo()
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		SyncControlObj = SyncControl()
+		querySyncInfo = SyncControl.query
 
 		querySyncInfo.equal_to('type', 'position')
 		count = querySyncInfo.count()
 		if count == 0:
-			AnalogSyncInfoObj.set("type", "position")
-			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "1990-00-00")
-			AnalogSyncInfoObj.save()
+			SyncControlObj.set("type", "position")
+			SyncControlObj.set("mainKeyId", 0)
+			SyncControlObj.set("rsDateTime", "1990-00-00")
+			SyncControlObj.save()
 
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
@@ -70,8 +70,8 @@ class Order:
 
 		OrderMC = self.data
 
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		querySyncInfo = SyncControl.query
 		querySyncInfo.equal_to('type', 'position')
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))

@@ -34,22 +34,22 @@ class Season:
 		client = Client(url)
 		# print (client)
 
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		self.AnalogSyncInfoObj = AnalogSyncInfo()
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		self.SyncControlObj = SyncControl()
+		querySyncInfo = SyncControl.query
 
 		querySyncInfo.equal_to('type', 'season')
 		syncObj = querySyncInfo.find()
 		if len(syncObj) == 0:
 			dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
-			self.AnalogSyncInfoObj.set("type", "season")
-			self.AnalogSyncInfoObj.set("mainKeyId", 0)
-			self.AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
-			self.AnalogSyncInfoObj.save()
+			self.SyncControlObj.set("type", "season")
+			self.SyncControlObj.set("mainKeyId", 0)
+			self.SyncControlObj.set("rsDateTime", "1990-01-01")
+			self.SyncControlObj.save()
 
-		self.AnalogSyncInfoObj = querySyncInfo.first()
-		self.maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
-		self.rsDateTime = self.AnalogSyncInfoObj.get('rsDateTime')
+		self.SyncControlObj = querySyncInfo.first()
+		self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
+		self.rsDateTime = self.SyncControlObj.get('rsDateTime')
 
 
 		# 赛季同步 WebService 测试接口Query_uimsSEASONSET
@@ -68,7 +68,7 @@ class Season:
 		mc更新uimsSeasonSet(赛季同步)表
 		'''
 
-		maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
+		maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
 
 		if self.Season["Code"] == 0:
 			self.DataObj = json.loads(self.Season["DataObj"])  #
@@ -88,9 +88,9 @@ class Season:
 		if DataObjArr == self.DataObj[-1]:
 			self.maxKeyId = int(DataObjArr['rsMainkeyID'])
 			self.rsDateTime = DataObjArr['rsDateTime']
-			self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
-			self.AnalogSyncInfoObj.set('rsDateTime', self.rsDateTime)
-			self.AnalogSyncInfoObj.save()
+			self.SyncControlObj.set('mainKeyId', self.maxKeyId)
+			self.SyncControlObj.set('rsDateTime', self.rsDateTime)
+			self.SyncControlObj.save()
 		# 打印
 		print ("maxKeyId:", self.maxKeyId, "===", "rsMainKeyID:", DataObjArr['rsMainkeyID'], "===",
 			   "rsDateTime:", DataObjArr['rsDateTime'])

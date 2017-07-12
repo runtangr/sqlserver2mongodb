@@ -34,22 +34,22 @@ class Teacher:
 		client = Client(url)
 		# print (client)
 
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		self.AnalogSyncInfoObj = AnalogSyncInfo()
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		self.SyncControlObj = SyncControl()
+		querySyncInfo = SyncControl.query
 
 		querySyncInfo.equal_to('type', 'TGQuestion')
 		syncObj = querySyncInfo.find()
 		if len(syncObj) == 0:
 
-			self.AnalogSyncInfoObj.set("type", "TGQuestion")
-			self.AnalogSyncInfoObj.set("mainKeyId", 0)
-			self.AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
-			self.AnalogSyncInfoObj.save()
+			self.SyncControlObj.set("type", "TGQuestion")
+			self.SyncControlObj.set("mainKeyId", 0)
+			self.SyncControlObj.set("rsDateTime", "1990-01-01")
+			self.SyncControlObj.save()
 
-		self.AnalogSyncInfoObj = querySyncInfo.first()
-		self.maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
-		self.rsDateTime = self.AnalogSyncInfoObj.get('rsDateTime')
+		self.SyncControlObj = querySyncInfo.first()
+		self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
+		self.rsDateTime = self.SyncControlObj.get('rsDateTime')
 		top = 100
 
 		# 问股列表 WebService 测试接口P_SynCommAskOnline
@@ -79,9 +79,9 @@ class Teacher:
 				if DataObjArr == DataObj[-1]:
 					self.maxKeyId = int(DataObjArr['rsMainkeyID'])
 					self.rsDateTime = DataObjArr['rsDateTime']
-					self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
-					self.AnalogSyncInfoObj.set('rsDateTime', self.rsDateTime)
-					self.AnalogSyncInfoObj.save()
+					self.SyncControlObj.set('mainKeyId', self.maxKeyId)
+					self.SyncControlObj.set('rsDateTime', self.rsDateTime)
+					self.SyncControlObj.save()
 
 				# 打印
 				print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",

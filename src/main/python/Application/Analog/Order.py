@@ -33,17 +33,17 @@ class Order:
 		url = "http://114.80.94.175:8084/Stocks.asmx?WSDL"
 		client = Client(url)
 		# print (client)
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		AnalogSyncInfoObj = AnalogSyncInfo()
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		SyncControlObj = SyncControl()
+		querySyncInfo = SyncControl.query
 
 		querySyncInfo.equal_to('type', 'order')
 		count = querySyncInfo.count()
 		if count == 0:
-			AnalogSyncInfoObj.set("type", "order")
-			AnalogSyncInfoObj.set("mainKeyId", 0)
-			AnalogSyncInfoObj.set("rsDateTime", "1990-01-01")
-			AnalogSyncInfoObj.save()
+			SyncControlObj.set("type", "order")
+			SyncControlObj.set("mainKeyId", 0)
+			SyncControlObj.set("rsDateTime", "1990-01-01")
+			SyncControlObj.save()
 
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))
@@ -67,8 +67,8 @@ class Order:
 		OrderMC = self.data
 		isChange = 0
 
-		AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-		querySyncInfo = AnalogSyncInfo.query
+		SyncControl = leancloud.Object.extend('SyncControl')
+		querySyncInfo = SyncControl.query
 		querySyncInfo.equal_to('type', 'order')
 		syncObj = querySyncInfo.first()
 		maxKeyId = int(syncObj.get('mainKeyId'))

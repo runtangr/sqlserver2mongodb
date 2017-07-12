@@ -35,22 +35,22 @@ class WZWStock:
         client = Client(url)
         # print (client)
 
-        AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-        self.AnalogSyncInfoObj = AnalogSyncInfo()
-        querySyncInfo = AnalogSyncInfo.query
+        SyncControl = leancloud.Object.extend('SyncControl')
+        self.SyncControlObj = SyncControl()
+        querySyncInfo = SyncControl.query
 
         querySyncInfo.equal_to('type', 'WZWStock')
         syncObj = querySyncInfo.find()
         if len(syncObj)== 0:
             dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
-            self.AnalogSyncInfoObj.set("type","WZWStock")
-            self.AnalogSyncInfoObj.set("mainKeyId",0)
-            self.AnalogSyncInfoObj.set("rsDateTime","1990-01-01")
-            self.AnalogSyncInfoObj.save()
+            self.SyncControlObj.set("type","WZWStock")
+            self.SyncControlObj.set("mainKeyId",0)
+            self.SyncControlObj.set("rsDateTime","1990-01-01")
+            self.SyncControlObj.save()
 
-        self.AnalogSyncInfoObj = querySyncInfo.first()
-        self.maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
-        self.rsDateTime = self.AnalogSyncInfoObj.get('rsDateTime')
+        self.SyncControlObj = querySyncInfo.first()
+        self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
+        self.rsDateTime = self.SyncControlObj.get('rsDateTime')
         top = 100
 
         # 王中王持仓列表 WebService 测试接口P_Z_uimsVSTSC_pro
@@ -71,7 +71,7 @@ class WZWStock:
         mc更新 A_DxtWZWStock(王中王持仓列表)表
         '''
 
-        maxKeyId = int(self.AnalogSyncInfoObj.get('mainKeyId'))
+        maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
 
         if self.WZWStock["Code"] == 0:
 
@@ -90,9 +90,9 @@ class WZWStock:
         if DataObjArr==self.DataObj[-1]:
             self.maxKeyId = int(DataObjArr['rsmainkeyid'])
             self.rsDateTime = DataObjArr['rsDateTime']
-            self.AnalogSyncInfoObj.set('mainKeyId', self.maxKeyId)
-            self.AnalogSyncInfoObj.set('rsDateTime', self.rsDateTime)
-            self.AnalogSyncInfoObj.save()
+            self.SyncControlObj.set('mainKeyId', self.maxKeyId)
+            self.SyncControlObj.set('rsDateTime', self.rsDateTime)
+            self.SyncControlObj.save()
 
         #打印
         print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsmainkeyid'], "===",

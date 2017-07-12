@@ -34,18 +34,18 @@ class StockPool:
         client = Client(url)
         # print (client)
 
-        AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-        AnalogSyncInfoObj = AnalogSyncInfo()
-        querySyncInfo = AnalogSyncInfo.query
+        SyncControl = leancloud.Object.extend('SyncControl')
+        SyncControlObj = SyncControl()
+        querySyncInfo = SyncControl.query
 
         querySyncInfo.equal_to('type', 'StockPoolStock')
         count = querySyncInfo.count()
         if count == 0:
             dataTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
-            AnalogSyncInfoObj.set("type","StockPoolStock")
-            AnalogSyncInfoObj.set("mainKeyId",0)
-            AnalogSyncInfoObj.set("rsDateTime","1990-01-01")
-            AnalogSyncInfoObj.save()
+            SyncControlObj.set("type","StockPoolStock")
+            SyncControlObj.set("mainKeyId",0)
+            SyncControlObj.set("rsDateTime","1990-01-01")
+            SyncControlObj.save()
 
         syncObj = querySyncInfo.first()
         maxKeyId = int(syncObj.get('mainKeyId'))
@@ -68,8 +68,8 @@ class StockPool:
         StockPoolMC = self.data
         isChange = 0
 
-        AnalogSyncInfo = leancloud.Object.extend('AnalogSyncInfo')
-        querySyncInfo = AnalogSyncInfo.query
+        SyncControl = leancloud.Object.extend('SyncControl')
+        querySyncInfo = SyncControl.query
         querySyncInfo.equal_to('type', 'StockPoolStock')
         syncObj = querySyncInfo.first()
         maxKeyId = int(syncObj.get('mainKeyId'))
