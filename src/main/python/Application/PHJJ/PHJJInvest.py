@@ -122,7 +122,7 @@ class PHJJInvest:
 
         Obj.set('volume', DataObjArr["volume"])
         Obj.set('profitorLoss', DataObjArr["ProfitorLoss"])
-        Obj.set('transType', DataObjArr["TransStyle"])
+        Obj.set('transType', self.TransStyle)
         # Obj.set('wtTime', 0)
         Obj.set('dealTime', self.rsdatetime)
 
@@ -130,6 +130,15 @@ class PHJJInvest:
         Obj.save()
 
     def Calculate(self,DataObjArr):
+
+        style = {
+            -1: "卖",
+            1: "买",
+            20: "分红",
+            30: "送股"
+        }
+        # 买卖
+        self.TransStyle = style[DataObjArr["TransStyle"]]
 
         #收益率计算
         self.syl = 0
