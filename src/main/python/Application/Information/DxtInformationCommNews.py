@@ -144,6 +144,7 @@ class CommNewsEdit:
 						A_DxtInformationList[0].set('content', DataObjArr['NewsContent'])
 						A_DxtInformationList[0].set('srcContent', DataObjArr['NewsContent'])
 
+						A_DxtInformationList[0].set('correlatedStockStr', DataObjArr['xggg'])
 						if int(DataObjArr['NewsStyle']) in label:
 							NewsStyle = int(DataObjArr['NewsStyle'])
 							tmp =[]
@@ -188,6 +189,8 @@ class CommNewsEdit:
 
 						A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
 						A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
+
+						A_DxtInformationObj.set('correlatedStockStr', DataObjArr['xggg'])
 
 						if int(DataObjArr['NewsStyle']) in label:
 							NewsStyle = int(DataObjArr['NewsStyle'])
