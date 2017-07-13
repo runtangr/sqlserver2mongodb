@@ -59,6 +59,7 @@ class CommNewsExtract:
                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                 rsMainkeyid=self.maxKeyId,
                                               rsDatetime=self.rsDateTime,
+                                              #   rsDatetime=    "2016-05-20 18:43:00.000",
                                                   top=top
                                                     )
         try:
@@ -115,11 +116,24 @@ class CommNewsExtract:
         self.A_DxtInformationList = A_DxtInformationQuery.find()
         # 编辑
         if len(self.A_DxtInformationList) > 0:
+            if int(DataObjArr['rsStatus']) <0:
+                print("rsStatus <0")
+                return
+
+            print ("len>1")
             self.Save(self.A_DxtInformationList[0],DataObjArr)
+
         else:
             A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
             A_DxtInformationObj = A_DxtInformation()
+            if int(DataObjArr['rsStatus']) <0:
+                print("rsStatus <0")
+                return
+
+            print ("len<1")
+            # print ("DataObjArr = ",DataObjArr)
             self.Save(A_DxtInformationObj,DataObjArr)
+
 
     def Save(self,Obj,DataObjArr):
         Obj.set('sync', 4)
@@ -127,10 +141,21 @@ class CommNewsExtract:
         Obj.set('source', DataObjArr["NewsSource"])
         Obj.set('summary', DataObjArr["NewsBrief"])
         Obj.set('thumbnail', "")
+
         Obj.set('url', DataObjArr['OtherDefine4'])  #静态页|
         Obj.set('pcUrl', DataObjArr['OtherDefine4'])  # 静态页|
-        Obj.set('content', DataObjArr['NewsContent'])
-        Obj.set('srcContent', DataObjArr['NewsContent'])
+        if len(DataObjArr['NewsContent'])<64*1024:
+
+            Obj.set('content', DataObjArr['NewsContent'])
+            Obj.set('srcContent', DataObjArr['NewsContent'])
+        else:
+            Obj.set('content', "")
+            print ("rsMainkeyID = ",DataObjArr['rsMainkeyID'])
+            print ("data len >64k")
+        # print ("NewsContent = ",DataObjArr['NewsContent'])
+        # print ("NewsContent len = ", len(DataObjArr['NewsContent']))
+
+
         Obj.set('NewsStyle', DataObjArr['NewsStyle'])   #add
 
         tmp = []
@@ -147,10 +172,12 @@ class CommNewsExtract:
         Obj.set('shareNumber', 0)
         Obj.set('collectNumber', DataObjArr["OtherDefine2"])
         Obj.set('relationId', DataObjArr['rsMainkeyID'])
-
+        #
         Obj.set('contentDealStatus', 0)
         Obj.set('CDNStatus', 0)
         Obj.set('imgCDNStatus', 0)
+        print ("obj = ",Obj)
+        print("object=", Obj.get("objectId"))
 
         Obj.save()
 
