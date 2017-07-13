@@ -111,8 +111,7 @@ class jxNewsImage:
 	def Save(self, Obj, DataObjArr):
 
 		if DataObjArr['rsStatus'] >0:
-			rsDateTime = datetime.strptime(DataObjArr['rsDateTime'][:-4], '%Y-%m-%d %H:%M:%S')
-			Data = []
+			Data = Obj.get("images")
 			Data.append(DataObjArr['Images'])
 			# Data["NewsID"] = DataObjArr['NewsID']
 			# Data["rsDateTime"] = DataObjArr['rsDateTime']
@@ -121,8 +120,11 @@ class jxNewsImage:
 			# print("data=",Data)
 			# print("object=", Obj.get("objectId"))
 
-			# Obj.set('rsDispIndex', )
+
 			Obj.set('images', Data)
+			Obj.set('contentDealStatus', 0)
+			Obj.set('CDNStatus', 0)
+			Obj.set('imgCDNStatus', 0)
 			Obj.save()
 
 if __name__ == "__main__":
