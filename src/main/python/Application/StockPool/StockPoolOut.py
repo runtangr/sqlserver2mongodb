@@ -108,6 +108,7 @@ class StockPoolOut:
         self.A_DxtStockPoolOutList[0].set('cqPrice', DataObjArr['CQPrice'])
         self.A_DxtStockPoolOutList[0].set('dqsy', DataObjArr['Dqsy'])
         self.A_DxtStockPoolOutList[0].set('inPrice', DataObjArr['AccessPrice'])
+        self.A_DxtStockPoolOutList[0].set('outPrice', DataObjArr['OutPrice'])
 
         self.A_DxtStockPoolOutList[0].set('stockComeFrom', DataObjArr['StockComeFrom'])
         self.A_DxtStockPoolOutList[0].set('inTime', self.AccessDateTime)
@@ -127,9 +128,10 @@ class StockPoolOut:
         A_DxtStockPoolOutDiaryObj.set('marketCode', DataObjArr['MarketCode'])  ########
 
         A_DxtStockPoolOutDiaryObj.set('cqPrice', DataObjArr['CQPrice'])
+
         A_DxtStockPoolOutDiaryObj.set('dqsy', DataObjArr['Dqsy'])
         A_DxtStockPoolOutDiaryObj.set('inPrice', DataObjArr['AccessPrice'])
-
+        A_DxtStockPoolOutDiaryObj.set('outPrice', DataObjArr['OutPrice'])
         A_DxtStockPoolOutDiaryObj.set('stockComeFrom', DataObjArr['StockComeFrom'])
         A_DxtStockPoolOutDiaryObj.set('inTime', self.AccessDateTime)
         A_DxtStockPoolOutDiaryObj.set('outTime', self.OutDateTime)
