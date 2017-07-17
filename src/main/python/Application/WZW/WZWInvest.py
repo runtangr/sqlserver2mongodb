@@ -109,7 +109,10 @@ class WZWInvest:
             30: "送股"
         }
         # 买卖
-        self.TransStyle = style[DataObjArr["TransStyle"]]
+        if type(DataObjArr["TransStyle"])==int:
+            self.TransStyle = style[DataObjArr["TransStyle"]]
+        else:
+            self.TransStyle = DataObjArr["TransStyle"]
 
         A_DxtWZWInvestQuery = leancloud.Query('A_DxtWZWInvest')
         A_DxtWZWInvestQuery.equal_to('relationId', DataObjArr['rsmainkeyid'])
