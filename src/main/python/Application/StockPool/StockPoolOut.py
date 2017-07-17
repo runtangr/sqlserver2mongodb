@@ -55,6 +55,13 @@ class StockPoolOut:
         '''
 
         self.SelectStockPool = 0
+        #删除数据
+        while True:
+            queryStockPoolOut = leancloud.Query('A_DxtStockPoolOut')
+            query_list = queryStockPoolOut.find()
+            if len(query_list) == 0:
+                break
+            leancloud.Object.destroy_all(query_list)
 
         for self.CommStockPoolOutLog in self.CommStockPoolOut:
 
@@ -76,11 +83,6 @@ class StockPoolOut:
 
     def DealData(self,DataObjArr):
 
-        A_DxtStockPoolOutQuery = leancloud.Query('A_DxtStockPoolOut')
-        A_DxtStockPoolOutQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-        self.A_DxtStockPoolOutList = A_DxtStockPoolOutQuery.find()
-
-
         # 查找StockPool 匹配relationId ，取出objectid
         A_DxtStockPoolQuery = leancloud.Query('A_DxtStockPool')
         A_DxtStockPoolQuery.equal_to('relationId', str(self.SelectStockPool))
@@ -91,31 +93,8 @@ class StockPoolOut:
         self.OutDateTime = datetime.strptime(DataObjArr['OutDateTime'], "%Y-%m-%d %H:%M:%S")
 
         # 编辑
-        if len(self.A_DxtStockPoolOutList) > 0:
-
-            self.Edit(DataObjArr)
-        else:
-            self.Add(DataObjArr)
-
-
-    def Edit(self,DataObjArr):
-
-        self.A_DxtStockPoolOutList[0].set('stockPoolObjectId', self.A_DxtStockPoolList[0].get('objectId'))
-        self.A_DxtStockPoolOutList[0].set('stockCode', DataObjArr['StockCode'])
-        self.A_DxtStockPoolOutList[0].set('stockName', DataObjArr['StockShortName'])
-        self.A_DxtStockPoolOutList[0].set('marketCode', DataObjArr['MarketCode'])
-
-        self.A_DxtStockPoolOutList[0].set('cqPrice', DataObjArr['CQPrice'])
-        self.A_DxtStockPoolOutList[0].set('dqsy', DataObjArr['Dqsy'])
-        self.A_DxtStockPoolOutList[0].set('inPrice', DataObjArr['AccessPrice'])
-        self.A_DxtStockPoolOutList[0].set('outPrice', DataObjArr['OutPrice'])
-
-        self.A_DxtStockPoolOutList[0].set('stockComeFrom', DataObjArr['StockComeFrom'])
-        self.A_DxtStockPoolOutList[0].set('inTime', self.AccessDateTime)
-        self.A_DxtStockPoolOutList[0].set('outTime', self.OutDateTime)
-        self.A_DxtStockPoolOutList[0].set('stockId', DataObjArr['StockId'])
-        self.A_DxtStockPoolOutList[0].set('relationId', str(DataObjArr["rsMainkeyID"]))
-        self.A_DxtStockPoolOutList[0].save()
+        #每次同步: 删除原有数据 再同步新数据!
+        self.Add(DataObjArr)
 
     def Add(self,DataObjArr):
 
