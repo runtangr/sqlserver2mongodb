@@ -158,9 +158,10 @@ class CommNewsExtract:
 
         Obj.set('NewsStyle', DataObjArr['NewsStyle'])   #add
 
-
-        Obj.set('categories', DataObjArr['ClassName'])
-        Obj.set('labels', DataObjArr['ClassName'])
+        tmp_categories = []
+        tmp_categories.append(DataObjArr['ClassName'])
+        Obj.set('categories', tmp_categories)
+        Obj.set('labels', tmp_categories)
 
         Obj.set('isDisable', self.isDisable)
 
