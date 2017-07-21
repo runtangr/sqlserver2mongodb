@@ -149,6 +149,9 @@ class sirsReportRemark:
 						A_DxtInformationList[0].set('CDNStatus', 0)
 						A_DxtInformationList[0].set('imgCDNStatus', 0)
 
+						A_DxtInformationList[0].set('AttachFile', DataObjArr['AttachFile'])
+						A_DxtInformationList[0].set('AttachPath', DataObjArr['AttachPath'])
+
 						A_DxtInformationList[0].save()
 					else:
 						A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
@@ -185,6 +188,9 @@ class sirsReportRemark:
 						A_DxtInformationObj.set('contentDealStatus', 0)
 						A_DxtInformationObj.set('CDNStatus', 0)
 						A_DxtInformationObj.set('imgCDNStatus', 0)
+
+						A_DxtInformationObj.set('AttachFile', DataObjArr['AttachFile'])
+						A_DxtInformationObj.set('AttachPath', DataObjArr['AttachPath'])
 
 						A_DxtInformationObj.save()
 
