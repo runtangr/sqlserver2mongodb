@@ -140,7 +140,7 @@ class WZWInvest:
 
         Obj.set('cjje',DataObjArr["cjje"] )
         Obj.set('price', DataObjArr["price"])
-        Obj.set('syl', DataObjArr["syl"])
+        Obj.set('syl', float(DataObjArr["syl"]))
 
         Obj.set('volume', DataObjArr['volume'])
         Obj.set('profitorLoss', DataObjArr['profitorLoss'])
