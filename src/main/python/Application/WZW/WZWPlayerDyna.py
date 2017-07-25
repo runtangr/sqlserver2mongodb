@@ -124,6 +124,8 @@ class WZWPlayerDyna:
     def Save(self,Obj,DataObjArr):
 
         self.Calculate(DataObjArr)
+        if DataObjArr["cjj"] == "":
+            return
 
         # Obj.set('groupBmId', )
         # Obj.set('stockCode', )
@@ -131,7 +133,7 @@ class WZWPlayerDyna:
         # Obj.set('marketCode', )
 
         Obj.set('teacherName',DataObjArr["UserName"])
-        Obj.set('price', DataObjArr["cjj"])
+        Obj.set('price', int(DataObjArr["cjj"]))
         Obj.set('transType', DataObjArr["UserCZ"])
         Obj.set('dealTime',  self.dealTime)
         Obj.set("AlertNewsDate",self.AlertNewsDate)
