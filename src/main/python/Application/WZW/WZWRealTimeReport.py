@@ -80,6 +80,7 @@ class WZWRealTimeReport:
     def Calculate(self, DataObjArr):
 
         self.dealTime = datetime.strptime(DataObjArr["rsDateTime"],'%Y-%m-%d %H:%M:%S')
+        self.transType = "买" if int(DataObjArr['OtherDefine2']) > 0 else "卖"
 
     def Save(self,Obj,DataObjArr):
 
@@ -93,7 +94,7 @@ class WZWRealTimeReport:
         Obj.set('teacherName',DataObjArr["NickName"] )
 
         Obj.set('profitorLoss', DataObjArr['OtherDefine3'])
-        Obj.set('transType', DataObjArr['OtherDefine2'])
+        Obj.set('transType', self.transType)
         Obj.set('dealTime',  self.dealTime)
         Obj.save()
 
