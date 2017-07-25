@@ -88,6 +88,9 @@ class CommNewsExtract_cp:
 
     def DealData(self,DataObjArr):
 
+        self.publishTime = datetime.strptime(DataObjArr['NewsDate'][:-4], '%Y-%m-%d %H:%M:%S')
+        self.now_time = datetime.strptime('2017-07-25 09:20:20', '%Y-%m-%d %H:%M:%S')
+
         #最后一条数据赋值
         if DataObjArr==self.DataObj[-1]:
             self.maxKeyId = int(DataObjArr['rsMainkeyID'])
@@ -95,6 +98,10 @@ class CommNewsExtract_cp:
             self.SyncControlObj.set('mainKeyId', self.maxKeyId)
             self.SyncControlObj.set('rsDateTime', self.rsDateTime)
             self.SyncControlObj.save()
+
+            #add
+            if self.publishTime > self.now_time:
+                return
 
         #打印
         print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
@@ -106,8 +113,6 @@ class CommNewsExtract_cp:
             self.isDisable = 0
         else:
             self.isDisable = 1
-
-        self.publishTime = datetime.strptime(DataObjArr['NewsDate'][:-5], '%Y-%m-%d %H:%M:%S')
 
         A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
         A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
