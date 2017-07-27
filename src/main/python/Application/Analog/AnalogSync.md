@@ -1,237 +1,237 @@
-###CJS Í¬²½³ÌÐòÂß¼­ÃèÊöÎÄµµ###
+###CJS åŒæ­¥ç¨‹åºé€»è¾‘æè¿°æ–‡æ¡£###
 
-1¡¢Position 
-####ÃèÊö####
-×Ê½ð³Ö²ÖÊý¾ÝÍ¬²½ 
-###Í¬²½Âß¼­ÃèÊö###
+1ã€Position
+####æè¿°####
+èµ„é‡‘æŒä»“æ•°æ®åŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
 
-###webservice½Ó¿Ú###
+###webserviceæŽ¥å£###
 Query_uimsStockTransList
-###±íÃû###
+###è¡¨å###
 AnalogStock
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 |----|----|
-|Ãû³Æ|ÀàÐÍ|ËµÃ÷|È±Ê¡|
-|userObjectId |×Ö·û´®|BOSSÏµÍ³ÓÃ»§objectid| ÎÞ|
-|userName |×Ö·û´®|BOSSÏµÍ³ÓÃ»§Ãû³Æ| ÎÞ|
-|analogUserId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³ÓÃ»§id| ÎÞ|
-|matchObjectId |×Ö·û´®|BOSSÏµÍ³´óÈüµÄojectid| ÎÞ|
-|matchName |×Ö·û´®|BOSSÏµÍ³´óÈüÃû³Æ| ÎÞ|
-|analogMatchId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³´óÈüid| ÎÞ|
-|groupBmId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³×Ê½ðid| ÎÞ|
-|stockCode |×Ö·û´®|¹ÉÆ±´úÂë£¬ÀýÈç600036| ÎÞ|
-|stockName |×Ö·û´®|¹ÉÆ±Ãû³Æ| ÎÞ|
-|stockTypeName |×Ö·û´®|¹ÉÆ±ÀàÐÍÃû³Æ£¬ÀýÈçA¹É| ÎÞ|
-|marketCode |×Ö·û´®|ÊÐ³¡´úÂë£¬ÀýÈçSH| ÎÞ|
-|marketName |×Ö·û´®|ÊÐ³¡Ãû³Æ£¬ÀýÈçÉÏº£| ÎÞ|
-|totalVolume |Êý×Ö|³Ö²Ö¹ÉÊý| ÎÞ|
-|useVolume |Êý×Ö|¿ÉÓÃ¹ÉÊý| ÎÞ|
-|price |Êý×Ö|³É±¾¼Û¸ñ| ÎÞ|
-|cost |Êý×Ö|¹ºÂò³É±¾| ÎÞ|
-|profitorLoss |Êý×Ö|Ó¯¿÷| ÎÞ|
-|buyMoney |Êý×Ö|¹ºÂò³É±¾£¬Ä¿Ç°ÒÔcostÎª×¼£¬±¾×Ö¶ÎÔÝ²»Ê¹ÓÃ| ÎÞ|
-|headImageUrl |×Ö·û´®|ÓÃ»§Í·Ïñ| ÎÞ|
+|åç§°|ç±»åž‹|è¯´æ˜Ž|ç¼ºçœ|
+|userObjectId |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·objectid| æ— |
+|userName |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·åç§°| æ— |
+|analogUserId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿç”¨æˆ·id| æ— |
+|matchObjectId |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿå¤§èµ›çš„ojectid| æ— |
+|matchName |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿå¤§èµ›åç§°| æ— |
+|analogMatchId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿå¤§èµ›id| æ— |
+|groupBmId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿèµ„é‡‘id| æ— |
+|stockCode |å­—ç¬¦ä¸²|è‚¡ç¥¨ä»£ç ï¼Œä¾‹å¦‚600036| æ— |
+|stockName |å­—ç¬¦ä¸²|è‚¡ç¥¨åç§°| æ— |
+|stockTypeName |å­—ç¬¦ä¸²|è‚¡ç¥¨ç±»åž‹åç§°ï¼Œä¾‹å¦‚Aè‚¡| æ— |
+|marketCode |å­—ç¬¦ä¸²|å¸‚åœºä»£ç ï¼Œä¾‹å¦‚SH| æ— |
+|marketName |å­—ç¬¦ä¸²|å¸‚åœºåç§°ï¼Œä¾‹å¦‚ä¸Šæµ·| æ— |
+|totalVolume |æ•°å­—|æŒä»“è‚¡æ•°| æ— |
+|useVolume |æ•°å­—|å¯ç”¨è‚¡æ•°| æ— |
+|price |æ•°å­—|æˆæœ¬ä»·æ ¼| æ— |
+|cost |æ•°å­—|è´­ä¹°æˆæœ¬| æ— |
+|profitorLoss |æ•°å­—|ç›ˆäº| æ— |
+|buyMoney |æ•°å­—|è´­ä¹°æˆæœ¬ï¼Œç›®å‰ä»¥costä¸ºå‡†ï¼Œæœ¬å­—æ®µæš‚ä¸ä½¿ç”¨| æ— |
+|headImageUrl |å­—ç¬¦ä¸²|ç”¨æˆ·å¤´åƒ| æ— |
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î		MC×Ö¶Î
-					->     userObjectId   		£¨ÓÉAnalogMyMatch±í»ñÈ¡userObjectId£©
-	ZhName	        ->     userName      
-					->     analogUserId  	 	£¨ÓÉAnalogMyMatch±í»ñÈ¡analogUserId£©
-					->     matchObjectId 		£¨ÓÉAnalogMyMatch±í»ñÈ¡matchObjectId£©
-					->     matchName     		£¨ÓÉAnalogMyMatch±í»ñÈ¡matchName£©
-					->     analogMatchId 		£¨ÓÉAnalogMyMatch±í»ñÈ¡analogMatchId£©
-	VGroupid        ->     groupBmId        
-	StockCode       ->     stockCode     
-	stockname       ->     stockName     
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ		MCå­—æ®µ
+					->     userObjectId   		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–userObjectIdï¼‰
+	ZhName	        ->     userName
+					->     analogUserId  	 	ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–analogUserIdï¼‰
+					->     matchObjectId 		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–matchObjectIdï¼‰
+					->     matchName     		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–matchNameï¼‰
+					->     analogMatchId 		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–analogMatchIdï¼‰
+	VGroupid        ->     groupBmId
+	StockCode       ->     stockCode
+	stockname       ->     stockName
 	stockTypeName   ->     stockTypeName
-	marketCode      ->     marketCode   
-	marketName      ->     marketName    
-	CurrentVolume   ->     totalVolume  
-	UseVolume       ->     useVolume    
-					->     price        £¨¼ÆËã£©
-	cost            ->     cost         
-	ProfitorLoss    ->     profitorLoss 
-    BuyMoney        ->     buyMoney     
-    headImageUrl    ->     headImageUrl 
+	marketCode      ->     marketCode
+	marketName      ->     marketName
+	CurrentVolume   ->     totalVolume
+	UseVolume       ->     useVolume
+					->     price        ï¼ˆè®¡ç®—ï¼‰
+	cost            ->     cost
+	ProfitorLoss    ->     profitorLoss
+    BuyMoney        ->     buyMoney
+    headImageUrl    ->     headImageUrl
 
-###±íÃû###
+###è¡¨å###
 AnalogMyMatch
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 |----|----|
-|Ãû³Æ|ÀàÐÍ|ËµÃ÷|È±Ê¡|
-|userObjectId |×Ö·û´®|BOSSÏµÍ³ÓÃ»§objectid| ÎÞ|
-|userName |×Ö·û´®|BOSSÏµÍ³ÓÃ»§Ãû³Æ| ÎÞ|
-|analogUserId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³ÓÃ»§id| ÎÞ|
-|matchObjectId |×Ö·û´®|BOSSÏµÍ³´óÈüµÄojectid| ÎÞ|
-|matchName |×Ö·û´®|BOSSÏµÍ³´óÈüÃû³Æ| ÎÞ|
-|analogMatchId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³´óÈüid| ÎÞ|
-|beginTime |Date|¿ªÊ¼ÈÕÆÚ| ÎÞ|
-|endTime |Date|½áÊøÈÕÆÚ| ÎÞ|
-|groupBmId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³×Ê½ðid| ÎÞ|
-|pm |Êý×Ö|ÅÅÃû| ÎÞ|
-|pmDay |Êý×Ö|ÈÕÅÅÃû| ÎÞ|
-|pmWeek |Êý×Ö|ÖÜÅÅÃû| ÎÞ|
-|syl |×Ö·û´®|ÊÕÒæÂÊ| ÎÞ|
-|sylDay |×Ö·û´®|ÈÕÊÕÒæÂÊ| ÎÞ|
-|sylWeek |×Ö·û´®|ÖÜÊÕÒæÂÊ| ÎÞ|
-|shouYiLv |Êý×Ö|ÊÕÒæÂÊ| ÎÞ|
-|shouYiLvDay |Êý×Ö|ÈÕÊÕÒæÂÊ| ÎÞ|
-|shouYiLvWeek |Êý×Ö|ÖÜÊÕÒæÂÊ| ÎÞ|
-|originalCapital |Êý×Ö|Ô­Ê¼×Ê½ð| ÎÞ|
-|residualCapital |Êý×Ö|Ê£Óà×Ê½ð| ÎÞ|
-|frozenCapital |Êý×Ö|¶³½á×Ê½ð| ÎÞ|
-|tradeTotal |Êý×Ö|²Ù×÷Êý| ÎÞ|
-|tradeCountYL |Êý×Ö|Ó¯Àû²Ù×÷Êý| ÎÞ|
-|myPopularity |Êý×Ö|ÈËÆø£¬¼´±»¹Ø×¢Êý| ÎÞ|
-|totalProfitorLoss |Êý×Ö|×ÜÓ¯¿÷| ÎÞ|
-|isDefault |×Ö·û´®|Ä£Äâ³´¹É±êÖ¾ 1Ä£Äâ³´¹É ÆäËû ³´¹É´óÈü| ÎÞ|
-|headImageUrl |×Ö·û´®|ÓÃ»§Í·Ïñ| ÎÞ|
+|åç§°|ç±»åž‹|è¯´æ˜Ž|ç¼ºçœ|
+|userObjectId |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·objectid| æ— |
+|userName |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·åç§°| æ— |
+|analogUserId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿç”¨æˆ·id| æ— |
+|matchObjectId |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿå¤§èµ›çš„ojectid| æ— |
+|matchName |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿå¤§èµ›åç§°| æ— |
+|analogMatchId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿå¤§èµ›id| æ— |
+|beginTime |Date|å¼€å§‹æ—¥æœŸ| æ— |
+|endTime |Date|ç»“æŸæ—¥æœŸ| æ— |
+|groupBmId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿèµ„é‡‘id| æ— |
+|pm |æ•°å­—|æŽ’å| æ— |
+|pmDay |æ•°å­—|æ—¥æŽ’å| æ— |
+|pmWeek |æ•°å­—|å‘¨æŽ’å| æ— |
+|syl |å­—ç¬¦ä¸²|æ”¶ç›ŠçŽ‡| æ— |
+|sylDay |å­—ç¬¦ä¸²|æ—¥æ”¶ç›ŠçŽ‡| æ— |
+|sylWeek |å­—ç¬¦ä¸²|å‘¨æ”¶ç›ŠçŽ‡| æ— |
+|shouYiLv |æ•°å­—|æ”¶ç›ŠçŽ‡| æ— |
+|shouYiLvDay |æ•°å­—|æ—¥æ”¶ç›ŠçŽ‡| æ— |
+|shouYiLvWeek |æ•°å­—|å‘¨æ”¶ç›ŠçŽ‡| æ— |
+|originalCapital |æ•°å­—|åŽŸå§‹èµ„é‡‘| æ— |
+|residualCapital |æ•°å­—|å‰©ä½™èµ„é‡‘| æ— |
+|frozenCapital |æ•°å­—|å†»ç»“èµ„é‡‘| æ— |
+|tradeTotal |æ•°å­—|æ“ä½œæ•°| æ— |
+|tradeCountYL |æ•°å­—|ç›ˆåˆ©æ“ä½œæ•°| æ— |
+|myPopularity |æ•°å­—|äººæ°”ï¼Œå³è¢«å…³æ³¨æ•°| æ— |
+|totalProfitorLoss |æ•°å­—|æ€»ç›ˆäº| æ— |
+|isDefault |å­—ç¬¦ä¸²|æ¨¡æ‹Ÿç‚’è‚¡æ ‡å¿— 1æ¨¡æ‹Ÿç‚’è‚¡ å…¶ä»– ç‚’è‚¡å¤§èµ›| æ— |
+|headImageUrl |å­—ç¬¦ä¸²|ç”¨æˆ·å¤´åƒ| æ— |
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î		MC×Ö¶Î
-						->     userObjectId   		£¨ÓÉ_User±í»ñÈ¡userId£©
-	ZhName	    		->     userName      
-						->     analogUserId  	 	£¨ÓÉAnalogMyMatch±í»ñÈ¡analogUserId£©
-						->     matchObjectId 		£¨ÓÉAnalogMyMatch±í»ñÈ¡matchObjectId£©
-						->     matchName     		£¨ÓÉAnalogMyMatch±í»ñÈ¡matchName£©
-						->     analogMatchId 		£¨ÓÉAnalogMyMatch±í»ñÈ¡analogMatchId£©
-						->	   beginTime        	£¨ÓÉAnalogMyMatch±í»ñÈ¡analogMatchId£©
-	endTime             ->     endTime          
-	VGroupid            ->     groupBmId        
-	pm_all              ->     pm               
-	pm_Day              ->     pmDay            
-	pm_week             ->     pmWeek           
-	syl_all             ->     syl              
-	syl_day             ->     sylDay           
-	syl_week            ->     sylWeek          
-	syl_all             ->     shouYiLv         
-	syl_day	            ->     shouYiLvDay      
-	syl_week            ->     shouYiLvWeek     
-	OriginalCapital     ->     originalCapital  
-	ResidualCapital     ->     residualCapital  
-	FrozenCapital       ->     frozenCapital    
-	tradeTotal          ->     tradeTotal       
-	tradeCount          ->     tradeCountYL     
-	myPopularity        ->     myPopularity     
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ		MCå­—æ®µ
+						->     userObjectId   		ï¼ˆç”±_Userè¡¨èŽ·å–userIdï¼‰
+	ZhName	    		->     userName
+						->     analogUserId  	 	ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–analogUserIdï¼‰
+						->     matchObjectId 		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–matchObjectIdï¼‰
+						->     matchName     		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–matchNameï¼‰
+						->     analogMatchId 		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–analogMatchIdï¼‰
+						->	   beginTime        	ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–analogMatchIdï¼‰
+	endTime             ->     endTime
+	VGroupid            ->     groupBmId
+	pm_all              ->     pm
+	pm_Day              ->     pmDay
+	pm_week             ->     pmWeek
+	syl_all             ->     syl
+	syl_day             ->     sylDay
+	syl_week            ->     sylWeek
+	syl_all             ->     shouYiLv
+	syl_day	            ->     shouYiLvDay
+	syl_week            ->     shouYiLvWeek
+	OriginalCapital     ->     originalCapital
+	ResidualCapital     ->     residualCapital
+	FrozenCapital       ->     frozenCapital
+	tradeTotal          ->     tradeTotal
+	tradeCount          ->     tradeCountYL
+	myPopularity        ->     myPopularity
 	totalProfitorLoss   ->     totalProfitorLoss
 						->     isDefault        (0)
-	headImageUrl        ->     headImageUrl     	£¨ÓÉ_User±í»ñÈ¡headImageUrl£©
+	headImageUrl        ->     headImageUrl     	ï¼ˆç”±_Userè¡¨èŽ·å–headImageUrlï¼‰
 
-	
-2¡¢Order 
-####ÃèÊö####
-³É½»Êý¾ÝÍ¬²½
-###Í¬²½Âß¼­ÃèÊö###
 
-###webservice½Ó¿Ú###
+2ã€Order
+####æè¿°####
+æˆäº¤æ•°æ®åŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
+
+###webserviceæŽ¥å£###
 Query_uimsStockTransDataSetList
-###±íÃû###
+###è¡¨å###
 AnalogOrder
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 |----|----|
-|Ãû³Æ|ÀàÐÍ|ËµÃ÷|È±Ê¡|
-|userObjectId |×Ö·û´®|BOSSÏµÍ³ÓÃ»§objectid| ÎÞ|
-|userName |×Ö·û´®|BOSSÏµÍ³ÓÃ»§Ãû³Æ| ÎÞ|
-|analogUserId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³ÓÃ»§id| ÎÞ|
-|matchObjectId |×Ö·û´®|BOSSÏµÍ³´óÈüµÄojectid| ÎÞ|
-|matchName |×Ö·û´®|BOSSÏµÍ³´óÈüÃû³Æ| ÎÞ|
-|analogMatchId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³´óÈüid| ÎÞ|
-|groupBmId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³×Ê½ðid| ÎÞ|
-|mainKeyId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³Î¯ÍÐid| ÎÞ|
-|stockCode |×Ö·û´®|¹ÉÆ±´úÂë£¬ÀýÈç600036| ÎÞ|
-|stockName |×Ö·û´®|¹ÉÆ±Ãû³Æ£¬ÀýÈçÕÐÉÌÒøÐÐ| ÎÞ|
-|marketCode |×Ö·û´®|ÊÐ³¡´úÂë£¬ÀýÈçSH| ÎÞ|
-|price |Êý×Ö|³É½»¼Û¸ñ| ÎÞ|
-|volume |Êý×Ö|³É½»¹ÉÊý| ÎÞ|
-|cjje |Êý×Ö|³É½»¼Û¸ñ| ÎÞ|
-|transType |×Ö·û´®|ÂòÂôÀàÐÍ| ÎÞ|
-|dealTime |Date|³É½»Ê±¼ä| ÎÞ|
-|profitorLoss |Êý×Ö|ÊÕÒæÖµ| ÎÞ|
-|syl |×Ö·û´®|ÊÕÒæÂÊ| ÎÞ|
-|headImageUrl |×Ö·û´®|ÓÃ»§Í·Ïñ| ÎÞ|
+|åç§°|ç±»åž‹|è¯´æ˜Ž|ç¼ºçœ|
+|userObjectId |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·objectid| æ— |
+|userName |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·åç§°| æ— |
+|analogUserId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿç”¨æˆ·id| æ— |
+|matchObjectId |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿå¤§èµ›çš„ojectid| æ— |
+|matchName |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿå¤§èµ›åç§°| æ— |
+|analogMatchId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿå¤§èµ›id| æ— |
+|groupBmId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿèµ„é‡‘id| æ— |
+|mainKeyId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿå§”æ‰˜id| æ— |
+|stockCode |å­—ç¬¦ä¸²|è‚¡ç¥¨ä»£ç ï¼Œä¾‹å¦‚600036| æ— |
+|stockName |å­—ç¬¦ä¸²|è‚¡ç¥¨åç§°ï¼Œä¾‹å¦‚æ‹›å•†é“¶è¡Œ| æ— |
+|marketCode |å­—ç¬¦ä¸²|å¸‚åœºä»£ç ï¼Œä¾‹å¦‚SH| æ— |
+|price |æ•°å­—|æˆäº¤ä»·æ ¼| æ— |
+|volume |æ•°å­—|æˆäº¤è‚¡æ•°| æ— |
+|cjje |æ•°å­—|æˆäº¤ä»·æ ¼| æ— |
+|transType |å­—ç¬¦ä¸²|ä¹°å–ç±»åž‹| æ— |
+|dealTime |Date|æˆäº¤æ—¶é—´| æ— |
+|profitorLoss |æ•°å­—|æ”¶ç›Šå€¼| æ— |
+|syl |å­—ç¬¦ä¸²|æ”¶ç›ŠçŽ‡| æ— |
+|headImageUrl |å­—ç¬¦ä¸²|ç”¨æˆ·å¤´åƒ| æ— |
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î		MC×Ö¶Î
-					->     userObjectId   		£¨ÓÉAnalogMyMatch±í»ñÈ¡userObjectId£©
-	ZhName	        ->     userName      
-					->     analogUserId  	 	£¨ÓÉAnalogMyMatch±í»ñÈ¡analogUserId£©
-					->     matchObjectId 		£¨ÓÉAnalogMyMatch±í»ñÈ¡matchObjectId£©
-					->     matchName     		£¨ÓÉAnalogMyMatch±í»ñÈ¡matchName£©
-					->     analogMatchId 		£¨ÓÉAnalogMyMatch±í»ñÈ¡analogMatchId£©
-	VGroupid        ->     groupBmId     
-	TransRecordId   ->     mainKeyId     
-	StockCode       ->     stockCode     
-	stockname       ->     stockName     
-	marketcode      ->     marketCode    
-	Price           ->     price         
-	Volume          ->     volume        
-					->     cjje   £¨¼ÆËã£©       
-	transType       ->     transType	 (×ª»»1£ºÂò   0£ºÂô)    
-	cjdatetime      ->     dealTime      
-	ProfitorLoss    ->     profitorLoss  
-	syl             ->     syl           
-					->     headImageUrl  £¨´ÓAnalogMyMatch±í»ñÈ¡headImageUrl£©
-	
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ		MCå­—æ®µ
+					->     userObjectId   		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–userObjectIdï¼‰
+	ZhName	        ->     userName
+					->     analogUserId  	 	ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–analogUserIdï¼‰
+					->     matchObjectId 		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–matchObjectIdï¼‰
+					->     matchName     		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–matchNameï¼‰
+					->     analogMatchId 		ï¼ˆç”±AnalogMyMatchè¡¨èŽ·å–analogMatchIdï¼‰
+	VGroupid        ->     groupBmId
+	TransRecordId   ->     mainKeyId
+	StockCode       ->     stockCode
+	stockname       ->     stockName
+	marketcode      ->     marketCode
+	Price           ->     price
+	Volume          ->     volume
+					->     cjje   ï¼ˆè®¡ç®—ï¼‰
+	transType       ->     transType	 (è½¬æ¢1ï¼šä¹°   0ï¼šå–)
+	cjdatetime      ->     dealTime
+	ProfitorLoss    ->     profitorLoss
+	syl             ->     syl
+					->     headImageUrl  ï¼ˆä»ŽAnalogMyMatchè¡¨èŽ·å–headImageUrlï¼‰
 
-3¡¢Range 
-####ÃèÊö####
-ÅÅÃûÊý¾ÝÍ¬²½ 
-###Í¬²½Âß¼­ÃèÊö###
 
-###webservice½Ó¿Ú###
+3ã€Range
+####æè¿°####
+æŽ’åæ•°æ®åŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
+
+###webserviceæŽ¥å£###
 Query_uimsSYPM
-###±íÃû###
+###è¡¨å###
 AnalogRange
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 |----|----|
-|Ãû³Æ|ÀàÐÍ|ËµÃ÷|È±Ê¡|
-|userObjectId |×Ö·û´®|BOSSÏµÍ³ÓÃ»§objectid| ÎÞ|
-|userName |×Ö·û´®|BOSSÏµÍ³ÓÃ»§Ãû³Æ| ÎÞ|
-|headImageUrl |×Ö·û´®|Í·Ïñ| ÎÞ|
-|groupBmId |Êý×Ö|Ä£Äâ³´¹ÉÏµÍ³×Ê½ðid| ÎÞ|
-|pm |Êý×Ö|ÅÅÃû| ÎÞ|
-|syl |×Ö·û´®|ÊÕÒæÂÊ| ÎÞ|
-|type |Êý×Ö|ÅÅÃûÀàÐÍ 1ÈÕÅÅÃû 2ÖÜÅÅÃû 3×ÜÅÅÃû | ÎÞ|
-|totalCapital |Êý×Ö|×Ü×Ê²ú | ÎÞ|
-|cgl |Êý×Ö|³Ö¹ÉÁ¿ | ÎÞ|
-|groupBm |×Ö·û´®|±¨ÃûÃû³Æ | ÎÞ|
-|djs |Êý×Ö|µã»÷Êý| ÎÞ|
-|shouYiLv |Êý×Ö|ÊÕÒæÂÊ | ÎÞ|
-|originalCapital |Êý×Ö|Ô­Ê¼×Ê½ð| ÎÞ|
-|cw |Êý×Ö|²ÖÎ» | ÎÞ|
+|åç§°|ç±»åž‹|è¯´æ˜Ž|ç¼ºçœ|
+|userObjectId |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·objectid| æ— |
+|userName |å­—ç¬¦ä¸²|BOSSç³»ç»Ÿç”¨æˆ·åç§°| æ— |
+|headImageUrl |å­—ç¬¦ä¸²|å¤´åƒ| æ— |
+|groupBmId |æ•°å­—|æ¨¡æ‹Ÿç‚’è‚¡ç³»ç»Ÿèµ„é‡‘id| æ— |
+|pm |æ•°å­—|æŽ’å| æ— |
+|syl |å­—ç¬¦ä¸²|æ”¶ç›ŠçŽ‡| æ— |
+|type |æ•°å­—|æŽ’åç±»åž‹ 1æ—¥æŽ’å 2å‘¨æŽ’å 3æ€»æŽ’å | æ— |
+|totalCapital |æ•°å­—|æ€»èµ„äº§ | æ— |
+|cgl |æ•°å­—|æŒè‚¡é‡ | æ— |
+|groupBm |å­—ç¬¦ä¸²|æŠ¥ååç§° | æ— |
+|djs |æ•°å­—|ç‚¹å‡»æ•°| æ— |
+|shouYiLv |æ•°å­—|æ”¶ç›ŠçŽ‡ | æ— |
+|originalCapital |æ•°å­—|åŽŸå§‹èµ„é‡‘| æ— |
+|cw |æ•°å­—|ä»“ä½ | æ— |
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î			MC×Ö¶Î
-						->	  	userObjectId 	 (´ÓAnalogMyMatch±í»ñÈ¡userObjectId)
-	groupbm	            ->		userName        
-						->		headImageUrl      (´ÓAnalogMyMatch±í»ñÈ¡headImageUrl)
-	vgroupid	        ->		groupBmId       
-	pm                  ->		pm              
-	ror                 ->		syl             
-	pmType              ->		type            
-	EndCaptial	        ->		totalCapital    
-	cgl                 ->		cgl             
-	groupbm             ->		groupBm         
-	djs                 ->		djs             
-	ror		            ->		shouYiLv        
-	originalCapital     ->		originalCapital 
-	cw                  ->		cw              
-	
-4¡¢Speech	
-####ÃèÊö####
-»ñ½±¸ÐÑÔÍ¬²½ 
-###Í¬²½Âß¼­ÃèÊö###
-Ã¿ÔÂ×îºóÒ»ÌìµÄ16µã30¸üÐÂ ·µ»Ø×îÐÂµÄ»ñ½±¸ÐÑÔÊý¾Ý 
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ			MCå­—æ®µ
+						->	  	userObjectId 	 (ä»ŽAnalogMyMatchè¡¨èŽ·å–userObjectId)
+	groupbm	            ->		userName
+						->		headImageUrl      (ä»ŽAnalogMyMatchè¡¨èŽ·å–headImageUrl)
+	vgroupid	        ->		groupBmId
+	pm                  ->		pm
+	ror                 ->		syl
+	pmType              ->		type
+	EndCaptial	        ->		totalCapital
+	cgl                 ->		cgl
+	groupbm             ->		groupBm
+	djs                 ->		djs
+	ror		            ->		shouYiLv
+	originalCapital     ->		originalCapital
+	cw                  ->		cw
 
-###webservice½Ó¿Ú###
+4ã€Speech
+####æè¿°####
+èŽ·å¥–æ„Ÿè¨€åŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
+æ¯æœˆæœ€åŽä¸€å¤©çš„16ç‚¹30æ›´æ–° è¿”å›žæœ€æ–°çš„èŽ·å¥–æ„Ÿè¨€æ•°æ®
+
+###webserviceæŽ¥å£###
 Query_uimsHJGY
-###±íÃû###
+###è¡¨å###
 uimsHJGY
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î			MC×Ö¶Î
-		BlogAddress		->	  BlogAddress			
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ			MCå­—æ®µ
+		BlogAddress		->	  BlogAddress
 		rsMainkeyID     ->    rsMainkeyID
 		Ror             ->    Ror
 		rsOperateID     ->    rsOperateID
@@ -241,61 +241,61 @@ uimsHJGY
 		PlatForms       ->    PlatForms
 		FbTime          ->    FbTime
 		ZhName          ->    ZhName
-		VGroupId        ->    VGroupId 
+		VGroupId        ->    VGroupId
 		rsDateTime      ->    rsDateTime
 		rsDispIndex     ->    rsDispIndex
 		Picture         ->    Picture
-	
-5¡¢HistRank
-####ÃèÊö####
-ÀúÊ·ÅÅÃûÍ¬²½ 
-###Í¬²½Âß¼­ÃèÊö###
-Ã¿ÔÂ×îºóÒ»ÌìµÄ16µã30¸üÐÂ×îÐÂµÄÀúÊ·ÅÅÃûÊý¾Ý
 
-###webservice½Ó¿Ú###
+5ã€HistRank
+####æè¿°####
+åŽ†å²æŽ’ååŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
+æ¯æœˆæœ€åŽä¸€å¤©çš„16ç‚¹30æ›´æ–°æœ€æ–°çš„åŽ†å²æŽ’åæ•°æ®
+
+###webserviceæŽ¥å£###
 Query_uimsLSPM
-###±íÃû###
+###è¡¨å###
 uimsLSPM
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î			MC×Ö¶Î
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ			MCå­—æ®µ
 	rsOperateID			->	  rsOperateID
-	rsStatus            ->    rsStatus   
+	rsStatus            ->    rsStatus
 	rsProjectId         ->    rsProjectId
 	rsMainkeyID         ->    rsMainkeyID
-	rsDateTime          ->    rsDateTime 
+	rsDateTime          ->    rsDateTime
 	rsDispIndex         ->    rsDispIndex
-	cgl                 ->    cgl        
-	allmoney            ->    allmoney   
-	vgroupid            ->    vgroupid   
-	dqyl                ->    dqyl       
-	pm                  ->    pm         
-	djs                 ->    djs        
-	groupbm             ->    groupbm    
-	getedPer            ->    getedPer   
-	gzz                 ->    gzz        
-	tradeDate			->	  tradeDate 
-	
-	
-6¡¢Comment
-####ÃèÊö####
-×¨¼ÒµãÆÀÍ¬²½ 
-###Í¬²½Âß¼­ÃèÊö###
-Ã¿Ìì16µã30¸üÐÂ×¨¼ÒµãÆÀÊý¾Ý
+	cgl                 ->    cgl
+	allmoney            ->    allmoney
+	vgroupid            ->    vgroupid
+	dqyl                ->    dqyl
+	pm                  ->    pm
+	djs                 ->    djs
+	groupbm             ->    groupbm
+	getedPer            ->    getedPer
+	gzz                 ->    gzz
+	tradeDate			->	  tradeDate
 
-###webservice½Ó¿Ú###
+
+6ã€Comment
+####æè¿°####
+ä¸“å®¶ç‚¹è¯„åŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
+æ¯å¤©16ç‚¹30æ›´æ–°ä¸“å®¶ç‚¹è¯„æ•°æ®
+
+###webserviceæŽ¥å£###
 Query_uimsZJDP
-###±íÃû###
+###è¡¨å###
 uimsZJDP
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î			MC×Ö¶Î
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ			MCå­—æ®µ
 	rsOperateID		->		rsOperateID
 	rsStatus        ->      rsStatus
 	rsProjectId     ->      rsProjectId
-	getedPer        ->      getedPer 
+	getedPer        ->      getedPer
 	rsMainkeyID     ->      rsMainkeyID
 	pm              ->      pm
 	groupbm         ->      groupbm
@@ -303,72 +303,72 @@ uimsZJDP
 	rsDateTime      ->      rsDateTime
 	rsDispIndex     ->      rsDispIndex
 	TradeDate       ->      TradeDate
-	
-7¡¢Season
-####ÃèÊö####
-Èü¼¾Í¬²½ 
-###Í¬²½Âß¼­ÃèÊö###
-Ã¿ÔÂ×îºóÒ»ÌìµÄ16µã30¸üÐÂ×îÐÂÈü¼¾Êý¾Ý
 
-###webservice½Ó¿Ú###
+7ã€Season
+####æè¿°####
+èµ›å­£åŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
+æ¯æœˆæœ€åŽä¸€å¤©çš„16ç‚¹30æ›´æ–°æœ€æ–°èµ›å­£æ•°æ®
+
+###webserviceæŽ¥å£###
 Query_uimsSEASONSET
-###±íÃû###
+###è¡¨å###
 uimsSeasonSet
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î			MC×Ö¶Î
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ			MCå­—æ®µ
 	rsOperateID		->		 rsOperateID
 	rsStatus        ->       rsStatus
 	rsProjectId     ->       rsProjectId
 	rsMainkeyID     ->       rsMainkeyID
 	rsDateTime      ->       rsDateTime
 	rsDispIndex     ->       rsDispIndex
-	SeasonId        ->       SeasonId 
+	SeasonId        ->       SeasonId
 	GroupStyle      ->       GroupStyle
 	StartDate       ->       StartDate
 	EndDate         ->       EndDate
-	
-	
-8¡¢NiuguList
-Å£¹É°ñÍ¬²½ 
-###Í¬²½Âß¼­ÃèÊö###
-Ã¿Ìì16µã30¸üÐÂ×îÐÂÅ£¹É°ñÊý¾Ý
 
-###webservice½Ó¿Ú###
+
+8ã€NiuguList
+ç‰›è‚¡æ¦œåŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
+æ¯å¤©16ç‚¹30æ›´æ–°æœ€æ–°ç‰›è‚¡æ¦œæ•°æ®
+
+###webserviceæŽ¥å£###
 Query_uimsNGB
-###±íÃû###
+###è¡¨å###
 uimsNGB
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î			MC×Ö¶Î
-	rsOperateID 	->		 rsOperateID 
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ			MCå­—æ®µ
+	rsOperateID 	->		 rsOperateID
 	rsStatus        ->       rsStatus
-    rsProjectId     ->       rsProjectId 
-    rsMainkeyID     ->       rsMainkeyID 
+    rsProjectId     ->       rsProjectId
+    rsMainkeyID     ->       rsMainkeyID
     rsDateTime      ->       rsDateTime
-    rsDispIndex     ->       rsDispIndex 
+    rsDispIndex     ->       rsDispIndex
     stockShortname  ->       stockShortname
     ownerCount      ->       ownerCount
     avgPrize        ->       avgPrize
     groupbm         ->       groupbm
     StockCode       ->       StockCode
     Stockid         ->       Stockid
-	
-9¡¢RecordVideo
-CCTVÍ¬²½
-###Í¬²½Âß¼­ÃèÊö###
+
+9ã€RecordVideo
+CCTVåŒæ­¥
+###åŒæ­¥é€»è¾‘æè¿°###
 
 
-###webservice½Ó¿Ú###
+###webserviceæŽ¥å£###
 P_Z_video
-###±íÃû###
+###è¡¨å###
 A_DxtRecordVideo
-####×Ö¶ÎËµÃ÷####
+####å­—æ®µè¯´æ˜Ž####
 
-###webservice½Ó¿Ú×Ö¶Î->MC×Ö¶Î###
-	webservice½Ó¿Ú×Ö¶Î			MC×Ö¶Î
+###webserviceæŽ¥å£å­—æ®µ->MCå­—æ®µ###
+	webserviceæŽ¥å£å­—æ®µ			MCå­—æ®µ
 	title				->	   title
 	desc                ->     content
 	videoType           ->     className
