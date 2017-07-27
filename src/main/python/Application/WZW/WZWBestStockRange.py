@@ -83,7 +83,7 @@ class WZWBestStockRange:
 
     def Calculate(self, DataObjArr):
         pass
-        # self.dealTime = datetime.strptime(DataObjArr["rsDateTime"],'%Y-%m-%d %H:%M:%S')
+        self.dealTime = datetime.strptime(DataObjArr["TransDate"],'%Y-%m-%d %H:%M:%S')
         # self.AlertNewsDate = datetime.strptime(DataObjArr["AlertNewsDate"],'%Y-%m-%d')
 
     def Save(self,Obj,DataObjArr):
@@ -96,6 +96,7 @@ class WZWBestStockRange:
         Obj.set('inPrice',  DataObjArr["Price"])
         Obj.set("zdf", DataObjArr["Price_ZDF"])
         Obj.set("StockID", DataObjArr["StockID"])
+        Obj.set("dealTime", self.dealTime)
 
         # Obj.set("dealTime", )
         # Obj.set('relationId', DataObjArr['rsMainkeyID'])
