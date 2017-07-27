@@ -57,7 +57,7 @@ class PHJJOptLog:
 
         # 先删除原有数据
         while True:
-            queryPHJJOptLog = leancloud.Query('A_DxtPHJJOptLog')
+            queryPHJJOptLog = leancloud.Query('A_DxtPHJJPlan')
             query_list = queryPHJJOptLog.find()
             if len(query_list) == 0:
                 break
@@ -80,7 +80,7 @@ class PHJJOptLog:
     def DealData(self,DataObjArr):
 
 
-        A_DxtPHJJOptLog = leancloud.Object.extend('A_DxtPHJJOptLog')
+        A_DxtPHJJOptLog = leancloud.Object.extend('A_DxtPHJJPlan')
         A_DxtPHJJOptLogObj = A_DxtPHJJOptLog()
         self.Save(A_DxtPHJJOptLogObj,DataObjArr)
 
