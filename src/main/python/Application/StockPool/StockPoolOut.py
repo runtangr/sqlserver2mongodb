@@ -37,7 +37,7 @@ class StockPoolOut:
         self.CommStockPoolOut = []
 
         # 股票池最近出池 WebService 测试接口 Query_ZJCC
-        for StockPoolNumber in range(1,4):
+        for StockPoolNumber in range(1,50):
             response = client.service.Query_ZJCC(Coordinates='021525374658617185',
                                                     Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                   PoolStyle=StockPoolNumber
