@@ -1,275 +1,408 @@
-#王中王相关#
 
-##1.资金表同步##
-###调用存储###
+1、王中王老师列表
+####描述####
+王中王老师列表
+###同步逻辑描述###
+
+###webservice接口###
 P_Z_uimsVSTC_pro
-###调用接口###
-P_Z_uimsVSTC_pro
-####传入参数####
-	@rsMainkeyID int
-	@rsDateTime datetime
-	@top int
-####返回数据####
-	rsMainkeyID         自增ID
-	rsStatus			默认状态
-	rsDateTime			默认时间
-	rsOperateID			默认
-	rsDispIndex			默认
-	rsProjectId			是否专家 10专家 0草根
-	UserId				用户ID
-	GroupStyle			参赛类别
-	GroupBM				参赛账号
-	OriginalCapital		当前赛季初始资金
-	ResidualCapital		剩余资金
-	FrozenCapital		冻结资金
-	OtherDefine1		
-	OtherDefine2		默认
-	OtherDefine3		
-	OtherDefine4		名称
-	OtherDefine5		
-	OtherDefine6 
-	OtherDefine7 
-	OtherDefine8 
-	Timage				头像
-	Tzsbh				证书编号	
-	Ttzgy				投资格言
-	Tfxsjs				分析师介绍
-	DJS                 人气
+###表名###
+A_DxtWZWTeacher
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|name|string|老师名称|无|
+|photo|string|老师头像照片地址|无|
+|groupBmId|number|当月王中王资金ID|无|
+|djs|number|人气|无|
+|isExpert|number|是否专家 0-专家 1-草根|0|
+|totalCapital|number|总资产|无|
+|sz|number|总市值|无|
+|cw|number|当前仓位|无|
+|originalCapital|number|本期起始资金|无|
+|pm|number|当月排行|无|
+|syl|number|收益率|无|
+|certId|string|投资证书编号|无|
+|desc|string|分析师介绍|无|
+|motto|string|投资格言|无|
+|relationId |string|同步系统关联老师ID| 无|
+
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	OtherDefine4			->			name
+	Timage					->			photo	
+	rsMainkeyID				->			groupBmId
+	DJS						->			djs	
+	rsProjectId				->			isExpert	   0 if rsProjectId else 1
+							->			totalCapital	 # 总资产 = 剩余资金+冻结资金+总市值（） totalCapital = ResidualCapital + FrozenCapital + total_sz
+							->			sz   从A_DxtWZWStock 取sz 求和
+							->			cw	   # 当前仓位= 总市值/总资产    # 总资产 = 剩余资金+冻结资金+总市值（）
+	OriginalCapital			->			originalCapital	  
+							->			pm	  遍历所有老师  排序  获取当前排名   保存当前
+							->			syl	   #收益率 = 总市值/本期起始资金 -1
+	Tzsbh					->			certId
+	Tfxsjs					->			desc
+	Ttzgy					->			motto
+							->			historyAccount   {}
+	rsMainkeyID				->			relationId
+																		
+										
+    self.totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"] + self.total_sz
+
+
+2、王中王赛榜
+####描述####
+王中王赛榜
+###同步逻辑描述###
+
+###webservice接口###
+上月：Query_MNSBSYF  本月：Query_MNSB  赛季：Query_SJList
+###表名###
+A_DxtWZWRank
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|name|string|老师名称|无|
+|photo|string|老师头像照片地址|无|
+|groupBmId|number|当月王中王资金ID|无|
+|teacherObjectId|string|王中王老师表ID。A_DxtWZWTeacher.ObjectId|无|
+|djs|number|人气|无|
+|totalCapital|number|总资产|无|
+|sz|number|总市值|无|
+|originalCapital|number|本期起始资金|无|
+|pm|number|当月排行|无|
+|syl|number|本月收益率|无|
+|profitorLoss|number|本月盈亏|无|
+|ljsy|number|累计收益|无|
+|yearSyl|number|年收益率|无|
+|season|number|赛季 0-本月赛季 -1 上月赛季 其他为赛季编号|无|
+|relationId |string|同步系统关联ID| 无|
+
+###上月赛榜###
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	username			->				name
+	Vgroupid			->				groupBmId
+	totalCapital		->				totalCapital
+						->				pm   遍历  排序  获取当前排名
+	ror					->				syl
+	profitorLoss		->				profitorLoss
+						->				season  -1
+	Vgroupid			->				relationId
+										
+###本月赛榜###
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	nickname			->				name
+	Vgroupid			->				groupBmId
+	Djs					->				djs
+	zjj					->				totalCapital
+						->				pm   遍历  排序  获取当前排名
+	YearSy				->				yearSyl
+	bqsy				->				syl
+						->				season   1
+	Vgroupid			->				relationId
+										
+###赛季赛榜###
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	nickname			->				name
+	Vgroupid			->				groupBmId
+	counts				->				djs
+	residualcapital		->				totalCapital
+						->				pm		遍历  排序  获取当前排名
+	bqsy				->				syl
+	bqsy				->				profitorLoss
+						->				season    通过 赛季列表 Query_SJLB 查询
+	VGroupid			->				relationId
 	
-##2.持仓表同步##
-###调用存储###
-P_Z_uimsVSTSC_pro
-###调用接口###
-P_Z_uimsVSTSC_pro
-####传入参数####
-	@rsMainkeyID int
-	@rsDateTime datetime
-	@top int
-####返回数据####
-	VGroupid  		资金ID
-	BuyMonney   	买入金额
-	FirstBuyDate	第一购买时间
-	usevolume		可用数量
-	Cost			成本
-	cbj				成本价
-	gpid			股票ID
-	currentVolume	总数量
-	stockshortname	股票名称
-	stockcode		股票代码
-	marketName		市场名称
-	marketcode		市场代码
-	rsmainkeyid		持仓ID
-	rsDateTime		持仓默认时间
 
-##3.交易记录表同步##
-###调用存储###
-P_Z_uimsVSTSCD_pro
-###调用接口###
-P_Z_uimsVSTSCD_pro
-####传入参数####
-	@rsMainkeyID int
-	@rsDateTime datetime
-	@top int
+3、王中王赛季列表
+####描述####
+王中王赛季列表
+###同步逻辑描述###
 
-####返回数据####
-	rsmainkeyid     自增ID
-	rsDateTime		默认时间
-	VGroupID        资金ID
-	MarketCode		市场代码
-	syl				收益率
-	wtTime			委托时间
-	profitorLoss    本次盈亏
-	gpid			股票ID
-	LogID			操作日志ID
-	TransStyle		交易类型
-	CJDate			成交时间
-	volume			成交数量
-	price			成交价
-	cjje			成交金额
-	stockcode		股票代码
-	stockshortName	股票名称
-
-
-##4.操作日志同步##
-###调用存储###
-P_Z_uimsVSTL
-###调用接口###
-P_Z_uimsVSTL
-####传入参数####
-	@rsMainkeyID int
-	@rsDateTime datetime
-	@top int
-####返回数据####
-	rsmainkeyid			自增长ID(操作日志ID)
-	rsdatetime			默认时间
-	logstyle			日志分类  ---1.日志 6博文
-	rzlx				日志类型
-	logdatetime			日志时间
-	stockid				股票Id
-	StockName			股票名称
-	transrecordid		交易记录ID
-	Logtitle			日志标题
-	VGroupid			资金ID
-	LogContent			日志内容
-
-##5.高手动态同步##
-###调用存储###
-P_Z_CommUserAlert_dx
-###调用接口###
-P_Z_CommUserAlert_dx
-####传入参数####
-	@rsMainkeyID int
-	@rsDateTime datetime
-	@top int
-####返回数据####
-	rsMainkeyID			自增ID   
-	rsDateTime          默认时间    
-	AlertNewsDate		时间
-	UserName			高手 
-	UserCZ				操作
-	cjj					成交价
-	StockShortName		股票名称
-
-##6.模拟大赛榜##
-
-###调用存储###
-P_W_Sel_MNSB
-###调用接口###
-Query_MNSB
-####传入参数####
-	@pagesize int,   --每页条数    同步传100000      
-	@page  int,    --第几页        同步传1
-	@TotalNum int  Output 
-####返回数据####
-	VGroupid		资金ID 
-	nickname		选手名称
-	YearSy			总收益
-	bqsy			月收益，
-	DjS				人气
-	zjj				总资产
-
-##6.模拟大赛榜-上月份##
-###说明###
-由于本月份数据实时计算 可用资金表数据进行相应计算 
-或直接沿用老接口   此同步频率 每月最后一天四点同步即可
-###调用存储###
-P_W_Sel_MNSBSYF 此接口为老接口
-###调用接口###
-Query_MNSBSYF
-####传入参数####
-
-####返回数据####
-	username		姓名，
-	capital			总资产，
-	profitorloss_lj	本月盈亏，
-	ror				本月收益率
-	Vgroupid        资金ID
-
-##7.赛季ID列表##
-###说明###
-根据赛季ID在界面显示第几赛季。如SeasonId=1 第一赛季  每月同步一次即可
-###调用存储###
-P_W_Sel_SJLB    老接口
-###调用接口###
+###webservice接口###
 Query_SJLB
-###返回数据###
-	SeasonId 赛季ID
+###表名###
+A_DxtWZWSeason
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|name|string|赛季名称|无|
+|season|number|赛季 0-本月赛季 -1 上月赛季 其他为赛季编号|无|
+|relationId |string|同步系统关联ID| 无|
 
-##8.历史赛季数据##
-###说明###
-根据赛季ID列表循环同步数据
-###调用存储###
-P_W_Sel_SJList  老接口
-###调用接口###
-Query_SJList
-####传入参数####
-	@SeasonId bigint  --赛季ID
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+										name
+										season
+										relationId
+	同步接口返回
+	{u'error_code': 0, u'data': [{u'SeasonId': 8}, {u'SeasonId': 7}, {u'SeasonId': 6}, {u'SeasonId': 5}, {u'SeasonId': 4}, {u'SeasonId': 3}, {u'SeasonId': 2}, {u'SeasonId': 1}], u'error': u'success'}
+	
 
-###返回数据###
-	nickname		选手
-	residualcapital	总资产
-	bqyk			本期盈亏
-	Bqsy			本期收益率
-	counts			人气
-	VGroupid		资金ID
+4、王中王投资列表
+####描述####
+王中王投资列表
+###同步逻辑描述###
 
-##9.牛股榜##
-###说明###
-数据每日下午4点更新
-###调用存储###
-P_W_Sel_StockNGB   老接口
-###调用接口###
+###webservice接口###
+P_Z_uimsVSTSCD_pro
+###表名###
+A_DxtWZWInvest
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|groupBmId|number|当月王中王资金ID|无|
+|teacherObjectId|string|王中王老师表ID。A_DxtWZWTeacher.ObjectId|无|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|groupBmId|number|当月王中王资金ID|无|
+|cjje|number|成交金额|无|
+|price|number|成交价|无|
+|syl|number|收益率|无|
+|volume|number|成交股数|无|
+|profitorLoss|number|本次盈亏|无|
+|transType |字符串|买卖类型| 无|
+|wtTime |Date|委托时间 对应otherdefine8| 无|
+|dealTime |Date|成交时间 对应rsdatetime| 无|
+|relationId |string|同步系统关联ID| 无|
+
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	VGroupID			->				groupBmId
+						->				teacherObjectId   通过 VGroupID 获取老师表的 objectId
+	stockcode			->				stockCode
+	stockshortName		->				stockName
+	MarketCode			->				marketCode
+	cjje				->				cjje
+	price				->				price
+	syl					->				syl
+	volume				->				volume
+	profitorLoss		->				profitorLoss
+	TransStyle			->				transType
+	wtTime				->				wtTime
+	CJDate				->				dealTime
+	rsmainkeyid			->					relationId
+
+
+	###王中王持仓列表###
+####类名称####
+A_DxtWZWStock
+####描述####
+王中王持仓列表
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|groupBmId|number|当月王中王资金ID|无|
+|teacherObjectId|string|王中王老师表ID。A_DxtWZWTeacher.ObjectId|无|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|marketName |字符串|市场名称，例如深证| 无|
+|currentVolume|number|当前持仓股数|无|
+|usevolume|number|当前可用股数|无|
+|buyMonney|number|买入总价? 对应buymonney|无|
+|cost|number|成本|无|
+|price|number|成本价 对应cbj|无|
+|stockId|number|股票Id|无|
+|firstBuyDate |Date|第一次买入时间| 无|
+|relationId |string|同步系统关联ID| 无|
+	
+	
+5、王中王持仓列表
+####描述####
+王中王持仓列表
+###同步逻辑描述###
+
+###webservice接口###
+P_Z_uimsVSTSC_pro
+###表名###
+A_DxtWZWStock
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|groupBmId|number|当月王中王资金ID|无|
+|teacherObjectId|string|王中王老师表ID。A_DxtWZWTeacher.ObjectId|无|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|marketName |字符串|市场名称，例如深证| 无|
+|currentVolume|number|当前持仓股数|无|
+|usevolume|number|当前可用股数|无|
+|buyMonney|number|买入总价? 对应buymonney|无|
+|cost|number|成本|无|
+|price|number|成本价 对应cbj|无|
+|stockId|number|股票Id|无|
+|firstBuyDate |Date|第一次买入时间| 无|
+|relationId |string|同步系统关联ID| 无|
+
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	VGroupID			->				groupBmId
+						->				teacherObjectId   通过 VGroupID 获取老师表的 objectId
+	stockcode			->				stockCode
+	stockshortName		->				stockName
+	MarketCode			->				marketCode
+	cjje				->				currentVolume
+	usevolume			->				usevolume
+	BuyMonney			->				buyMonney
+	Cost				->				cost
+	cbj					->				price
+	gpid				->				stockId
+	FirstBuyDate		->				firstBuyDate
+	rsmainkeyid			->				relationId
+	
+
+6、战绩快报列表
+####描述####
+战绩快报列表
+###同步逻辑描述###
+
+###webservice接口###
+P_N_SSZJBB_WZW
+###表名###
+A_DxtWZWNews
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|groupBmId|number|当月王中王资金ID|无|
+|teacherObjectId|string|王中王老师表ID。A_DxtWZWTeacher.ObjectId|无|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|zdf |number|最大涨跌幅| 无|
+|publishTime |datetime|发布时间 对应rsdatetime| 无|
+|relationId |string|同步系统关联ID| 无|
+
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	VgroupID			->				groupBmId
+						->				teacherObjectId	    通过 VGroupID 获取老师表的 objectId
+	stockcode			->				stockCode
+	stockshortName		->				stockName
+	MarketCode			->				marketCode
+	Price_ZDF			->				zdf
+	rsdatetime			->				publishTime
+	rsMainkeyID			->				relationId
+    			
+				
+###王中王高手动态###
+####类名称####
+A_DxtWZWPlayerDyna
+####描述####
+王中王高手动态
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|groupBmId|number|当月王中王资金ID|无|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|teacherName|字符串|选手名称|无|
+|price|number|成交价|无|
+|transType |字符串|买卖类型 ('买' '卖')| 无|
+|dealTime |Date|成交时间 对应rsdatetime| 无|
+|relationId |string|同步系统关联ID| 无|
+			
+			
+7、王中王高手动态
+####描述####
+王中王高手动态
+###同步逻辑描述###
+
+###webservice接口###
+P_Z_CommUserAlert_dx
+###表名###
+A_DxtWZWPlayerDyna
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|groupBmId|number|当月王中王资金ID|无|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|teacherName|字符串|选手名称|无|
+|price|number|成交价|无|
+|transType |字符串|买卖类型 ('买' '卖')| 无|
+|dealTime |Date|成交时间 对应rsdatetime| 无|
+|relationId |string|同步系统关联ID| 无|
+
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	stockshortName		->				stockName
+	UserName			->				teacherName
+	cjj					->				price
+	UserCZ				->				transType
+	AlertNewsDate		->				dealTime
+	rsMainkeyID			->				relationId
+	
+
+
+8、王中王实时战绩播报
+####描述####
+王中王实时战绩播报
+###同步逻辑描述###
+
+###webservice接口###
+P_N_SSZJBB_WZW
+###表名###
+A_DxtWZWRealTimeReport
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|groupBmId|number|当月王中王资金ID|无|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|teacherName|字符串|选手名称|无|
+|profitorLoss|number|盈利|无|
+|transType |字符串|买卖类型 ('买' '卖')| 无|
+|dealTime |Date|成交时间 对应rsdatetime| 无|
+|relationId |string|同步系统关联ID| 无|
+
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	stockcode			->				stockCode
+	stockshortName		->				stockName
+	NickName			->				teacherName
+	OtherDefine3						profitorLoss
+	Price_ZDF			->				transType    "买" if OtherDefine2 > 0 else "卖
+	rsDateTime			->				dealTime
+	
+
+9、王中王牛股英雄榜
+####描述####
+王中王牛股英雄榜
+###同步逻辑描述###
+
+###webservice接口###
 Query_StockNGB
-####传入参数####
-	@Userid bigint=0,      --同步不传
-	@WebIP  nvarchar(20)='' --同步不传 
-	@PageSize  int,      --此传10000                                 
-	@Page   int,    --传1  
-	@TotalNum  int  Output  
-###返回数据###
-	StockShortName股票名称
-	stockCode股票代码
-	Price买入价
-	StockID股票ID 
-	Price_ZDF涨幅
+###表名###
+A_DxtWZWBestStockRange
+####字段说明####
+|名称|类型|说明|缺省|
+|--------|
+|stockCode |字符串|股票代码，例如600036| 无|
+|stockName |字符串|股票名称，例如招商银行| 无|
+|marketCode |字符串|市场代码，例如SH| 无|
+|inPrice|number|买入价|无|
+|zdf |number|最大涨跌幅| 无|
+|dealTime |Date|时间| 无|
+|relationId |string|同步系统关联ID| 无|
 
-
-##10.战绩快报##
-###调用存储###
-P_Z_uimsVSGG_Pro   
-###调用接口###
-P_Z_uimsVSGG_Pro
-####传入参数####
-	@rsMainkeyID int
-	@rsDateTime datetime
-	@top int
-###返回数据###
-	rsMainkeyID 	自增ID	
-	rsdatetime 		时间
-	Price_ZDF 		最大涨幅
-	username 		姓名
-	stockshortname 	股票名称
-	stockcode 		股票代码
-	MarketCode 		市场代码
-	VgroupID		资金ID
-
-
-##11.实时战绩播报##
-同步逻辑:全量同步(删除老数据,同步新数据),每30分钟同步一次
-###调用存储###
-P_N_SSZJBB_WZW  
-###调用接口###
-P_N_SSZJBB_WZW	老接口
-###传入参数###
-###返回数据###
-	rsDateTime    时间,
-	OtherDefine2  买卖标识,
-	OtherDefine3  赢利,
-	NickName      姓名,
-	StockShortName 股票名称,
-	StockCode    股票代码
-
-##12.持仓操作理由##
-同步逻辑:增量同步  同步频率:10分钟同步一次
-###调用存储###
-P_Z_CZLY_WZW
-###调用接口###
-P_Z_CZLY_WZW
-####传入参数####
-	@rsMainkeyID int
-	@rsDateTime datetime
-	@top int
-####返回数据####
-
-	rsMainkeyID		自增ID
-	rsDateTime		默认时间
-	TransRecordId    持仓ID
-	Logtitle		标题
-	logcontent		内容
-	stockshortname	股票名称
-	stockcode		股票代码
-	logdatetime		时间
-	MarketCode		市场代码
+###webservice接口字段->MC字段###
+	webservice接口字段					MC字段
+	stockcode			->				stockCode
+	stockshortName		->				stockName
+	Price				->				inPrice
+	Price_ZDF							zdf
+	StockID				->				StockID
+	TransDate			->				dealTime
 
 
 
+
+    		
