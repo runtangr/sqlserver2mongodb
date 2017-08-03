@@ -127,8 +127,8 @@ class WZWTeacher:
         self.totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"] + self.total_sz
         # 当前仓位= 总市值/总资产
         self.cw = self.total_sz/self.totalCapital
-        #收益率 = 总资产/本期起始资金 -1
-        self.syl = self.totalCapital/DataObjArr["OriginalCapital"]-1
+        #收益率 = (总资产/本期起始资金 -1)*100
+        self.syl = (self.totalCapital/DataObjArr["OriginalCapital"]-1)*100
 
         #排名初始化
         self.pm = 0
