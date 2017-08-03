@@ -116,7 +116,7 @@ def  addRankThisMonth(A_Obj, TeacherObj, DataObjArr,SeasonId):
     A_Obj.set('djs', DataObjArr["DjS"])
     A_Obj.set('totalCapital', DataObjArr['zjj'])
 
-    A_Obj.set('pm', pm)
+    A_Obj.set('pm', DataObjArr['row']) #add
 
     A_Obj.set('yearSyl', DataObjArr["YearSy"])
     A_Obj.set('syl', DataObjArr["bqsy"])
