@@ -125,8 +125,8 @@ class WZWTeacher:
                 self.total_sz += PositionPrice.get("total_sz")
         # 总资产 = 剩余资金+冻结资金+总市值（）
         self.totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"] + self.total_sz
-        # 当前仓位= 总市值/总资产
-        self.cw = self.total_sz/self.totalCapital
+        # 当前仓位= (总市值/总资产) *100
+        self.cw = (self.total_sz/self.totalCapital)*100
         #收益率 = (总资产/本期起始资金 -1)*100
         self.syl = (self.totalCapital/DataObjArr["OriginalCapital"]-1)*100
 
