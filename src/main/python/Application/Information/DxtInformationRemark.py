@@ -86,7 +86,7 @@ class sirsReportRemark:
 			label = { 21058:"钱坤晨会",
 					  23784:"数据选股",
 					  21057:"热点前瞻",
-					  44951:"月度投资报告"}
+					  44951:"月投资报告"}
 
 
 			for DataObjArr in DataObj:
