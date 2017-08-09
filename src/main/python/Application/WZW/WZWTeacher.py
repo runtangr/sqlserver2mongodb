@@ -117,6 +117,8 @@ class WZWTeacher:
         A_DxtWZWRankQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
         A_DxtWZWRankQuery.equal_to('season', 0)
         self.A_DxtWZWStockList = A_DxtWZWRankQuery.find()
+        if len(self.A_DxtWZWStockList) == 0 :
+            return
         WZWStockData = self.A_DxtWZWStockList[0]
         self.pm = WZWStockData.get("pm")
 
