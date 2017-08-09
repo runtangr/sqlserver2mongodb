@@ -112,6 +112,14 @@ class WZWTeacher:
         A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
 
+        # 查找WZWRank 本月 匹配 rsMainkeyID ，取出pm
+        A_DxtWZWRankQuery = leancloud.Query('A_DxtWZWRank')
+        A_DxtWZWRankQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
+        A_DxtWZWRankQuery.equal_to('season', 0)
+        self.A_DxtWZWStockList = A_DxtWZWRankQuery.find()
+        WZWStockData = self.A_DxtWZWStockList[0]
+        self.pm = WZWStockData.get("pm")
+
         #查找WZWStock 匹配name ，取出objectid
         A_DxtWZWZWStockQuery = leancloud.Query('A_DxtWZWStock')
         A_DxtWZWZWStockQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
@@ -130,8 +138,8 @@ class WZWTeacher:
         #收益率 = (总资产/本期起始资金 -1)*100
         self.syl = (self.totalCapital/DataObjArr["OriginalCapital"]-1)*100
 
-        #排名初始化
-        self.pm = 0
+        # #排名初始化
+        # self.pm = 0
 
         self.historyAccount={}  ###########
 
@@ -149,35 +157,33 @@ class WZWTeacher:
         self.A_DxtWZWTeacherAll = A_DxtWZWTeacherQuery.find()
 
         TeacherProperty = []
-        if len(self.A_DxtWZWTeacherAll) == 0:
-            self.pm = 0
+        # if len(self.A_DxtWZWTeacherAll) == 0:
+        #     self.pm = 0
+        # else:
+        #     # 遍历所有老师
+        #     for Teacher in self.A_DxtWZWTeacherAll:
+        #         TeacherProperty.append(Teacher.get("totalCapital"))
+        #     # 排序
+        #     TeacherProperty.sort()
+        #     TeacherProperty.reverse()
+        #     # 获取当前排名
+        #     self.pm = TeacherProperty.index(self.totalCapital)+1
+        #     # 保存当前
+        #
+        #     #######save  可完善
+        #
+        #     A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
+        #     A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+        #     self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
+
+        # 编辑 存储
+        if len(self.A_DxtWZWTeacherList) > 0:
+
+            self.Save(self.A_DxtWZWTeacherList[0], DataObjArr)
         else:
-            # 遍历所有老师
-            for Teacher in self.A_DxtWZWTeacherAll:
-                TeacherProperty.append(Teacher.get("totalCapital"))
-            # 排序
-            TeacherProperty.sort()
-            TeacherProperty.reverse()
-            # 获取当前排名
-            self.pm = TeacherProperty.index(self.totalCapital)+1
-            # 保存当前
-
-            #######save  可完善
-
-            A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
-            A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-            self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
-
-            # 编辑 存储
-            if len(self.A_DxtWZWTeacherList) > 0:
-
-                self.Save(self.A_DxtWZWTeacherList[0], DataObjArr)
-            else:
-                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
-                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
-                self.Save(A_DxtWZWTeacherObj, DataObjArr)
-
-
+            A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+            A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+            self.Save(A_DxtWZWTeacherObj, DataObjArr)
 
     def Save(self,Obj,DataObjArr):
 
@@ -193,7 +199,8 @@ class WZWTeacher:
         Obj.set('cw', self.cw)
         Obj.set('originalCapital', DataObjArr["OriginalCapital"])
 
-        Obj.set('pm',self.pm)  #|当月排行|无|
+        # Obj.set('pm',self.pm)  #|当月排行|无|
+        Obj.set('pm', self.pm)
         Obj.set('syl', self.syl)
 
         Obj.set('certId', DataObjArr["Tzsbh"])
