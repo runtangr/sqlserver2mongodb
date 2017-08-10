@@ -102,7 +102,7 @@ class CommNewsExtract:
 
         #数据处理
         # 转换
-        if DataObjArr['rsStatus'] > 0:
+        if int(DataObjArr['rsStatus']) > 0:
             self.isDisable = 0
         else:
             self.isDisable = 1

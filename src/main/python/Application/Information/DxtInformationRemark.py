@@ -102,7 +102,7 @@ class sirsReportRemark:
 					   "rsDateTime:", DataObjArr['rsDateTime'])
 
 				# 转换
-				if DataObjArr['rsStatus'] > 0:
+				if int(DataObjArr['rsStatus']) > 0:
 					isDisable = 0
 				else:
 					isDisable = 1
