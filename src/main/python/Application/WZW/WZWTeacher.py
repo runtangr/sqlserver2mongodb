@@ -58,7 +58,7 @@ class WZWTeacher:
         response = client.service.P_Z_uimsVSTC_pro(Coordinates='021525374658617185',
                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                 rsMainkeyID=self.maxKeyId,
-                                                rsDateTime=self.rsDateTime,
+                                                rsDateTime='2017-08-1 0:0:0',
                                                   top=top
                                                     )
         try:
