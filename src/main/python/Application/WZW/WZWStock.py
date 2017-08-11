@@ -104,9 +104,9 @@ class WZWStock:
         # totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["ResidualCapital"]
         #持仓市价  持仓市值 = 行情接口获取当前价 * 当前持仓股数
         if MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia:
-            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia/10000
+            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia/10000.00
         else:
-            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuoShou/10000
+            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuoShou/10000.00
 
         self.position_sz =current * DataObjArr["currentVolume"]
 
