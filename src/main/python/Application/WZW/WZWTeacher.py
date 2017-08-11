@@ -132,13 +132,26 @@ class WZWTeacher:
 
             # 总市值 = 所有 持仓市价（持仓市价 = 行情接口 获取当前价 *当前持仓股数）
             for PositionPrice in self.A_DxtWZWStockList:
-                self.total_sz += PositionPrice.get("total_sz")
+                jduge_time = PositionPrice.get("firstBuyDate")
+                year = datetime.today().year
+                date_cp = int(str(datetime.today().month))
+                if date_cp <10:
+                    date = int(str(datetime.today().year)+"0"+str(datetime.today().month)+"01")
+                else:
+                    date = int(str(datetime.today().year) + str(datetime.today().month) + "01")
+                jduge_time_cp = int(time.strftime("%Y%m%d",jduge_time.timetuple()))
+                # data.astimezone(timezone.utc).replace(tzinfo=None)
+                if jduge_time_cp >= date:
+                    self.total_sz += PositionPrice.get("total_sz")
         # 总资产 = 剩余资金+冻结资金+总市值（）
         self.totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"] + self.total_sz
         # 当前仓位= (总市值/总资产) *100
         self.cw = (self.total_sz/self.totalCapital)*100
         #收益率 = (总资产/本期起始资金 -1)*100
         self.syl = (self.totalCapital/DataObjArr["OriginalCapital"]-1)*100
+
+        if (DataObjArr['rsMainkeyID'] == 73790):
+            a=1
 
         # #排名初始化
         # self.pm = 0
