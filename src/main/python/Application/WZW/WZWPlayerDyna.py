@@ -133,7 +133,7 @@ class WZWPlayerDyna:
         # Obj.set('marketCode', )
 
         Obj.set('teacherName',DataObjArr["UserName"])
-        Obj.set('price', int(DataObjArr["cjj"]))
+        Obj.set('price', DataObjArr["cjj"])
         Obj.set('transType', DataObjArr["UserCZ"])
         Obj.set('dealTime',  self.dealTime)
         Obj.set("AlertNewsDate",self.AlertNewsDate)
