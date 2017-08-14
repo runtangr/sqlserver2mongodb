@@ -58,7 +58,7 @@ class WZWTeacher:
         response = client.service.P_Z_uimsVSTC_pro(Coordinates='021525374658617185',
                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                 rsMainkeyID=self.maxKeyId,
-                                                rsDateTime='2017-08-01 0:0:0',
+                                                rsDateTime=self.rsDateTime,
                                                   top=top
                                                     )
         try:
@@ -121,6 +121,7 @@ class WZWTeacher:
             return
         WZWStockData = self.A_DxtWZWStockList[0]
         self.pm = WZWStockData.get("pm")
+        self.yearSyl = WZWStockData.get("yearSyl")
 
         #查找WZWStock 匹配name ，取出objectid
         A_DxtWZWZWStockQuery = leancloud.Query('A_DxtWZWStock')
@@ -217,6 +218,7 @@ class WZWTeacher:
         # Obj.set('pm',self.pm)  #|当月排行|无|
         Obj.set('pm', self.pm)
         Obj.set('syl', self.syl)
+        Obj.set('yearSyl', self.yearSyl)
 
         Obj.set('certId', DataObjArr["Tzsbh"])
         Obj.set('desc', DataObjArr["Tfxsjs"])
