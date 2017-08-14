@@ -52,7 +52,7 @@ class WZWTeacher:
         self.SyncControlObj = querySyncInfo.first()
         self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
-        top = 100
+        top = 200
 
         # 王中王老师列表 WebService 测试接口P_Z_uimsVSTC_pro
         response = client.service.P_Z_uimsVSTC_pro(Coordinates='021525374658617185',
@@ -151,7 +151,7 @@ class WZWTeacher:
         #收益率 = (总资产/本期起始资金 -1)*100
         self.syl = (self.totalCapital/DataObjArr["OriginalCapital"]-1)*100
 
-        if (DataObjArr['rsMainkeyID'] == 73790):
+        if (DataObjArr['rsMainkeyID'] == 73761):
             a=1
 
         # #排名初始化
