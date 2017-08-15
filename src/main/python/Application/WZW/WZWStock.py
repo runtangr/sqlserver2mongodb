@@ -7,7 +7,7 @@ Modified on June 27, 2017
 '''
 
  #王中王持仓列表
-
+import os
 import unittest
 from suds.client import Client
 import json
@@ -19,10 +19,10 @@ from Utils import init_leancloud_client
 import logging
 import MarketData
 
-logging.basicConfig(level=logging.WARNING,
-                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                datefmt='%a, %d %b %Y %H:%M:%S'
-					)
+
+logging.basicConfig(format='%(asctime)s %(levelname)s %(module)s.%(funcName)s Line:%(lineno)d %(message)s',
+                    level=os.getenv("LOG_LEVEL", 'INFO'))
+
 
 init_leancloud_client()
 
@@ -85,7 +85,7 @@ class WZWStock:
              logging.warning("提交王中王持仓列表数据返回失败：%s" %self.WZWStock)
 
     def DealData(self,DataObjArr):
-
+        # logging.warning("1")
         #最后一条数据赋值
         if DataObjArr==self.DataObj[-1]:
             self.maxKeyId = int(DataObjArr['rsmainkeyid'])
@@ -102,12 +102,14 @@ class WZWStock:
         #时间格式
         self.firstBuyDate = datetime.strptime(DataObjArr['FirstBuyDate'],'%Y-%m-%d %H:%M:%S')
         # totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["ResidualCapital"]
+        # logging.warning("2")
         #持仓市价  持仓市值 = 行情接口获取当前价 * 当前持仓股数
-        if MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia:
-            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia/10000.00
+        market_data =MarketData.getTicker(DataObjArr["marketcode"] + DataObjArr['stockcode'])
+        if market_data.ZuiXinJia:
+            current = market_data.ZuiXinJia/10000.00
         else:
-            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuoShou/10000.00
-
+            current = market_data.ZuoShou/10000.00
+        # logging.warning("3")
         self.position_sz =current * DataObjArr["currentVolume"]
 
         A_DxtWZWStockStockQuery = leancloud.Query('A_DxtWZWStock')
@@ -119,6 +121,7 @@ class WZWStock:
         A_DxtWZWTeacherQuery.equal_to('groupBmId', int(DataObjArr["VGroupid"]))
         self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
         # 编辑  王中王老师有 才会有持仓
+        # logging.warning("4")
         if len(self.A_DxtWZWStockStockList) > 0 and len(self.A_DxtWZWTeacherList)>0:
 
             self.Save(self.A_DxtWZWStockStockList[0],DataObjArr)
@@ -127,6 +130,7 @@ class WZWStock:
             A_DxtWZWStockObj = A_DxtWZWStock()
             self.Save(A_DxtWZWStockObj,DataObjArr)
 
+        # logging.warning("5")
     def Save(self,Obj,DataObjArr):
         Obj.set('groupBmId', DataObjArr['VGroupid'])
         Obj.set('teacherObjectId', self.A_DxtWZWTeacherList[0].get("objectId"))
