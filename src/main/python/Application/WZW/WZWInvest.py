@@ -51,7 +51,7 @@ class WZWInvest:
         self.SyncControlObj = querySyncInfo.first()
         self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
-        top = 100
+        top = 500
 
         # 王中王投资列表 WebService 测试接口P_Z_uimsVSTSCD_pro
         response = client.service.P_Z_uimsVSTSCD_pro(Coordinates='021525374658617185',
@@ -86,13 +86,13 @@ class WZWInvest:
 
     def DealData(self,DataObjArr):
 
-        #最后一条数据赋值
-        if DataObjArr==self.DataObj[-1]:
-            self.maxKeyId = int(DataObjArr['rsmainkeyid'])
-            self.rsDateTime = DataObjArr['rsDateTime']
-            self.SyncControlObj.set('mainKeyId', self.maxKeyId)
-            self.SyncControlObj.set('rsDateTime', self.rsDateTime)
-            self.SyncControlObj.save()
+        #每一条数据赋值
+
+        self.maxKeyId = int(DataObjArr['rsmainkeyid'])
+        self.rsDateTime = DataObjArr['rsDateTime']
+        self.SyncControlObj.set('mainKeyId', self.maxKeyId)
+        self.SyncControlObj.set('rsDateTime', self.rsDateTime)
+        self.SyncControlObj.save()
 
         #打印
         print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsmainkeyid'], "===",
@@ -109,7 +109,10 @@ class WZWInvest:
             30: "送股"
         }
         # 买卖
-        self.TransStyle = style[DataObjArr["TransStyle"]]
+        if type(DataObjArr["TransStyle"])==int:
+            self.TransStyle = style[DataObjArr["TransStyle"]]
+        else:
+            self.TransStyle = DataObjArr["TransStyle"]
 
         A_DxtWZWInvestQuery = leancloud.Query('A_DxtWZWInvest')
         A_DxtWZWInvestQuery.equal_to('relationId', DataObjArr['rsmainkeyid'])
@@ -137,7 +140,7 @@ class WZWInvest:
 
         Obj.set('cjje',DataObjArr["cjje"] )
         Obj.set('price', DataObjArr["price"])
-        Obj.set('syl', DataObjArr["syl"])
+        Obj.set('syl', float(DataObjArr["syl"]))
 
         Obj.set('volume', DataObjArr['volume'])
         Obj.set('profitorLoss', DataObjArr['profitorLoss'])

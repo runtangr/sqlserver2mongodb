@@ -52,13 +52,13 @@ class WZWTeacher:
         self.SyncControlObj = querySyncInfo.first()
         self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
-        top = 100
+        top = 200
 
         # 王中王老师列表 WebService 测试接口P_Z_uimsVSTC_pro
         response = client.service.P_Z_uimsVSTC_pro(Coordinates='021525374658617185',
                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                 rsMainkeyID=self.maxKeyId,
-                                                rsDateTime=self.rsDateTime,
+                                                rsDateTime="2017-08-01 00:00:00",
                                                   top=top
                                                     )
         try:
@@ -112,6 +112,17 @@ class WZWTeacher:
         A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
 
+        # 查找WZWRank 本月 匹配 rsMainkeyID ，取出pm
+        A_DxtWZWRankQuery = leancloud.Query('A_DxtWZWRank')
+        A_DxtWZWRankQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
+        A_DxtWZWRankQuery.equal_to('season', 0)
+        self.A_DxtWZWStockList = A_DxtWZWRankQuery.find()
+        if len(self.A_DxtWZWStockList) == 0 :
+            return
+        WZWStockData = self.A_DxtWZWStockList[0]
+        self.pm = WZWStockData.get("pm")
+        self.yearSyl = WZWStockData.get("yearSyl")
+
         #查找WZWStock 匹配name ，取出objectid
         A_DxtWZWZWStockQuery = leancloud.Query('A_DxtWZWStock')
         A_DxtWZWZWStockQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
@@ -122,16 +133,29 @@ class WZWTeacher:
 
             # 总市值 = 所有 持仓市价（持仓市价 = 行情接口 获取当前价 *当前持仓股数）
             for PositionPrice in self.A_DxtWZWStockList:
-                self.total_sz += PositionPrice.get("total_sz")
+                jduge_time = PositionPrice.get("firstBuyDate")
+                year = datetime.today().year
+                date_cp = int(str(datetime.today().month))
+                if date_cp <10:
+                    date = int(str(datetime.today().year)+"0"+str(datetime.today().month)+"01")
+                else:
+                    date = int(str(datetime.today().year) + str(datetime.today().month) + "01")
+                jduge_time_cp = int(time.strftime("%Y%m%d",jduge_time.timetuple()))
+                # data.astimezone(timezone.utc).replace(tzinfo=None)
+                if jduge_time_cp >= date:
+                    self.total_sz += PositionPrice.get("total_sz")
         # 总资产 = 剩余资金+冻结资金+总市值（）
         self.totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"] + self.total_sz
-        # 当前仓位= 总市值/总资产
-        self.cw = self.total_sz/self.totalCapital
-        #收益率 = 总市值/本期起始资金 -1
-        self.syl = self.total_sz/DataObjArr["OriginalCapital"]-1
+        # 当前仓位= (总市值/总资产) *100
+        self.cw = (self.total_sz/self.totalCapital)*100
+        #收益率 = (总资产/本期起始资金 -1)*100
+        self.syl = (self.totalCapital/DataObjArr["OriginalCapital"]-1)*100
 
-        #排名初始化
-        self.pm = 0
+        if (DataObjArr['rsMainkeyID'] == 73761):
+            a=1
+
+        # #排名初始化
+        # self.pm = 0
 
         self.historyAccount={}  ###########
 
@@ -149,35 +173,33 @@ class WZWTeacher:
         self.A_DxtWZWTeacherAll = A_DxtWZWTeacherQuery.find()
 
         TeacherProperty = []
-        if len(self.A_DxtWZWTeacherAll) == 0:
-            self.pm = 0
+        # if len(self.A_DxtWZWTeacherAll) == 0:
+        #     self.pm = 0
+        # else:
+        #     # 遍历所有老师
+        #     for Teacher in self.A_DxtWZWTeacherAll:
+        #         TeacherProperty.append(Teacher.get("totalCapital"))
+        #     # 排序
+        #     TeacherProperty.sort()
+        #     TeacherProperty.reverse()
+        #     # 获取当前排名
+        #     self.pm = TeacherProperty.index(self.totalCapital)+1
+        #     # 保存当前
+        #
+        #     #######save  可完善
+        #
+        #     A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
+        #     A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+        #     self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
+
+        # 编辑 存储
+        if len(self.A_DxtWZWTeacherList) > 0:
+
+            self.Save(self.A_DxtWZWTeacherList[0], DataObjArr)
         else:
-            # 遍历所有老师
-            for Teacher in self.A_DxtWZWTeacherAll:
-                TeacherProperty.append(Teacher.get("totalCapital"))
-            # 排序
-            TeacherProperty.sort()
-            TeacherProperty.reverse()
-            # 获取当前排名
-            self.pm = TeacherProperty.index(self.totalCapital)+1
-            # 保存当前
-
-            #######save  可完善
-
-            A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
-            A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-            self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
-
-            # 编辑 存储
-            if len(self.A_DxtWZWTeacherList) > 0:
-
-                self.Save(self.A_DxtWZWTeacherList[0], DataObjArr)
-            else:
-                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
-                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
-                self.Save(A_DxtWZWTeacherObj, DataObjArr)
-
-
+            A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+            A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+            self.Save(A_DxtWZWTeacherObj, DataObjArr)
 
     def Save(self,Obj,DataObjArr):
 
@@ -193,8 +215,10 @@ class WZWTeacher:
         Obj.set('cw', self.cw)
         Obj.set('originalCapital', DataObjArr["OriginalCapital"])
 
-        Obj.set('pm',self.pm)  #|当月排行|无|
+        # Obj.set('pm',self.pm)  #|当月排行|无|
+        Obj.set('pm', self.pm)
         Obj.set('syl', self.syl)
+        Obj.set('yearSyl', self.yearSyl)
 
         Obj.set('certId', DataObjArr["Tzsbh"])
         Obj.set('desc', DataObjArr["Tfxsjs"])

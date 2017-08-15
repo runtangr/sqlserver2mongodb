@@ -97,6 +97,15 @@ class StockPool:
     def DealData(self,DataObjArr):
 
         if DataObjArr["NewsStyle"] not in self.StcokPoolList:
+            # 打印
+            print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
+                   "rsDateTime:", DataObjArr['rsDateTime'])
+            self.maxKeyId = int(DataObjArr['rsMainkeyID'])
+            self.rsDateTime = DataObjArr['rsDateTime']
+            # 最后保存同步数据
+            self.SyncControlObj.set('mainKeyId', self.maxKeyId)
+            self.SyncControlObj.set('rsDateTime', self.rsDateTime)
+            self.SyncControlObj.save()
             return
         #此处无法判断左后一条数据，每次赋值
         # if DataObjArr==self.DataObj[-1]:

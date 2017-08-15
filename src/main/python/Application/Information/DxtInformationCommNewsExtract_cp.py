@@ -26,16 +26,16 @@ logging.basicConfig(level=logging.WARNING,
 
 init_leancloud_client()
 
-class CommNewsExtract:
+class CommNewsExtract_cp:
     def CreateSyncInfo(self,*args):
         SyncControl = leancloud.Object.extend('SyncControl')
         self.SyncControlObj = SyncControl()
         querySyncInfo = SyncControl.query
 
-        querySyncInfo.equal_to('type', 'CommNewsExtract')
+        querySyncInfo.equal_to('type', 'CommNewsExtract_cp')
         syncObj = querySyncInfo.find()
         if len(syncObj) == 0:
-            self.SyncControlObj.set("type", "CommNewsExtract")
+            self.SyncControlObj.set("type", "CommNewsExtract_cp")
             self.SyncControlObj.set("mainKeyId", 0)
             self.SyncControlObj.set("rsDateTime", "1990-01-01")
             self.SyncControlObj.save()
@@ -44,7 +44,7 @@ class CommNewsExtract:
         self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
 
-    def CommNewsExtractPort(self):
+    def CommNewsExtract_cpPort(self):
         '''
         获取端口数据
         '''
@@ -63,30 +63,33 @@ class CommNewsExtract:
                                                   top=top
                                                     )
         try:
-            self.CommNewsExtract = json.loads(response)
+            self.CommNewsExtract_cp = json.loads(response)
 
         except Exception, e:
             logging.error("%s :webservice get data error! %s" %(__file__ ,response))
 
-    def CommNewsExtractMC(self):
+    def CommNewsExtract_cpMC(self):
         '''
         mc更新 A_DxtInformation(技术学堂表)表
         '''
 
         maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
 
-        if self.CommNewsExtract["Code"] == 0:
+        if self.CommNewsExtract_cp["Code"] == 0:
 
-            self.DataObj =  json.loads(self.CommNewsExtract["DataObj"])#
+            self.DataObj =  json.loads(self.CommNewsExtract_cp["DataObj"])#
 
 
             map(self.DealData,self.DataObj)
 
 
         else:
-            logging.warning("%s:data return fail!：%s" %(__file__ ,self.CommNewsExtract))
+            logging.warning("%s:data return fail!：%s" %(__file__ ,self.CommNewsExtract_cp))
 
     def DealData(self,DataObjArr):
+
+        self.publishTime = datetime.strptime(DataObjArr['NewsDate'][:-4], '%Y-%m-%d %H:%M:%S')
+        self.now_time = datetime.strptime('2017-07-25 09:20:20', '%Y-%m-%d %H:%M:%S')
 
         #最后一条数据赋值
         if DataObjArr==self.DataObj[-1]:
@@ -96,18 +99,20 @@ class CommNewsExtract:
             self.SyncControlObj.set('rsDateTime', self.rsDateTime)
             self.SyncControlObj.save()
 
+            #add
+            if self.publishTime > self.now_time:
+                return
+
         #打印
         print ("maxKeyId:", self.maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
                "rsDateTime:", DataObjArr['rsDateTime'])
 
         #数据处理
         # 转换
-        if int(DataObjArr['rsStatus']) > 0:
+        if DataObjArr['rsStatus'] > 0:
             self.isDisable = 0
         else:
             self.isDisable = 1
-
-        self.publishTime = datetime.strptime(DataObjArr['NewsDate'][:-5], '%Y-%m-%d %H:%M:%S')
 
         A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
         A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
@@ -183,8 +188,8 @@ class CommNewsExtract:
 
 if __name__ == "__main__":
 
-	CommNewsExtract_object = CommNewsExtract()
+	CommNewsExtract_cp_object = CommNewsExtract_cp()
 
-	CommNewsExtract_object.CommNewsExtractPort()
-	CommNewsExtract_object.CommNewsExtractMC()
+	CommNewsExtract_cp_object.CommNewsExtract_cpPort()
+	CommNewsExtract_cp_object.CommNewsExtract_cpMC()
 

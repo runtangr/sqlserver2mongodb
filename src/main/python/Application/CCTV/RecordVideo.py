@@ -119,7 +119,9 @@ class RecordVideo:
         Obj.set('title', DataObjArr['title'])
         Obj.set('desc', DataObjArr["content"])
         Obj.set('videoType', DataObjArr['className'])
-        Obj.set('videoImage', DataObjArr['pictureUrl'])
+        Obj.set('sourceType', DataObjArr['classId'])
+
+        Obj.set('videoImage', DataObjArr['pictureH5Url'])
         Obj.set('pictureH5Url', DataObjArr['pictureH5Url'])
         Obj.set('videoUrl', DataObjArr["url"])
 

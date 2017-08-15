@@ -51,13 +51,13 @@ class WZWStock:
         self.SyncControlObj = querySyncInfo.first()
         self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
-        top = 100
+        top = 200
 
         # 王中王持仓列表 WebService 测试接口P_Z_uimsVSTSC_pro
         response = client.service.P_Z_uimsVSTSC_pro(Coordinates='021525374658617185',
                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                 rsMainkeyID=self.maxKeyId,
-                                                rsDateTime=self.rsDateTime,
+                                                rsDateTime="2017-08-01 00:00:00",
                                                   top=top
                                                     )
         try:
@@ -104,9 +104,9 @@ class WZWStock:
         # totalCapital = DataObjArr["ResidualCapital"] + DataObjArr["ResidualCapital"]
         #持仓市价  持仓市值 = 行情接口获取当前价 * 当前持仓股数
         if MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia:
-            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia/10000
+            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia/10000.00
         else:
-            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuoShou/10000
+            current = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuoShou/10000.00
 
         self.position_sz =current * DataObjArr["currentVolume"]
 
@@ -146,6 +146,9 @@ class WZWStock:
         Obj.set('firstBuyDate', self.firstBuyDate)
 
         Obj.set('relationId', DataObjArr['rsmainkeyid'])
+
+        # if (DataObjArr['rsMainkeyID'] == 34099):
+        #     a=1
 
         #持仓市价
         Obj.set('total_sz', self.position_sz)
