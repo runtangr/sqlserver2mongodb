@@ -116,6 +116,9 @@ class StockPoolOut:
         A_DxtStockPoolOutDiaryObj.set('outTime', self.OutDateTime)
         A_DxtStockPoolOutDiaryObj.set('stockId', DataObjArr['StockId'])
         A_DxtStockPoolOutDiaryObj.set('relationId', str(DataObjArr["rsMainkeyID"]))
+
+        syl = (DataObjArr['OutPrice'] - DataObjArr['AccessPrice'])/DataObjArr['AccessPrice']
+        A_DxtStockPoolOutDiaryObj.set('syl', syl)
         A_DxtStockPoolOutDiaryObj.save()
 
 if __name__ == "__main__":
