@@ -225,6 +225,8 @@ class WZWTeacher:
         Obj.set('motto', DataObjArr["Ttzgy"])
         Obj.set('historyAccount', self.historyAccount)  #历史账目-资金ID|无|
         Obj.set('relationId', str(DataObjArr["rsMainkeyID"]))
+        Obj.set('residualCapital', DataObjArr["ResidualCapital"])
+        Obj.set('frozenCapital', DataObjArr["FrozenCapital"])
         Obj.save()
 
 if __name__ == "__main__":
