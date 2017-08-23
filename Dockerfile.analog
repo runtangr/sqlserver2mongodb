@@ -1,5 +1,7 @@
 FROM python27/package:0.1
-ENV TZ=Asia/Chengdu
+
+run apt-get update
+RUN pip install -r requirements.txt -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
 
 ADD ./src /app/src
 ADD ./docs /app/docs
@@ -8,8 +10,6 @@ ADD analog.pth /usr/local/lib/python2.7/site-packages/analog.pth
 
 workdir /app/
 
-run apt-get update
-RUN pip install -r requirements.txt -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
 
 ADD ./packages /app/packages
 workdir /app/packages/
