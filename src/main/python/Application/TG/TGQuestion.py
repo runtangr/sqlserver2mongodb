@@ -112,12 +112,14 @@ class Teacher:
                     else:
                         UserQuery = leancloud.Query('_User')
                         UserQuery.equal_to('userId', DataObjArr['UserId'])
-                        userObject = UserQuery.first()
+                        userList = UserQuery.find()
+                        if len(userList) == 0:
+                            continue
 
                         A_DxtTGQuestion = leancloud.Object.extend('A_DxtTGQuestion')
                         A_DxtTGQuestionObj = A_DxtTGQuestion()
 
-                        A_DxtTGQuestionObj.set('userObjectId', userObject.id)
+                        A_DxtTGQuestionObj.set('userObjectId', userList[0].id)
                         A_DxtTGQuestionObj.set('userNickName', DataObjArr['OtherIM'])
                         A_DxtTGQuestionObj.set('userPhoto', DataObjArr['UserPhoto'])
                         A_DxtTGQuestionObj.set('question', DataObjArr['AskContent'])
