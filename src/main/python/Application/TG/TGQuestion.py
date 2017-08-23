@@ -113,7 +113,7 @@ class Teacher:
                         UserQuery = leancloud.Query('_User')
                         UserQuery.equal_to('userId', DataObjArr['UserId'])
                         userList = UserQuery.find()
-                        if len(userList) == 0:
+                        if not userList:
                             continue
 
                         A_DxtTGQuestion = leancloud.Object.extend('A_DxtTGQuestion')
