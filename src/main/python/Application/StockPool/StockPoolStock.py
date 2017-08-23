@@ -125,6 +125,11 @@ class StockPool:
                         #add
                         A_DxtStockPoolStockObj.set('rsStatus', DataObjArr['rsStatus'])
                         A_DxtStockPoolStockObj.set('relationId',  str(DataObjArr["rsMainkeyID"]))
+
+                        A_DxtStockPoolStockObj.set('suggestion', DataObjArr['dqjy'])
+                        A_DxtStockPoolStockObj.set('willBuy', DataObjArr['mrsj'])
+                        A_DxtStockPoolStockObj.set('willSale', DataObjArr['mcsj'])
+
                         A_DxtStockPoolStockObj.save()
                     # 新增
                     elif len(A_DxtStockPoolObj)>0:
@@ -148,6 +153,11 @@ class StockPool:
                         # add
                         A_DxtStockPoolStockObj.set('rsStatus', DataObjArr['rsStatus'])
                         A_DxtStockPoolStockObj.set('relationId', str(DataObjArr["rsMainkeyID"]))
+
+                        A_DxtStockPoolStockObj.set('suggestion', DataObjArr['dqjy'])
+                        A_DxtStockPoolStockObj.set('willBuy', DataObjArr['mrsj'])
+                        A_DxtStockPoolStockObj.set('willSale', DataObjArr['mcsj'])
+
                         A_DxtStockPoolStockObj.save()
 
                 except Exception, e:

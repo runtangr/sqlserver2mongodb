@@ -139,10 +139,11 @@ class PHJJStock:
         self.price = DataObjArr["Cost"]/DataObjArr["currentVolume"]
 
         #当前价
-        if MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia:
-            self.currentPrice = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuiXinJia/10000
+        market_data = MarketData.getTicker(DataObjArr["marketcode"] + DataObjArr['stockcode'])
+        if market_data.ZuiXinJia:
+            self.currentPrice = market_data.ZuiXinJia/10000.00
         else:
-            self.currentPrice = MarketData.getTicker(DataObjArr["marketcode"]+DataObjArr['stockcode']).ZuoShou/10000
+            self.currentPrice = market_data.ZuoShou/10000.00
 
         #盈亏 = （当前价 - 成本价）*持有数量
         self.profitorLoss = (self.currentPrice - self.price) * DataObjArr["currentVolume"]

@@ -159,7 +159,12 @@ class CommNewsExtract:
         Obj.set('NewsStyle', DataObjArr['NewsStyle'])   #add
 
         tmp_categories = []
-        tmp_categories.append(DataObjArr['ClassName'])
+        if DataObjArr['rsMainkeyID'] == "6879974":
+            b =1
+        if DataObjArr['ClassName'] == u"重大事件":
+            tmp_categories.append("重要信息")
+        else:
+            tmp_categories.append(DataObjArr['ClassName'])
         Obj.set('categories', tmp_categories)
         Obj.set('labels', tmp_categories)
 

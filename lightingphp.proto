@@ -1,0 +1,541 @@
+syntax = "proto3";
+package LIGHTINGPHP; 
+
+message UAResponse{
+    string Qid = 1;
+    int32 Err = 2;
+    int32 Counter = 3;
+    bytes Data = 4;
+    string ErrMsg = 5;
+}
+
+message MSG{
+    int32 Id = 1;
+    string Obj = 2;
+    int64 ShiJian = 3;
+    string JsonTbl = 4;
+    
+    repeated QuoteDynaSingle RepDataQuoteDynaSingle = 20;
+    repeated QuoteKlineSingle RepDataQuoteKlineSingle = 21;   //K线
+    repeated QuoteTickSingle RepDataQuoteTickSingle = 22;   //分笔
+    repeated QuoteMinSingle RepDataQuoteMinSingle = 23;     //分时
+    repeated StkData RepDataStkData = 27;//大行情
+    repeated PaiXu RepDataPaiXu = 28;
+    repeated JianPanBaoShuChu RepDataJianPanBaoShuChu = 29;
+    repeated BlockObjOutput RepDataBlockObjOutput = 33;     //成份股查询
+    repeated BlockPropOutput RepDataBlockPropOutput = 34;   //板块查询
+    repeated ZhiBiaoFuWuOutput RepDataZhiBiaoFuWuOutput = 300; //指标服务
+    repeated QuoteDividSingle RepDataQuoteDividSingle = 301;//权息系数
+    repeated QuoteGbfhGbbdOutPut RepDataQuoteGbfhGbbdOutPut = 302;//股本历史
+    repeated QuoteFjxxSingle RepDataQuoteFjxxSingle = 303;//分价信息查询服务
+    repeated QuoteMarketSingle RepDataQuoteMarketSingle = 304;//市场状态查询服务
+    repeated QuoteKlineIndex RepDataQuoteKlineIndex = 305;//市场状态查询服务
+}
+
+//动态行情start
+message QuoteDynaSingle{
+    string Obj = 1;
+    GeGuDongTai Data = 2;
+}
+
+message GeGuDongTai{
+    int64 Id = 1;
+    int64 ShiJian = 2;
+    int64 ZuiXinJia = 3;
+    int64 KaiPanJia = 4;
+    int64 ZuiGaoJia = 5;
+    int64 ZuiDiJia = 6;
+    int64 ZuoShou = 7;
+    int64 JunJia = 8;
+    int64 ZhangDie = 9;
+    int64 ZhangFu = 10;
+    int64 ZhenFu = 11;
+    int64 ChengJiaoLiang = 12;
+    int64 XianShou = 13;
+    int64 ChengJiaoE = 14;
+    int64 ZongChengJiaoBiShu = 15;
+    int64 HuanShou = 16;
+    int64 LiangBi = 17;
+    int64 NeiPan = 18;
+    int64 WaiPan = 19;
+}
+//动态行情end
+
+//键盘宝start
+message JianPanBaoShuChu{
+    string GuanJianZi = 1;
+    repeated JPBShuChu JieGuo = 2;
+}
+
+message JPBShuChu{
+    JPBLeiXing LeiXing = 1;
+    repeated JPBShuJu ShuJu = 2;
+}
+
+message JPBShuJu{
+    string DaiMa = 1;
+    string MingCheng = 2;
+    string ShuXing = 3;
+    string KuoZhan = 4;
+}
+
+enum JPBLeiXing{
+    TYPE_OBJ = 0;
+    TYPE_INDI = 1;
+    TYPE_TOPIC = 2;
+    TYPE_LHB = 3;
+}
+//键盘宝end
+
+message PaiXu{
+    string SortField = 1;
+    string Desc = 2;
+    repeated PaiXuSort Data = 3;
+}
+//排序start
+message PaiXuSort{
+    string Obj = 1;
+    int64 Value = 2;
+    string MingCheng = 3;
+    string Text = 4;
+}
+//排序end
+
+//分时start
+message QuoteMinSingle{
+    string Obj = 1;
+    repeated FenShi Data = 2;
+}
+message FenShi{
+    int64 ShiJian = 1;
+    int64 ChengJiaoJia = 2;
+    int64 ChengJiaoLiang = 3;
+    int64 ChengJiaoE = 4;
+    int64 JunJia = 5;
+}
+//分时 end
+//分笔 start
+message QuoteTickSingle{
+    string Obj = 1;
+    repeated FenBiChengJiao Data = 2;
+}
+
+message FenBiChengJiao{
+    int64 ShiJian = 1;
+    int64 ChengJiaoJia = 2;
+    int64 ChengJiaoLiang = 3;
+    int64 ChengJiaoE = 4;
+    int64 ChengJiaoDanBiShu = 5;
+    int64 ShiFouZhuDongXingMaiDan = 6;
+    int64 MaiMaiFangXiang = 7;
+}
+//分笔 end
+//板块查询 start
+message BlockPropOutput{
+    repeated string name = 1;
+}
+//板块查询 end
+
+
+//kline start
+message QuoteKlineSingle{
+    string Obj = 1;
+    string period = 2;
+    string split = 3;
+    repeated KXian Data = 4;
+}
+message KXian{
+    int64 ShiJian = 1;
+    int64 KaiPanJia = 2;
+    int64 ZuiGaoJia = 3;
+    int64 ZuiDiJia = 4;
+    int64 ShouPanJia = 5;
+    int64 ChengJiaoLiang = 6;
+    int64 ChengJiaoE = 7;
+    int64 ChengJiaoBiShu = 8;          //总成交笔数,只对股票有效
+    int64 ShangZhangJiaShu = 9;        //上涨家数,只对指数有效
+    int64 XiaDieJiaShu = 10;           //下跌家数,只对指数有效
+    int64 ChiCang = 11;                  //持仓,只对期货日k线有效
+    int64 ZengCang = 12;                  //增仓,只对期货日k线有效
+    //int64 ZengLiang = 13;
+    int64 JieSuanJia = 14;                  //结算价,只对期货日k线有效
+}
+//kline end
+
+
+//大行情start
+message StkData{
+string Obj = 1;
+//个股信息
+string ZhongWenJianCheng = 3;
+int64 LeiXing = 400;   //类型: (0，指数;1，股票;2，基金;3，债券)
+int64 ZiLeiXing = 401; //子类型
+string LeiXingMingCheng = 402;
+int64 ChengJiaoLiangDanWei = 403;
+//动态行情字段
+int64 ZuiXinJia = 4;
+int64 KaiPanJia = 5;
+int64 ZuiGaoJia = 6;
+int64 ZuiDiJia = 7;
+int64 ZuoShou = 8;
+int64 JunJia = 9;
+int64 ZhangDie = 10;
+int64 ZhangFu = 11;
+int64 ZhenFu = 12;
+int64 ChengJiaoLiang = 13;
+int64 XianShou = 14;
+int64 ChengJiaoE = 15;
+int64 ZongChengJiaoBiShu = 16;
+int64 HuanShou = 17;
+int64 LiangBi = 19;
+int64 NeiPan = 20;
+int64 WaiPan = 21;
+//int64 ZongMaiRu = 22;
+//int64 ZongMaiChu = 23;
+int64 FenZhongZhangFu1 = 77;
+int64 FenZhongZhangFu2 = 78;
+int64 FenZhongZhangFu3 = 79;
+int64 FenZhongZhangFu4 = 80;
+int64 FenZhongZhangFu5 = 81;
+int64 ZhangTing = 83;
+int64 DieTing = 84;
+int64 ChiCang = 1001;
+int64 ZengCang = 1002;
+int64 RiZeng = 1003;
+int64 JieSuanJia = 1004;
+int64 ZuoRiJieSuanJia = 1005;
+int64 KaiPing = 1006;
+int64 JieSuanZhangDie = 1007;
+int64 JieSuanZhangFu = 1008;
+//买卖盘相关字段
+int64 ShiJian = 96;
+int64 WeiTuoMaiRuJia1 = 26; //委托买入价1(元)
+int64 WeiTuoMaiRuJia2 = 27;
+int64 WeiTuoMaiRuJia3 = 28;
+int64 WeiTuoMaiRuJia4 = 29;
+int64 WeiTuoMaiRuJia5 = 30;
+int64 WeiTuoMaiRuLiang1 = 31; //委托买入量1(股)
+int64 WeiTuoMaiRuLiang2 = 32;
+int64 WeiTuoMaiRuLiang3 = 33;
+int64 WeiTuoMaiRuLiang4 = 34;
+int64 WeiTuoMaiRuLiang5 = 35;
+int64 WeiTuoMaiChuJia1 = 42; //委托卖出价1(元)
+int64 WeiTuoMaiChuJia2 = 44;
+int64 WeiTuoMaiChuJia3 = 46;
+int64 WeiTuoMaiChuJia4 = 48;
+int64 WeiTuoMaiChuJia5 = 50;
+int64 WeiTuoMaiChuLiang1 = 43; //委托卖出量1(股)
+int64 WeiTuoMaiChuLiang2 = 45;
+int64 WeiTuoMaiChuLiang3 = 47;
+int64 WeiTuoMaiChuLiang4 = 49;
+int64 WeiTuoMaiChuLiang5 = 51; //委托卖出量5(股)
+int64 WeiBi = 52; //委比 87.59, //委比87.59%
+int64 WeiCha = 53; //委差(手)
+//财务数据字段
+string PinZhongObj = 601;                        //交易代码 SH601519,
+string BaoGaoQi = 602;                           //报告期
+string ShangShiRiQi = 603;                       //上市日期
+double MeiGuShouYi = 604;                        //每股收益(元)
+double MeiGuShouYiJiSuan = 640;                  //每股收益(元)--乘上系数，不适合展示，只用于计算
+double MeiGuJingZiChan = 605;                    //每股净资产(元)
+double JingZiChanShouYiLv = 606;                 //净资产收益率
+double MeiGuJingYingXianJin = 607;               //每股经营现金(元)
+double MeiGuGongJiJin = 608;                     //每股公积金(元)
+double MeiGuWeiFenPei = 609;                     //每股未分配(元)
+double GuDongQuanYiBi = 610;                      //股东权益比
+double JingLiRunTongBi = 611;                    //净利润同比
+double ZhuYingShouRuTongBi = 612;                //主营收入同比
+double XiaoShouMaoLiLv = 613;                    //销售毛利率
+double TiaoZhengMeiGuJingZi = 614;               //调整每股净资(元)
+double ZongZiChan = 615;                         //总资产(万元)
+double LiuDongZiChan = 616;                      //流动资产(万元)
+double GuDingZiChan = 617;                       //固定资产(万元)
+double WuXingZiChan = 618;                       //无形资产(万元)
+double LiuDongFuZhai = 619;                      //流动负债(万元)
+double ChangQiFuZhai = 620;                      //长期负债(万元)
+double ZongFuZhai = 621;                         //总负债(万元)
+double ZiChanFuZhaiLv = 106;                     //资产负债率（无）
+double GuDongQuanYi = 622;                       //股东权益(万元)
+double ZiBenGongJiJin = 623;                     //资本公积金(万元)
+double JingYingXianJinLiuLiang = 624;             //经营现金流量(万元)
+double TouZiXianJinLiuLiang = 625;                //投资现金流量(万元)
+double ChouZiXianJinLiuLiang = 626;               //筹资现金流量(万元)
+double XianJinZengJiaE = 627;                    //现金增加额(万元)
+double ZhuYingShouRu = 628;                      //主营收入(万元)
+double ZhuYingLiRun = 629;                        //主营利润(万元)
+double YingYeLiRun = 630;                         //营业利润(万元)
+double TouZiShouYi = 631;                        //投资收益(万元)
+double YingYeWaiShouZhi = 632;                   //营业外收支(万元)
+double LiRunZongE = 633;                          //利润总额(万元)
+double JingLiRun = 634;                          //净利润(万元)
+double WeiFenPeiLiRun = 635;                      //未分配利润(万元)
+double ZongGuBen = 636;                           //总股本(万股)
+double WuXianShouGuHeJi = 637;                    //无限售股合计(万股)
+double ShangShiJia = 9001;                        //* 上市价-------------需要增加(大智慧无)
+double LiuTongGu = 9002;                          //* 当前流通股(A股或B股)(万股)------需要增加(大智慧无)
+double GuDongRenShu = 9003;                       //* 股东人数------需要增加(大智慧无)
+double PingJunGuBen = 9004;                       //* 平均股本------需要增加(大智慧无)
+double LiuTongAGu = 638;                          //流通A股(万股)
+double LiuTongBGu = 639;                          //流通B股(万股)
+//----以下暂时不要 start
+//double JingWaiShangShiGu = 640;                   //境外上市股(万股)
+//double QiTaLiuTongGu = 641;                       //其他流通股(万股)
+//double XianShouGuHeJi = 642;                        //限售股合计(万股)
+//double GuoJiaChiGu = 643;                        //国家持股(万股)
+//double GuoYouFaRenGu = 644;                      //国有法人股(万股)
+//double JingNeiFaRenGu = 645;                      //境内法人股(万股)
+//double JingNeiZiRanRenGu = 646;                   //境内自然人股(万股)
+//double QiTaFaQiRenGu = 647;                      //其他法人股(万股)
+//double MuJiFaRenGu = 648;                       //募集法人股(万股)
+//double JingWaiFaRenGu = 649;                    //境外法人股(万股)
+//double JingWaiZiRanRenGu = 650;                   //境外自然人股(万股)
+//double YouXianGuHuoQiTa = 651;                   //优先股或其他(万股)
+//----以上暂时不要 end
+double ShiYingLv = 82;                           //市盈率（动）
+int64 JingTaiShiYingLv = 103;                   //无
+double ShiJingLv = 97;                           //市净率
+double ZongShiZhi = 98;                         //总市值(万元)
+double LiuTongShiZhi = 99;                      //流通市值(万元)
+// 板块属性
+int64 ShangZhangJiaShu = 901;          //上涨家数(个)
+int64 XiaDieJiaShu = 902; //下跌家数(个)
+int64 PingPanJiaShu = 903;//平盘家数(个)
+string LingZhangGeGu = 904;//领涨个股代码
+string LingZhangGeGuMingCheng = 905; //领涨个股名称
+int64 LingZhangGeGuZhangFu = 906;//领涨个股涨幅()
+
+int64 ZhangTingJiaShu = 913;//涨停家数(个)
+int64 DieTingJiaShu = 914; //跌停家数(个)
+int64 TingPaiJiaShu = 915;//停牌家数(个)
+
+//自选资金
+int64 LiuRu = 907;        //流出
+int64 LiuChu = 908;        //流出
+int64 JingE = 909;        //净额
+int64 ZanChengJiaoE = 910;  //占成交额
+int64 JunLiang5Day = 911;// 5日均量
+//其它
+int64 MaiMaiLeiXing = 912;//买卖类型
+}
+//大行情 end
+//成份股查询 start
+message BlockObjOutput {
+    repeated string obj = 1;
+}
+//成份股查询 end
+
+
+//消息体-指标服务
+message ZhiBiaoFuWuOutput {
+    string Obj = 1;
+    repeated ZhiBiaoFuWuData Data = 2;
+}
+
+//数据体-指标服务
+message ZhiBiaoFuWuData {
+    repeated ZhiBiaoZiJinLiuXiang ZiJinLiuXiang = 3;//资金流向
+    repeated ZhiBiaoZiJinKongPan ZiJinKongPan = 4;//资金控盘
+    repeated ZhiBiaoZiJinDongLi ZiJinDongLi = 5;//资金动力
+    repeated ZhiBiaoZiJinLiuXiangFenDang ZiJinLiuXiangFenDang = 6;//资金流向分档
+    repeated ZhiBiaoMaiMaiLiDao MaiMaiLiDao = 7;//-买卖力道
+    repeated ZhiBiaoMaiMaiLiDaoFenDang MaiMaiLiDaoFenDang = 8;//-买卖力道分档
+    repeated ZhiBiaoQianKunZhangDie QianKunZhangDie = 9;//钱坤涨跌
+    repeated ZhiBiaoZhangDieJiaShu ZhangDieJiaShu = 10;//涨跌家数
+}
+
+//数据-指标-资金流向
+message ZhiBiaoZiJinLiuXiang {
+    string param = 1;     //指标参数
+    double zmcp  = 2;     //总卖盘
+    double zmrp  = 3;     //总买盘
+    double ddmr5 = 7;  //大单买入第5档    //主力买入默认使用这个值
+    double ddmc4 = 8;  //大单卖出第4档    //主力卖出默认使用这个值
+    double xdmc4 = 20;  //小单卖出第4档    //散户卖出默认使用这个值
+    double xdmr4 = 21;  //小单买入第4档    //散户买入默认使用这个值
+    int64 date = 30;
+}
+
+//数据-指标-资金流向分档
+message ZhiBiaoZiJinLiuXiangFenDang {
+    string param = 1;     //指标参数
+    double zmcp  = 2;     //总卖盘
+    double zmrp  = 3;     //总买盘
+    double ddmc6 = 4;  //大单卖出第6档
+    double ddmr6 = 5;  //大单买入第6档
+    double ddmc5 = 6;  //大单卖出第5档
+    double ddmr5 = 7;  //大单买入第5档    //主力买入默认使用这个值
+    double ddmc4 = 8;  //大单卖出第4档    //主力卖出默认使用这个值
+    double ddmr4 = 9;  //大单买入第4档
+    double ddmc3 = 10; //大单卖出第3档
+    double ddmr3 = 11;  //大单买入第3档
+    double ddmc2 = 12;  //大单卖出第2档 
+    double ddmr2 = 13;  //大单买入第2档 
+    double ddmc1 = 14;  //大单卖出第1档
+    double ddmr1 = 15;  //大单买入第1档
+    double xdmc6 = 16;  //小单卖出第6档
+    double xdmr6 = 17;  //小单买入第6档
+    double xdmc5 = 18;  //小单卖出第5档
+    double xdmr5 = 19;  //小单买入第5档
+    double xdmc4 = 20;  //小单卖出第4档    //散户卖出默认使用这个值
+    double xdmr4 = 21;  //小单买入第4档    //散户买入默认使用这个值
+    double xdmc3 = 22;  //小单卖出第3档
+    double xdmr3 = 23;  //小单买入第3档
+    double xdmc2 = 24;  //小单卖出第2档
+    double xdmr2 = 25;  //小单买入第2档
+    double xdmc1 = 26;  //小单卖出第1档
+    double xdmr1 = 27;  //小单买入第1档
+    int64 date = 30;
+}
+
+//数据-指标-资金控盘
+message ZhiBiaoZiJinKongPan {
+    string param = 1;     //指标参数
+    double zhou = 2;        //轴，一般为50
+    double zlkpxs = 3;  //主力控盘系数    //主要用这个值 //这个值大于轴值，即为高度控盘 一般在0-100
+    double zlcmgs = 4;  //主力筹码估算
+    double shcmgs = 5;  //散户筹码估算
+    double shtlbl = 6;  //散户套牢筹码比率
+    double zlkpbl = 7;  //主力控盘筹码比率
+    int64 date = 30;
+}
+
+//数据-指标-资金动力，这三个值不会同时出现
+message ZhiBiaoZiJinDongLi {
+    string param = 1;     //指标参数
+    double zjdlqiang = 2;        //资金动力-强值,一般0-100
+    double zjdlzhong = 3;      //资金动力-中值，一般0-50
+    double zjdlrou = 4;          //资金动力-弱值，一般-100-0
+    int64 date = 30;
+}
+
+//数据-指标-买卖力道
+message ZhiBiaoMaiMaiLiDao {
+    string param = 1;     //指标参数
+    double zmcp  = 2;     //总卖盘
+    double zmrp  = 3;     //总买盘
+    double ddmr5 = 7;  //大单买入第5档    //主力买入默认使用这个值
+    double ddmc4 = 8;  //大单卖出第4档    //主力卖出默认使用这个值
+    double xdmc4 = 20;  //小单卖出第4档    //散户卖出默认使用这个值
+    double xdmr4 = 21;  //小单买入第4档    //散户买入默认使用这个值
+    int64 date = 30;
+}
+
+//数据-指标-买卖力道分档
+message ZhiBiaoMaiMaiLiDaoFenDang {
+    string param = 1;     //指标参数
+    double zmcp  = 2;     //总卖盘
+    double zmrp  = 3;     //总买盘
+    double ddmc6 = 4;  //大单卖出第6档
+    double ddmr6 = 5;  //大单买入第6档
+    double ddmc5 = 6;  //大单卖出第5档
+    double ddmr5 = 7;  //大单买入第5档    //主力买入默认使用这个值
+    double ddmc4 = 8;  //大单卖出第4档    //主力卖出默认使用这个值
+    double ddmr4 = 9;  //大单买入第4档
+    double ddmc3 = 10; //大单卖出第3档
+    double ddmr3 = 11;  //大单买入第3档
+    double ddmc2 = 12;  //大单卖出第2档 
+    double ddmr2 = 13;  //大单买入第2档 
+    double ddmc1 = 14;  //大单卖出第1档
+    double ddmr1 = 15;  //大单买入第1档
+    double xdmc6 = 16;  //小单卖出第6档
+    double xdmr6 = 17;  //小单买入第6档
+    double xdmc5 = 18;  //小单卖出第5档
+    double xdmr5 = 19;  //小单买入第5档
+    double xdmc4 = 20;  //小单卖出第4档    //散户卖出默认使用这个值
+    double xdmr4 = 21;  //小单买入第4档    //散户买入默认使用这个值
+    double xdmc3 = 22;  //小单卖出第3档
+    double xdmr3 = 23;  //小单买入第3档
+    double xdmc2 = 24;  //小单卖出第2档
+    double xdmr2 = 25;  //小单买入第2档
+    double xdmc1 = 26;  //小单卖出第1档
+    double xdmr1 = 27;  //小单买入第1档
+    int64 date = 30;
+}
+//数据 - 指标 钱坤涨跌
+message ZhiBiaoQianKunZhangDie{
+    int64 qkzd = 1;
+    int64 date = 30;
+}
+
+//数据 - 指标 涨跌家数
+message ZhiBiaoZhangDieJiaShu{
+    int64 szjs = 1; //上涨家数  //包含涨停家数 //总家数 = 上涨家数 + 下跌家数 + 平盘家数 + 停牌家数
+    int64 xdjs = 2; //下跌家数  //包含跌停家数
+    int64 ppjs = 3; //平盘家数
+    int64 ztjs = 4; //涨停家数
+    int64 dtjs = 5; //跌停家数
+    int64 tpjs = 6; //停牌家数
+    int64 date = 30;
+}
+
+//消息体--权息系数
+message QuoteDividSingle{
+    string Obj = 1;
+    repeated DividSingle Data = 2;
+}
+
+//数据--权息系数
+message DividSingle{
+    int64 Date = 1;
+    double QianChuQuanChengShu = 2;
+    double QianChuQuanPianYi = 3;
+    double HouChuQuanChengShu = 4;
+    double HouQianChuQuanPianYi = 5;
+    string FhkgXinXi = 6;  //"10派2.7元"
+    string gqdjr = 7;  //"20111231", //股权登记日
+    string cqcxr = 8;  //"20111231", //除权除息日
+    string zhjyr = 9;  //"20111231", //最后交易日
+    string qxbgq = 10;  //"20111231", //权息报告期
+}
+
+//消息体--股本历史
+message QuoteGbfhGbbdOutPut{
+    string Obj = 1;
+    repeated QuoteGbfhGbbd Data = 2;
+}
+
+//数据--股本历史
+message QuoteGbfhGbbd{
+    int64 Date = 1;
+    double bdhzgb = 2;
+    double bdhltgb = 3;
+}
+
+// 1.10分价信息
+message QuoteFjxxSingle {
+    string Obj = 1;
+    string ShiJian = 2;
+    repeated QuoteFjxxSingleData Data = 3;
+}
+// 1.10分价信息data
+message QuoteFjxxSingleData {
+    double ChengJiaoJia = 1;
+    double ChengJiaoLiang = 2;
+    double NeiPan = 3;
+    double WeiPan = 4;
+    double ChengJiaoDanBiShu = 5;
+}
+
+//1.11、市场状态查询服务
+message QuoteMarketSingle {
+    string marketcode = 1;//"SH",  //市场代码
+    string ShiJian = 2;//时间，如91012
+    string status = 3;//1, //状态
+    string recnum = 4;//6199,  //股票数量
+    string tradedate =5;// 20161201,   //日期
+}
+//1.13
+message QuoteKlineIndex{
+    string Obj = 1;
+    string period = 2;
+    string split = 3;
+    repeated QuoteKlineIndexData Data = 4;
+}
+//
+message QuoteKlineIndexData {
+    string period = 1;
+    string begintime = 2;
+    string endtime = 3;
+    string totalcount = 4;
+}
+

@@ -89,8 +89,10 @@ class PHJJAcount:
 
         Obj.set('residualCapital',DataObjArr["ResidualCapital"] )
         Obj.set('frozenCapital', DataObjArr["FrozenCapital"])
+        Obj.set('OriginalCapital', DataObjArr["OriginalCapital"])
 
-        # Obj.set('syl', 0)
+
+        Obj.set('syl', self.syl)
 
         Obj.set('relationId', DataObjArr['rsMainkeyID'])
         Obj.save()
@@ -107,8 +109,9 @@ class PHJJAcount:
         #总资产计算
         self.totalCapital = self.total_sz + DataObjArr["ResidualCapital"] + DataObjArr["FrozenCapital"]
 
-        # #收益率 = 总市值/本期起始资金 -1
-        # self.syl =  self.total_sz/
+        # #收益率 = 总市值/本期起始资金 -1  错误
+        # 收益率 = （总资产-本期起始资金） / 本期起始资金
+        self.syl =  (self.totalCapital - DataObjArr["OriginalCapital"])/DataObjArr["OriginalCapital"]
 
         #仓位=总市值/总资产
         self.cw = self.total_sz/self.totalCapital
