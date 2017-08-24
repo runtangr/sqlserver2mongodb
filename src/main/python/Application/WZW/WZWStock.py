@@ -135,8 +135,8 @@ class WZWStock:
 
     def Save(self, Obj, DataObjArr):
         # 如果原持仓数据及即将更新的持仓数据都为0,则不进行处理
-        if Obj.get('currentVolume', 0) and DataObjArr["currentVolume"]:
-            return
+        # if Obj.get('currentVolume', 0) and DataObjArr["currentVolume"] == 0:
+        #     return
         Obj.set('groupBmId', DataObjArr['VGroupid'])
         Obj.set('teacherObjectId', self.A_DxtWZWTeacherList[0].get("objectId"))
         Obj.set('stockCode', DataObjArr['stockcode'])
