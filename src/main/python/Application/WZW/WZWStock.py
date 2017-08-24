@@ -110,6 +110,8 @@ class WZWStock:
                 current = market_data.ZuoShou / 10000.00
         else:
             current = 0
+        if DataObjArr['stockcode'] == "603677":
+            print DataObjArr
         # logging.warning("3")
         self.position_sz = current * DataObjArr["currentVolume"]
 
