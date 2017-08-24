@@ -50,7 +50,7 @@ class WZWStock:
         self.SyncControlObj = querySyncInfo.first()
         self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
-        top = 200
+        top = 10000
 
         # 王中王持仓列表 WebService 测试接口P_Z_uimsVSTSC_pro
         response = client.service.P_Z_uimsVSTSC_pro(Coordinates='021525374658617185',
