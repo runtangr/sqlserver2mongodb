@@ -104,7 +104,7 @@ class Teacher:
                         A_DxtTGQuestionObj.set('answer', DataObjArr["AnsContent"])
                         A_DxtTGQuestionObj.set('questionTime', questionTime)
                         A_DxtTGQuestionObj.set('answerTime', answerTime)
-                        if DataObjArr['AnsDateTime'] is not None and len(DataObjArr['AnsDateTime']) > 0:
+                        if DataObjArr['AnsContent'] is not None and len(DataObjArr['AnsContent']) > 0:
                             A_DxtTGQuestionObj.set("answerStatus", 1)
                         A_DxtTGQuestionObj.save()
                     # 新增
@@ -127,7 +127,7 @@ class Teacher:
                         A_DxtTGQuestionObj.set('answerTime', answerTime)
                         A_DxtTGQuestionObj.set('relationId', DataObjArr['rsMainkeyID'])
 
-                        if DataObjArr['AnsDateTime'] is not None and len(DataObjArr['AnsDateTime']) > 0:
+                        if DataObjArr['AnsContent'] is not None and len(DataObjArr['AnsContent']) > 0:
                             A_DxtTGQuestionObj.set("answerStatus", 1)
 
                         A_DxtTGQuestionObj.save()
