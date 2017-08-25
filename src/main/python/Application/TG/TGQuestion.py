@@ -104,7 +104,6 @@ class Teacher:
                         A_DxtTGQuestionObj.set('answer', DataObjArr["AnsContent"])
                         A_DxtTGQuestionObj.set('questionTime', questionTime)
                         A_DxtTGQuestionObj.set('answerTime', answerTime)
-                        A_DxtTGQuestionObj.set("answerStatus", 1)
                         if DataObjArr['AnsDateTime'] is not None and len(DataObjArr['AnsDateTime']) > 0:
                             A_DxtTGQuestionObj.set("answerStatus", 1)
                         A_DxtTGQuestionObj.save()
