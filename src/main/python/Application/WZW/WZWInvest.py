@@ -137,6 +137,8 @@ class WZWInvest:
         Obj.set('stockCode', DataObjArr['stockcode'])
         Obj.set('stockName', DataObjArr['stockshortName'])
         Obj.set('marketCode', DataObjArr["MarketCode"])
+        Obj.set('optReason', DataObjArr["LogContent"])
+        Obj.set('optReasonTitle', DataObjArr["LogTitle"])
 
         Obj.set('cjje',DataObjArr["cjje"] )
         Obj.set('price', DataObjArr["price"])
