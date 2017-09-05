@@ -122,106 +122,106 @@ class CommNewsEdit:
 				#此处不需要毫秒 所以后面5个
 				NewsDate = datetime.strptime(DataObjArr['NewsDate'][:-5], '%Y-%m-%d %H:%M:%S')
 
-				try:
-					A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
-					A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
-					#同步判断
-					A_DxtInformationQuery.equal_to('sync', 1)
+				# try:
+				A_DxtInformationQuery = leancloud.Query('A_DxtInformation')
+				A_DxtInformationQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
+				#同步判断
+				A_DxtInformationQuery.equal_to('sync', 1)
 
-					A_DxtInformationList = A_DxtInformationQuery.find()
-					# 编辑
-					if len(A_DxtInformationList) > 0:
+				A_DxtInformationList = A_DxtInformationQuery.find()
+				# 编辑
+				if len(A_DxtInformationList) > 0:
 
-						#添加同步字段
-						A_DxtInformationList[0].set('sync', 1)
+					#添加同步字段
+					A_DxtInformationList[0].set('sync', 1)
 
-						A_DxtInformationList[0].set('title', DataObjArr['NewsTitle'])
-						A_DxtInformationList[0].set('source', DataObjArr['OtherDefine2'])
-						A_DxtInformationList[0].set('summary', DataObjArr['NewsBrief'])
-						A_DxtInformationList[0].set('thumbnail', DataObjArr['OtherDefine1'])
-						A_DxtInformationList[0].set('url', DataObjArr['OtherDefine4'])
-						A_DxtInformationList[0].set('pcUrl', DataObjArr['OtherDefine4'])
-						A_DxtInformationList[0].set('content', DataObjArr['NewsContent'])
-						A_DxtInformationList[0].set('srcContent', DataObjArr['NewsContent'])
+					A_DxtInformationList[0].set('title', DataObjArr['NewsTitle'])
+					A_DxtInformationList[0].set('source', DataObjArr['OtherDefine2'])
+					A_DxtInformationList[0].set('summary', DataObjArr['NewsBrief'])
+					A_DxtInformationList[0].set('thumbnail', DataObjArr['OtherDefine1'])
+					A_DxtInformationList[0].set('url', DataObjArr['OtherDefine4'])
+					A_DxtInformationList[0].set('pcUrl', DataObjArr['OtherDefine4'])
+					A_DxtInformationList[0].set('content', DataObjArr['NewsContent'])
+					A_DxtInformationList[0].set('srcContent', DataObjArr['NewsContent'])
 
-						A_DxtInformationList[0].set('correlatedStockStr', DataObjArr['xggg'])
-						if int(DataObjArr['NewsStyle']) in label:
-							NewsStyle = int(DataObjArr['NewsStyle'])
-							tmp =[]
-							tmp.append(label[NewsStyle])
-							A_DxtInformationList[0].set('categories', tmp)
-							#主题投资
-							if int(DataObjArr['NewsStyle'])==36743:
-								tmp = []
-								tmp.append(DataObjArr['xghy'])
-								A_DxtInformationList[0].set('labels', tmp)
-							else:
-								A_DxtInformationList[0].set('labels', tmp)
-
-						A_DxtInformationList[0].set('isDisable', isDisable)
-						A_DxtInformationList[0].set('author', DataObjArr['OtherDefine2'])
-						A_DxtInformationList[0].set('publishTime', NewsDate)
-						A_DxtInformationList[0].set('clickNumber', 0)
-						A_DxtInformationList[0].set('likeNumber', 0)
-						A_DxtInformationList[0].set('shareNumber', 0)
-						A_DxtInformationList[0].set('collectNumber', 0)
-
-						A_DxtInformationList[0].set('relationId', DataObjArr['rsMainkeyID'])
-
-						A_DxtInformationList[0].set('contentDealStatus', 0)
-						A_DxtInformationList[0].set('CDNStatus', 0)
-						A_DxtInformationList[0].set('imgCDNStatus', 0)
-
-						A_DxtInformationList[0].save()
-					else:
-						A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
-						A_DxtInformationObj = A_DxtInformation()
-
-						# 添加同步字段
-						A_DxtInformationObj.set('sync', 1)
-
-						A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
-						A_DxtInformationObj.set('source', DataObjArr['OtherDefine2'])
-						A_DxtInformationObj.set('summary', DataObjArr['NewsBrief'])
-						A_DxtInformationObj.set('thumbnail', DataObjArr['OtherDefine1'])
-						A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
-						A_DxtInformationObj.set('pcUrl', DataObjArr['OtherDefine4'])
-
-						A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
-						A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
-
-						A_DxtInformationObj.set('correlatedStockStr', DataObjArr['xggg'])
-
-						if int(DataObjArr['NewsStyle']) in label:
-							NewsStyle = int(DataObjArr['NewsStyle'])
+					A_DxtInformationList[0].set('correlatedStockStr', DataObjArr['xggg'])
+					if int(DataObjArr['NewsStyle']) in label:
+						NewsStyle = int(DataObjArr['NewsStyle'])
+						tmp =[]
+						tmp.append(label[NewsStyle])
+						A_DxtInformationList[0].set('categories', tmp)
+						#主题投资
+						if int(DataObjArr['NewsStyle'])==36743:
 							tmp = []
-							tmp.append(label[NewsStyle])
-							A_DxtInformationObj.set('categories', tmp)
-							# 主题投资
-							if int(DataObjArr['NewsStyle']) == 36743:
-								tmp = []
-								tmp.append(DataObjArr['xghy'])
-								A_DxtInformationObj.set('labels', tmp)
-							else:
-								A_DxtInformationObj.set('labels', tmp)
+							tmp.append(DataObjArr['xghy'])
+							A_DxtInformationList[0].set('labels', tmp)
+						else:
+							A_DxtInformationList[0].set('labels', tmp)
 
-						A_DxtInformationObj.set('isDisable', isDisable)
-						A_DxtInformationObj.set('author', DataObjArr['OtherDefine2'])
-						A_DxtInformationObj.set('publishTime', NewsDate)
-						A_DxtInformationObj.set('clickNumber', 0)
-						A_DxtInformationObj.set('likeNumber', 0)
-						A_DxtInformationObj.set('shareNumber', 0)
-						A_DxtInformationObj.set('collectNumber', 0)
-						A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+					A_DxtInformationList[0].set('isDisable', isDisable)
+					A_DxtInformationList[0].set('author', DataObjArr['OtherDefine2'])
+					A_DxtInformationList[0].set('publishTime', NewsDate)
+					A_DxtInformationList[0].set('clickNumber', 0)
+					A_DxtInformationList[0].set('likeNumber', 0)
+					A_DxtInformationList[0].set('shareNumber', 0)
+					A_DxtInformationList[0].set('collectNumber', 0)
 
-						A_DxtInformationObj.set('contentDealStatus', 0)
-						A_DxtInformationObj.set('CDNStatus', 0)
-						A_DxtInformationObj.set('imgCDNStatus', 0)
+					A_DxtInformationList[0].set('relationId', DataObjArr['rsMainkeyID'])
 
-						A_DxtInformationObj.save()
+					A_DxtInformationList[0].set('contentDealStatus', 0)
+					A_DxtInformationList[0].set('CDNStatus', 0)
+					A_DxtInformationList[0].set('imgCDNStatus', 0)
 
-				except Exception, e:
-					logging.error("资讯表 自主新闻数据更新失败: %s" % DataObjArr)
+					A_DxtInformationList[0].save()
+				else:
+					A_DxtInformation = leancloud.Object.extend('A_DxtInformation')
+					A_DxtInformationObj = A_DxtInformation()
+
+					# 添加同步字段
+					A_DxtInformationObj.set('sync', 1)
+
+					A_DxtInformationObj.set('title', DataObjArr['NewsTitle'])
+					A_DxtInformationObj.set('source', DataObjArr['OtherDefine2'])
+					A_DxtInformationObj.set('summary', DataObjArr['NewsBrief'])
+					A_DxtInformationObj.set('thumbnail', DataObjArr['OtherDefine1'])
+					A_DxtInformationObj.set('url', DataObjArr['OtherDefine4'])
+					A_DxtInformationObj.set('pcUrl', DataObjArr['OtherDefine4'])
+
+					A_DxtInformationObj.set('content', DataObjArr['NewsContent'])
+					A_DxtInformationObj.set('srcContent', DataObjArr['NewsContent'])
+
+					A_DxtInformationObj.set('correlatedStockStr', DataObjArr['xggg'])
+
+					if int(DataObjArr['NewsStyle']) in label:
+						NewsStyle = int(DataObjArr['NewsStyle'])
+						tmp = []
+						tmp.append(label[NewsStyle])
+						A_DxtInformationObj.set('categories', tmp)
+						# 主题投资
+						if int(DataObjArr['NewsStyle']) == 36743:
+							tmp = []
+							tmp.append(DataObjArr['xghy'])
+							A_DxtInformationObj.set('labels', tmp)
+						else:
+							A_DxtInformationObj.set('labels', tmp)
+
+					A_DxtInformationObj.set('isDisable', isDisable)
+					A_DxtInformationObj.set('author', DataObjArr['OtherDefine2'])
+					A_DxtInformationObj.set('publishTime', NewsDate)
+					A_DxtInformationObj.set('clickNumber', 0)
+					A_DxtInformationObj.set('likeNumber', 0)
+					A_DxtInformationObj.set('shareNumber', 0)
+					A_DxtInformationObj.set('collectNumber', 0)
+					A_DxtInformationObj.set('relationId', DataObjArr['rsMainkeyID'])
+
+					A_DxtInformationObj.set('contentDealStatus', 0)
+					A_DxtInformationObj.set('CDNStatus', 0)
+					A_DxtInformationObj.set('imgCDNStatus', 0)
+
+					A_DxtInformationObj.save()
+
+				# except Exception, e:
+				# 	logging.error("资讯表 自主新闻数据更新失败: %s" % DataObjArr)
 
 		else:
 			logging.warning("提交模拟炒股系统资讯表 自主新闻数据返回失败：%s" %CommNewsEditMC)
