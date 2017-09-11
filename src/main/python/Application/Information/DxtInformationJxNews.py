@@ -83,7 +83,7 @@ class jx_News:
 			DataObj =  json.loads(jx_NewsMC["DataObj"])#
 
 			#label
-			label = { 1001:"财富早班车",
+			label = { 1001:"明日金股",
 					  1002:"资讯直通车",
 					  1003:"资金全揭秘",
 					  1004:"复盘进行时",
