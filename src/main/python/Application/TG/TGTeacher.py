@@ -63,6 +63,8 @@ class Teacher:
 						A_DxtTGTeacherObj = A_DxtTGTeacherQuery.first()
 						A_DxtTGTeacherObj.set('photo', DataObjArr['UserPhoto'])
 						A_DxtTGTeacherObj.set('name', DataObjArr['NickName'])
+						A_DxtTGTeacherObj.set('sn', DataObjArr['zsbh'])
+						A_DxtTGTeacherObj.set('snType', DataObjArr['zslx'])
 						A_DxtTGTeacherObj.save()
 					#新增
 					else:
@@ -71,6 +73,8 @@ class Teacher:
 						A_DxtTGTeacherObj.set('name', DataObjArr['NickName'])
 						A_DxtTGTeacherObj.set('photo', DataObjArr['UserPhoto'])
 						A_DxtTGTeacherObj.set('relationId', DataObjArr['TeacherUserid'])
+						A_DxtTGTeacherObj.set('sn', DataObjArr['zsbh'])
+						A_DxtTGTeacherObj.set('snType', DataObjArr['zslx'])
 
 						A_DxtTGTeacherObj.set('title', "")
 						A_DxtTGTeacherObj.set('desc', "")
