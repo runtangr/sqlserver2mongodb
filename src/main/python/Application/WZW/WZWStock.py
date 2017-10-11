@@ -103,11 +103,15 @@ class WZWStock:
         # logging.warning("2")
         if DataObjArr["currentVolume"] > 0:
             # 持仓市价  持仓市值 = 行情接口获取当前价 * 当前持仓股数
-            market_data = MarketData.getTicker(DataObjArr["marketcode"] + DataObjArr['stockcode'])
-            if market_data.ZuiXinJia:
-                current = market_data.ZuiXinJia / 10000.00
-            else:
-                current = market_data.ZuoShou / 10000.00
+            try:
+                market_data = MarketData.getTicker(DataObjArr["marketcode"].strip() + DataObjArr['stockcode'].strip())
+                if market_data.ZuiXinJia:
+                    current = market_data.ZuiXinJia / 10000.00
+                else:
+                    current = market_data.ZuoShou / 10000.00
+            except Exception, e:
+                current = 0
+                print ("getTicker error |{}| |{}|".format(DataObjArr["marketcode"], DataObjArr['stockcode']))
         else:
             current = 0
         # logging.warning("3")
@@ -139,9 +143,9 @@ class WZWStock:
             return
         Obj.set('groupBmId', DataObjArr['VGroupid'])
         Obj.set('teacherObjectId', self.A_DxtWZWTeacherList[0].get("objectId"))
-        Obj.set('stockCode', DataObjArr['stockcode'])
+        Obj.set('stockCode', DataObjArr['stockcode'].strip())
         Obj.set('stockName', DataObjArr['stockshortname'])
-        Obj.set('marketCode', DataObjArr["marketcode"])
+        Obj.set('marketCode', DataObjArr["marketcode"].strip())
         Obj.set('marketName', DataObjArr["marketName"])
 
         Obj.set('currentVolume', DataObjArr["currentVolume"])
