@@ -36,6 +36,13 @@ def    remove_data():
                 break
             leancloud.Object.destroy_all(query_list)
 
+        while True:
+            A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
+            query_teacher_list = A_DxtWZWTeacherQuery.find()
+            if len(query_teacher_list) == 0:
+                break
+            leancloud.Object.destroy_all(query_teacher_list)
+
 
    
 if __name__ == '__main__':
