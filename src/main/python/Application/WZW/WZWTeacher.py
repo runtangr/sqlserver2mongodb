@@ -193,13 +193,13 @@ class WZWTeacher:
         #     self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
 
         # 编辑 存储
-        if len(self.A_DxtWZWTeacherList) > 0:
+        # if len(self.A_DxtWZWTeacherList) > 0:
 
-            self.Save(self.A_DxtWZWTeacherList[0], DataObjArr)
-        else:
-            A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
-            A_DxtWZWTeacherObj = A_DxtWZWTeacher()
-            self.Save(A_DxtWZWTeacherObj, DataObjArr)
+        #     self.Save(self.A_DxtWZWTeacherList[0], DataObjArr)
+        # else:
+        #     A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+        #     A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+        #     self.Save(A_DxtWZWTeacherObj, DataObjArr)
 
     def Save(self,Obj,DataObjArr):
 
