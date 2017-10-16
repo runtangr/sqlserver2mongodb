@@ -273,15 +273,15 @@ if __name__ == '__main__':
 
      # Season
 
-     SeasonIdList = remoteSourceSJSeasonId(client)
-     save_select = addRankSeason
-
-     remote = lambda SeasonId:remoteSourceSJSeason(client,SeasonId)
-
-     for data in SeasonIdList:
-         SeasonId, retv = remote(int(data.values()[0]))
-        #check
-         Rank(retv, save_select,SeasonId)
+     # SeasonIdList = remoteSourceSJSeasonId(client)
+     # save_select = addRankSeason
+     #
+     # remote = lambda SeasonId:remoteSourceSJSeason(client,SeasonId)
+     #
+     # for data in SeasonIdList:
+     #     SeasonId, retv = remote(int(data.values()[0]))
+     #    #check
+     #     Rank(retv, save_select,SeasonId)
 
 
 
