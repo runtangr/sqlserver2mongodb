@@ -58,7 +58,7 @@ class WZWTeacher:
         response = client.service.P_Z_uimsVSTC_pro(Coordinates='021525374658617185',
                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                 rsMainkeyID=self.maxKeyId,
-                                                rsDateTime="2017-10-01 00:00:00",
+                                                rsDateTime="2017-09-01 00:00:00",
                                                   top=top
                                                     )
         try:
@@ -227,6 +227,7 @@ class WZWTeacher:
         Obj.set('relationId', str(DataObjArr["rsMainkeyID"]))
         Obj.set('residualCapital', DataObjArr["ResidualCapital"])
         Obj.set('frozenCapital', DataObjArr["FrozenCapital"])
+        Obj.set('rsStatus', DataObjArr["rsStatus"])
         Obj.save()
 
 if __name__ == "__main__":
