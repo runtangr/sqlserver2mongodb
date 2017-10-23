@@ -78,9 +78,9 @@ class StockPool:
             # newsStyle = 28000 为机构实战池
             # newsStyle = 31161 为机构研报池
             # newsStyle = 27590 为天机一号池
-            self.StcokPool={"28000":"机构实战池",
-                            "31161":"机构研报池",
-                           "27590":"天玑I号池"}
+            self.StcokPool={"28000":"3",
+                            "31161":"2",
+                           "27590":"1"}
             self.StcokPoolList= list(self.StcokPool.keys())
 
 
@@ -123,9 +123,9 @@ class StockPool:
         A_DxtStockPoolStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtStockPoolStockList = A_DxtStockPoolStockQuery.find()
 
-        #查找StockPool 匹配name ，取出objectid
+        #查找StockPool 匹配 relationId ，取出objectid
         A_DxtStockPoolQuery = leancloud.Query('A_DxtStockPool')
-        A_DxtStockPoolQuery.equal_to('name', self.StcokPool[DataObjArr["NewsStyle"]])
+        A_DxtStockPoolQuery.equal_to('relationId', self.StcokPool[DataObjArr["NewsStyle"]])
         self.A_DxtStockPoolList = A_DxtStockPoolQuery.find()
         # 编辑
         if len(self.A_DxtStockPoolStockList) > 0:
