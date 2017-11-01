@@ -112,7 +112,7 @@ def  addRankThisMonth(A_Obj, TeacherObj, DataObjArr,SeasonId):
     pm = CalculatePM(syl, SeasonId)
     #获取老师表status
     if len(TeacherObj)!=0:
-        A_Obj.set('rsStatus', TeacherObj.get('rsStatus'))
+        A_Obj.set('rsStatus', TeacherObj[0].get('rsStatus'))
     # A_Obj.set('rsStatus', DataObjArr['rsStatus'])
     A_Obj.set('name', DataObjArr["nickname"])
     A_Obj.set('groupBmId', DataObjArr["VGroupid"])
@@ -252,10 +252,10 @@ def  Rank(retv,save_select,SeasonId):
         return
 
     
-    try:
-        map(lambda item: processSource(item,save_select,SeasonId), DataObj)
-    except Exception, e:
-        logging.warning("data format error :%s" % retv)
+    # try:
+    map(lambda item: processSource(item,save_select,SeasonId), DataObj)
+    # except Exception, e:
+    #     logging.warning("data format error :%s" % retv)
    
    
 if __name__ == '__main__':
@@ -267,6 +267,13 @@ if __name__ == '__main__':
      save_select = addRankLastMonth
      SeasonId = -1
      Rank(retv,save_select,SeasonId)
+
+     while True:
+         queryWZWRank = leancloud.Query('A_DxtWZWRank')
+         query_list = queryWZWRank.find()
+         if len(query_list) == 0:
+             break
+         leancloud.Object.destroy_all(query_list)
 
      # ThisMonth
      retv = remoteSourceThisMonth(client)
