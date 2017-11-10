@@ -111,8 +111,8 @@ def  addRankThisMonth(A_Obj, TeacherObj, DataObjArr,SeasonId):
     syl = DataObjArr["bqsy"]
     pm = CalculatePM(syl, SeasonId)
     #获取老师表status
-    if len(TeacherObj)!=0:
-        A_Obj.set('rsStatus', TeacherObj[0].get('rsStatus'))
+    # if len(TeacherObj)!=0:
+    #     A_Obj.set('rsStatus', TeacherObj[0].get('rsStatus'))
     # A_Obj.set('rsStatus', DataObjArr['rsStatus'])
     A_Obj.set('name', DataObjArr["nickname"])
     A_Obj.set('groupBmId', DataObjArr["VGroupid"])
