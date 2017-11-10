@@ -259,17 +259,26 @@ if __name__ == '__main__':
 
      url = "http://stock.cjs.com.cn/Stocks.asmx?WSDL"
      client = Client(url)
-     #LastMonth
-     # retv = remoteSourceLastMonth(client)
-     # save_select = addRankLastMonth
-     # SeasonId = -1
-     # Rank(retv,save_select,SeasonId)
-     #
-     # # ThisMonth
+
+     while True:
+         queryWZWRank = leancloud.Query('A_DxtWZWRank')
+         queryWZWRank.not_equal_to("season", 0)
+         query_list = queryWZWRank.find()
+         if len(query_list) == 0:
+             break
+         leancloud.Object.destroy_all(query_list)
+
+     # ThisMonth
      # retv = remoteSourceThisMonth(client)
      # save_select = addRankThisMonth
      # SeasonId = 0
      # Rank(retv, save_select,SeasonId)
+
+     # LastMonth
+     retv = remoteSourceLastMonth(client)
+     save_select = addRankLastMonth
+     SeasonId = -1
+     Rank(retv,save_select,SeasonId)
 
      # Season
 
