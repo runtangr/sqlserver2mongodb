@@ -94,11 +94,11 @@ class StockPool:
                 print ("maxKeyId:", maxKeyId, "===", "rsMainkeyID:", DataObjArr['rsMainkeyID'], "===",
                        "rsDateTime:", DataObjArr['rsDateTime'])
 
-                inTime = datetime.strptime(DataObjArr['AccessDateTime'], "%Y-%m-%d %H:%M:%S")
+                inTime = datetime.strptime(DataObjArr['AccessDateTime'], "%Y-%m-%d %H:%M:%S.%f")
                 if DataObjArr["OutDateTime"] is None or DataObjArr["OutDateTime"] == "1900-01-01 00:00:00":
                     outTime = datetime(year=1900, month=1, day=1)
                 else:
-                    outTime = datetime.strptime(DataObjArr["OutDateTime"], "%Y-%m-%d %H:%M:%S")
+                    outTime = datetime.strptime(DataObjArr["OutDateTime"], "%Y-%m-%d %H:%M:%S.%f")
                 try:
                     A_DxtStockPoolStockQuery = leancloud.Query('A_DxtStockPoolStock')
                     A_DxtStockPoolStockQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
