@@ -105,9 +105,6 @@ class WZWTeacher:
         #专家
         self.isExpert = 0 if  DataObjArr["rsProjectId"] else 1
 
-
-
-
         A_DxtWZWTeacherQuery = leancloud.Query('A_DxtWZWTeacher')
         A_DxtWZWTeacherQuery.equal_to('relationId', str(DataObjArr['rsMainkeyID']))
         self.A_DxtWZWTeacherList = A_DxtWZWTeacherQuery.find()
@@ -118,6 +115,15 @@ class WZWTeacher:
         A_DxtWZWRankQuery.equal_to('season', 0)
         self.A_DxtWZWStockList = A_DxtWZWRankQuery.find()
         if len(self.A_DxtWZWStockList) == 0 :
+            if self.A_DxtWZWTeacherList:
+
+                self.A_DxtWZWTeacherList[0].set("rsStatus", DataObjArr["rsStatus"])
+                self.A_DxtWZWTeacherList[0].save()
+            else:
+                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+                A_DxtWZWTeacherObj.set("rsStatus", DataObjArr["rsStatus"])
+                A_DxtWZWTeacherObj.save()
             return
         WZWStockData = self.A_DxtWZWStockList[0]
         self.pm = WZWStockData.get("pm")
