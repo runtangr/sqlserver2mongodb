@@ -114,20 +114,7 @@ class WZWTeacher:
         A_DxtWZWRankQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
         A_DxtWZWRankQuery.equal_to('season', 0)
         self.A_DxtWZWStockList = A_DxtWZWRankQuery.find()
-        if len(self.A_DxtWZWStockList) == 0 :
-            if self.A_DxtWZWTeacherList:
 
-                self.A_DxtWZWTeacherList[0].set("rsStatus", DataObjArr["rsStatus"])
-                self.A_DxtWZWTeacherList[0].save()
-            else:
-                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
-                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
-                A_DxtWZWTeacherObj.set("rsStatus", DataObjArr["rsStatus"])
-                A_DxtWZWTeacherObj.save()
-            return
-        WZWStockData = self.A_DxtWZWStockList[0]
-        self.pm = WZWStockData.get("pm")
-        self.yearSyl = WZWStockData.get("yearSyl")
 
         #查找WZWStock 匹配name ，取出objectid
         A_DxtWZWZWStockQuery = leancloud.Query('A_DxtWZWStock')
@@ -157,15 +144,28 @@ class WZWTeacher:
         #收益率 = (总资产/本期起始资金 -1)*100
         self.syl = (self.totalCapital/DataObjArr["OriginalCapital"]-1)*100
 
-        if (DataObjArr['rsMainkeyID'] == 73761):
-            a=1
-
         # #排名初始化
         # self.pm = 0
 
         self.historyAccount={}  ###########
 
+
             # 编辑 存储
+        if len(self.A_DxtWZWStockList) == 0:
+            if self.A_DxtWZWTeacherList:
+                self.save_no_stock(self.A_DxtWZWTeacherList[0], DataObjArr)
+
+            else:
+                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+                self.save_no_stock(A_DxtWZWTeacherObj, DataObjArr)
+            return
+
+        WZWStockData = self.A_DxtWZWStockList[0]
+        self.pm = WZWStockData.get("pm")
+        self.yearSyl = WZWStockData.get("yearSyl")
+
+
         if len(self.A_DxtWZWTeacherList) > 0:
 
             self.Save(self.A_DxtWZWTeacherList[0],DataObjArr)
@@ -207,6 +207,33 @@ class WZWTeacher:
         #     A_DxtWZWTeacherObj = A_DxtWZWTeacher()
         #     self.Save(A_DxtWZWTeacherObj, DataObjArr)
 
+
+    def save_no_stock(self,Obj,DataObjArr):
+
+        Obj.set('name', DataObjArr['OtherDefine4'])
+        Obj.set('photo', DataObjArr['Timage'])
+        Obj.set('groupBmId', DataObjArr['rsMainkeyID'])
+        Obj.set('djs', DataObjArr['DJS'])
+        Obj.set('isExpert', self.isExpert)
+
+        Obj.set('totalCapital', self.totalCapital)
+
+        Obj.set('sz', self.total_sz)
+        Obj.set('cw', self.cw)
+        Obj.set('originalCapital', DataObjArr["OriginalCapital"])
+
+        Obj.set('syl', self.syl)
+
+
+        Obj.set('certId', DataObjArr["Tzsbh"])
+        Obj.set('desc', DataObjArr["Tfxsjs"])
+        Obj.set('motto', DataObjArr["Ttzgy"])
+        Obj.set('historyAccount', self.historyAccount)  #历史账目-资金ID|无|
+        Obj.set('relationId', str(DataObjArr["rsMainkeyID"]))
+        Obj.set('residualCapital', DataObjArr["ResidualCapital"])
+        Obj.set('frozenCapital', DataObjArr["FrozenCapital"])
+        Obj.set('rsStatus', DataObjArr["rsStatus"])
+        Obj.save()
     def Save(self,Obj,DataObjArr):
 
         Obj.set('name', DataObjArr['OtherDefine4'])
