@@ -113,7 +113,7 @@ class WZWTeacher:
         A_DxtWZWRankQuery = leancloud.Query('A_DxtWZWRank')
         A_DxtWZWRankQuery.equal_to('groupBmId', DataObjArr["rsMainkeyID"])
         A_DxtWZWRankQuery.equal_to('season', 0)
-        self.A_DxtWZWStockList = A_DxtWZWRankQuery.find()
+        self.A_DxtWZWRankList = A_DxtWZWRankQuery.find()
 
 
         #查找WZWStock 匹配name ，取出objectid
@@ -149,21 +149,13 @@ class WZWTeacher:
 
         self.historyAccount={}  ###########
 
-
-            # 编辑 存储
-        if len(self.A_DxtWZWStockList) == 0:
-            if self.A_DxtWZWTeacherList:
-                self.save_no_stock(self.A_DxtWZWTeacherList[0], DataObjArr)
-
-            else:
-                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
-                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
-                self.save_no_stock(A_DxtWZWTeacherObj, DataObjArr)
+        # 编辑 存储
+        if len(self.A_DxtWZWRankList) == 0:
             return
 
-        WZWStockData = self.A_DxtWZWStockList[0]
-        self.pm = WZWStockData.get("pm")
-        self.yearSyl = WZWStockData.get("yearSyl")
+        WZWRankData = self.A_DxtWZWRankList[0]
+        self.pm = WZWRankData.get("pm")
+        self.yearSyl = WZWRankData.get("yearSyl")
 
 
         if len(self.A_DxtWZWTeacherList) > 0:
