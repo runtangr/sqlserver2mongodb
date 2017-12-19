@@ -166,6 +166,7 @@ class WZWStock:
         # 持仓市价
         Obj.set('total_sz', self.position_sz)
         Obj.save()
+        print ('relationId', Obj.get('relationId'))
 
 
 if __name__ == "__main__":
