@@ -56,7 +56,7 @@ class WZWStock:
         response = client.service.P_Z_uimsVSTSC_pro(Coordinates='021525374658617185',
                                                     Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                     rsMainkeyID=self.maxKeyId,
-                                                    rsDateTime="2017-08-01 00:00:00",
+                                                    rsDateTime=self.rsDateTime,
                                                     top=top
                                                     )
         try:
