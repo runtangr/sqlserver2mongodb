@@ -54,11 +54,14 @@ class WZWTeacher:
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
         top = 200
 
+        # add 20180104 每月时间设置
+        month_date = datetime.now().replace(day=1, hour=0, minute=0)
+
         # 王中王老师列表 WebService 测试接口P_Z_uimsVSTC_pro
         response = client.service.P_Z_uimsVSTC_pro(Coordinates='021525374658617185',
                                                 Encryptionchar='F5AC95F60BBEDAA9372AE29B84F5E67A',
                                                 rsMainkeyID=self.maxKeyId,
-                                                rsDateTime=self.rsDateTime,
+                                                rsDateTime=month_date,
                                                   top=top
                                                     )
         try:
