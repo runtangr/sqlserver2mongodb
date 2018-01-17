@@ -52,7 +52,7 @@ class WZWTeacher:
         self.SyncControlObj = querySyncInfo.first()
         self.maxKeyId = int(self.SyncControlObj.get('mainKeyId'))
         self.rsDateTime = self.SyncControlObj.get('rsDateTime')
-        top = 200
+        top = 2000
 
         # add 20180104 每月时间设置
         month_date = datetime.now().replace(day=1, hour=0, minute=0)
@@ -154,6 +154,13 @@ class WZWTeacher:
 
         # 编辑 存储
         if len(self.A_DxtWZWRankList) == 0:
+            if len(self.A_DxtWZWTeacherList) > 0:
+
+                self.save_no_stock(self.A_DxtWZWTeacherList[0], DataObjArr)
+            else:
+                A_DxtWZWTeacher = leancloud.Object.extend('A_DxtWZWTeacher')
+                A_DxtWZWTeacherObj = A_DxtWZWTeacher()
+                self.save_no_stock(A_DxtWZWTeacherObj, DataObjArr)
             return
 
         WZWRankData = self.A_DxtWZWRankList[0]
